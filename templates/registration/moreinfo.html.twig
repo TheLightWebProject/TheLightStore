@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RegistrationController!
+{% endblock %}
+
+{% block body %}
+	<h1>More Information</h1>
+	{{ form_start(form_Cus) }}
+	{{ form_widget(form_Cus) }}
+	<input type="submit" value="OK">
+	{{ form_end(form_Cus) }}
+
+{% endblock %}
