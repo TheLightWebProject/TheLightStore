@@ -68,7 +68,7 @@
 								</a>
 							</td>
 							<td style='text-align:center'>
-								<a href="{{ path('delete_product', { 'id': product.id }) }}">
+								<a href="{{ path('delete_product', { 'id': product.id }) }}" onclick="return confirm('Are you sure to delete!')">
 									<i class="bi bi-trash-fill" style="color: red;"></i>
 								</a>
 							</td>

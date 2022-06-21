@@ -54,6 +54,26 @@ class ProductsRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
+    /**
+     * @return Products[]
+     */
+    public function showTop4BestSelling(): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->setMaxResults(4);
+        return $query->getQuery()->execute();
+    }
+
+    /**
+     * @return Products[]
+     */
+    public function showShop(): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->orderBy('p.createdDate', 'DESC');
+        return $query->getQuery()->execute();
+    }
+
     //    /**
     //     * @return Products[] Returns an array of Products objects
     //     */
