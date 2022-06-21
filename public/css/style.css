@@ -8,6 +8,11 @@
   margin-top: 50px
 }
 
+/*navigation*/
+#navigation li a{
+  color: orange;
+}
+
 /*product of shop*/
 .product-grid1 {
   font-family: 'Poppins', sans-serif;

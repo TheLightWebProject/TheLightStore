@@ -4,10 +4,12 @@
 {% endblock %}
 
 {% block body %}
-	<h1>More Information</h1>
+	<h1 class="text-center mt-3">More Information</h1>
 	{{ form_start(form_Cus) }}
 	{{ form_widget(form_Cus) }}
-	<input type="submit" value="OK">
+	<div class="text-center">
+		<input class="btn btn-primary my-3" type="submit" value="Confirm">
+	</div>
 	{{ form_end(form_Cus) }}
 
 {% endblock %}
