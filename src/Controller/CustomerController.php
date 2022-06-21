@@ -3,13 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Customers;
+use App\Entity\User;
+use App\Form\Type\ChangePasswordFormType;
 use App\Form\Type\CustomerFormType;
+use App\Form\Type\UserFormType;
 use App\Repository\CustomersRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -42,7 +49,12 @@ class CustomerController extends AbstractController
             $em->persist($customer);
             $em->flush();
 
-            return $this->redirectToRoute('index');
+            $this->addFlash(
+                'success',
+                'Update profile successfully'
+            );
+
+            return $this->redirectToRoute('update_profile');
         }
 
         return $this->render('customer/update.html.twig', [
@@ -50,4 +62,39 @@ class CustomerController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/customer/changepassword", name="change_password")
+     */
+    public function changePasswordAction(ManagerRegistry $re, Request $req, UserRepository $repo, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils): Response
+    {
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        $user = $repo->findOneBy(['email' => $lastUsername]);
+
+        $formChange = $this->createForm(ChangePasswordFormType::class, $user);
+        $formChange->handleRequest($req);
+        if ($formChange->isSubmitted() && $formChange->isValid()) {
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $formChange->get('password')->getData()
+                )
+            );
+
+            $em = $re->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Change password successfully'
+            );
+
+            return $this->redirectToRoute('change_password');
+        }
+
+        return $this->render('customer/changepassword.html.twig', [
+            'change_password_form' => $formChange->createView(),
+        ]);
+    }
 }
