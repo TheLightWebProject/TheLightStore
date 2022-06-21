@@ -4,15 +4,16 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Registration</h1>
+	<h1 class="text-center mt-3">REGISTRATION</h1>
 
-	
+
 	{{ form_start(form_User) }}
 	{{ form_widget(form_User) }}
 
-	<input type="submit" name="btnRegister" id="btnRegister" value="Register">
+	<div class="text-center">
+		<input class="btn btn-primary mb-3" type="submit" name="btnRegister" id="btnRegister" value="Register">
+	</div>
 	{{ form_end(form_User) }}
-
 
 
 {% endblock %}
