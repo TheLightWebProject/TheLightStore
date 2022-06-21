@@ -84,20 +84,19 @@ class BrandController extends AbstractController
                 $brand->setImage($newFilename);
             }
 
-            $err = $valid->validate($brand);
-            if (count($err) > 0) {
-                $string_err = (string)$err;
-                return new Response($string_err, 400);
-            }
+            // $err = $valid->validate($brand);
+            // if (count($err) > 0) {
+            //     $string_err = (string)$err;
+            //     return new Response($string_err, 400);
+            // }
 
             $entity->persist($brand);
             $entity->flush();
 
-            $this->addFlash(
-                'success',
-                'Your post was added'
-            );
-
+            // $this->addFlash(
+            //     'success',
+            //     'Your post was added'
+            // );
 
             return $this->redirectToRoute("show_all_brands");
         }
