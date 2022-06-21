@@ -36,32 +36,42 @@
 					</tr>
 				</thead>
 
-                <tbody>
-					{% set count = 1 %}
-					{% for supplier in suppliers %}
+				<tbody>
+					{% if suppliers %}
+						{% set count = 1 %}
+						{% for supplier in suppliers %}
+							<tr>
+								<td
+									class="text-center">
+									{# <a href="{{ path('show_detail_brand', { 'id': brand.id }) }}">{{ count }}</a> #}
+									{{ count }}
+								</td>
+								<td>{{ supplier.name }}</td>
+								<td class="text-center">{{ supplier.telephone }}</td>
+								<td align='center'>
+									{{ supplier.email }}
+								</td>
+								<td style='text-align:center'>
+									<a href="{{ path('edit_supplier', { 'id': supplier.id }) }}">
+										<i class="bi bi-pen-fill" style="color: black;"></i>
+									</a>
+								</td>
+								<td style='text-align:center'>
+									<a href="{{ path('delete_supplier', { 'id': supplier.id }) }}" onclick="return confirm('Are you sure to delete!')">
+										<i class="bi bi-trash-fill" style="color: red;"></i>
+									</a>
+								</td>
+							</tr>
+							{% set count = count + 1 %}
+						{% endfor %}
+					{% else %}
 						<tr>
-							<td class="text-center">
-								{# <a href="{{ path('show_detail_brand', { 'id': brand.id }) }}">{{ count }}</a> #}
-                                {{ count }}
-							</td>
-							<td>{{ supplier.name }}</td>
-							<td class="text-center">{{ supplier.telephone }}</td>
-							<td align='center'>
-								{{ supplier.email }}
-							</td>
-							<td style='text-align:center'>
-								<a href="{{ path('edit_supplier', { 'id': supplier.id }) }}">
-									<i class="bi bi-pen-fill" style="color: black;"></i>
-								</a>
-							</td>
-							<td style='text-align:center'>
-								<a href="{{ path('delete_supplier', { 'id': supplier.id }) }}">
-									<i class="bi bi-trash-fill" style="color: red;"></i>
-								</a>
+							<td colspan="6" class="text-center fw-bold">
+								Supplier list is empty
 							</td>
 						</tr>
-						{% set count = count + 1 %}
-					{% endfor %}
+					{% endif %}
+
 				</tbody>
 			</table>
 		</form>

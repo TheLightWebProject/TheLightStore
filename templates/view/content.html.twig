@@ -88,5 +88,34 @@
 			</div>
 		</div>
 		<hr>
+		<div class="mt-2">
+			<h2>
+				<b>Top 4 - Products</b>
+			</h2>
+			<div class="d-flex justify-content-center mt-50">
+				<div class="row">
+					{% for product in products %}
+						<div class="col-12 col-lg-3 col-sm-6">
+							<div class="product-grid">
+								<div class="product-image">
+									<a href="" class="image">
+										<img class="img-1" src="{{ path('get_product_photo', {'filename' : product.image} ) }}">
+									</a>
+								</div>
+								<div class="product-content">
+									<div class="price">
+										<b>${{ product.price }}</b>
+									</div>
+									<h3 class="title">
+										<a href="" class="text-decoration-none">{{ product.name }}</a>
+									</h3>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
 	</section>
 {% endblock %}

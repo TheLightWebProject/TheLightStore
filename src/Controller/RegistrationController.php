@@ -84,4 +84,36 @@ class RegistrationController extends AbstractController
             'form_Cus' => $formCus->createView(),
         ]);
     }
+
+    /**
+     * @Route("/profile/update", name="update_profile")
+     */
+    public function updateProfileAction(Request $req, ManagerRegistry $re, UserRepository $repo): Response
+    {
+        $customer = new Customers();
+
+        $formCus = $this->createForm(CustomerFormType::class, $customer);
+
+        $formCus->handleRequest($req);
+
+        if ($formCus->isSubmitted() && $formCus->isValid()) {
+            $data = $formCus->getData($req);
+
+            $customer->setFullname($data->getFullname());
+            $customer->setSex($data->isSex());
+            $customer->setTelephone($data->getTelephone());
+            $customer->setAddress($data->getAddress());
+            $customer->setBirthday($data->getBirthday());
+
+            $em = $re->getManager();
+            $em->persist($customer);
+            $em->flush();
+
+            return $this->redirectToRoute('index');
+        }
+
+        return $this->render('customer/update.html.twig', [
+            'update_profile' => $formCus->createView(),
+        ]);
+    }
 }
