@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\BrandsRepository;
 use App\Repository\ProductsRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,12 +27,17 @@ class ViewController extends AbstractController
     /**
      * @Route("/shop", name="shop")
      */
-    public function shopAction(ProductsRepository $repo): Response
+    public function shopAction(Request $req, ProductsRepository $repo, BrandsRepository $repoBrand, PaginatorInterface $paginator): Response
     {
         $products = $repo->showShop();
 
+        $brands = $repoBrand->findAll();
+
+        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 12);
+
         return $this->render('view/shop.html.twig', [
-            'products' => $products
+            'products' => $paginator,
+            'brands' => $brands
         ]);
     }
 

@@ -23,8 +23,10 @@
 			<nav id="sidebarMenu" class="collapse d-md-block bg-white">
 				<div class="position-sticky">
 					<div class="list-group list-group-flush">
-						<a href="" class="list-group-item list-group-item-action py-2">All</a>
-						<a href="" class="list-group-item list-group-item-action py-2">Brand</a>
+						<a href="{{ path('shop') }}" class="list-group-item list-group-item-action py-2">All</a>
+						{% for brand in brands %}
+							<a href="{{ path('shop', { 'id': brand.id }) }}" class="list-group-item list-group-item-action py-2">{{ brand.name }}</a>
+						{% endfor %}
 					</div>
 				</div>
 			</nav>
@@ -65,6 +67,9 @@
 							</div>
 						</div>
 					{% endfor %}
+				</div>
+				<div class="pagination justify-content-center">
+					{{ knp_pagination_render(products, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
 				</div>
 			</section>
 		</div>
