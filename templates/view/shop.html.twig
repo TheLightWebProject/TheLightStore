@@ -13,19 +13,29 @@
 				</button>
 
 				<!-- Brand -->
-				<a class="text-decoration-none text-black ps-3" href="index.php">
-					<h3>BACH HOA SI</h3>
+				<a class="text-decoration-none text-black ps-3 d-none d-md-block" href="{{ path('index') }}">
+					<h3 class="fw-bold">The Light Store</h3>
 				</a>
 			</nav>
 			<!-- Navbar -->
 
 			<!-- Sidebar -->
 			<nav id="sidebarMenu" class="collapse d-md-block bg-white">
+				<h5 class="ms-3 mt-4 fw-bold">Brand</h5>
 				<div class="position-sticky">
 					<div class="list-group list-group-flush">
 						<a href="{{ path('shop') }}" class="list-group-item list-group-item-action py-2">All</a>
 						{% for brand in brands %}
-							<a href="{{ path('shop', { 'id': brand.id }) }}" class="list-group-item list-group-item-action py-2">{{ brand.name }}</a>
+							<a href="{{ path('shop', { 'bid': brand.id }) }}" class="list-group-item list-group-item-action py-2">{{ brand.name }}</a>
+						{% endfor %}
+					</div>
+				</div>
+				<h5 class="ms-3 mt-4 fw-bold">Supplier</h5>
+				<div class="position-sticky">
+					<div class="list-group list-group-flush">
+						<a href="{{ path('shop') }}" class="list-group-item list-group-item-action py-2">All</a>
+						{% for supplier in suppliers %}
+							<a href="{{ path('shop', { 'sid': supplier.id }) }}" class="list-group-item list-group-item-action py-2">{{ supplier.name }}</a>
 						{% endfor %}
 					</div>
 				</div>

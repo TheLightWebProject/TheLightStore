@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\BrandsRepository;
 use App\Repository\ProductsRepository;
+use App\Repository\SuppliersRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,17 +28,30 @@ class ViewController extends AbstractController
     /**
      * @Route("/shop", name="shop")
      */
-    public function shopAction(Request $req, ProductsRepository $repo, BrandsRepository $repoBrand, PaginatorInterface $paginator): Response
+    public function shopAction(Request $req, ProductsRepository $repo, BrandsRepository $repoBrand, SuppliersRepository $repoSup, PaginatorInterface $paginator): Response
     {
-        $products = $repo->showShop();
-
+        $suppliers = $repoSup->findAll();
         $brands = $repoBrand->findAll();
+
+        if (isset($_GET['bid'])) {
+            $id = $req->query->get('bid');
+            $products = $repo->findBy(['brand' => $id]);
+        } elseif (isset($_GET['sid'])) {
+            $id = $req->query->get('sid');
+            $products = $repo->findBy(['supplier' => $id]);
+        } elseif (isset($_POST['btnSearch'])) {
+            $value = $req->request->get('txtSearch');
+            $products = $repo->findBySearch($value);
+        } else {
+            $products = $repo->showShop();
+        }
 
         $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 12);
 
         return $this->render('view/shop.html.twig', [
             'products' => $paginator,
-            'brands' => $brands
+            'brands' => $brands,
+            'suppliers' => $suppliers,
         ]);
     }
 
