@@ -146,7 +146,7 @@
   position: absolute;
   bottom: 50px;
   left: 50%;
-  transition: all .4s ease-out;
+  transition: all .5s ease-out;
   text-decoration: none;
   border: 2px outset #b6b6b6;
 }
@@ -496,3 +496,67 @@ form span {
   padding: 1.5vh;
   border-radius: 0;
 }
+
+/* CSS FOR HOMEPAGE--------------------------*/
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active{
+    color: coral;
+}
+
+.navbar-light .navbar-nav .nav-item:hover,
+.navbar-light .navbar-nav .nav-item.active{
+    color: coral;
+}
+
+.navbar i{
+  font-size: 1.2rem;
+  padding: 0 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.home span{
+  color: coral;
+}
+
+
+
+/*view fea*/
+.product{
+  cursor: pointer;
+  margin-bottom: 0.3s all;
+}
+
+.product img{
+  transition: 0.3s all;
+}
+
+.product:hover img{
+  opacity: 0.7;
+}
+
+.product .buy-btn{
+  background: #fb774b;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: 0.3s all;
+}
+
+.product:hover .buy-btn{
+
+  transform: translateY(0);
+  opacity:1;
+}
+#home span{
+  color: coral;
+}
+
+.text {
+  color: #fff;
+  position: absolute;
+  top: 10px;
+  left: 70px;
+  }
+  
