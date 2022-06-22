@@ -24,17 +24,17 @@
 									${{ product.0.price }}
 								</h2>
 							</div>
-							<form action="?page=cart" method="POST" class="mb-2">
+							<form action="/cart" method="POST" class="mb-2">
 								<div class="row d-flex">
 									<input type="number" name="quantity" class="col-md-2" value="1" min="1" max="{{ product.0.quantity }}">
 									<input type="submit" name="addcart" class="btn btn-dark btn-rounded mx-md-2 my-2 my-md-0 col-md-3" value="Add to cart">
-									<input type="submit" name="btnBuynow" formaction="?page=order" class="btn btn-primary btn-rounded me-md-2 my-md-0 mb-2 col-md-3" value="Buy Now">
+									<input type="submit" name="btnBuynow" formaction="/order/buynow" class="btn btn-primary btn-rounded me-md-2 my-md-0 mb-2 col-md-3" value="Buy Now">
 								</div>
-								<input type="hidden" name="proid" value="<?php echo $id ?>">
-								<input type="hidden" name="proname" value="<?php echo $proname ?>">
-								<input type="hidden" name="shortdesc" value="<?php echo $short ?>">
-								<input type="hidden" name="image" value="<?php echo $pic ?>">
-								<input type="hidden" name="price" value="<?php echo $price ?>">
+								<input type="hidden" name="proid" value="{{ product.0.id }}">
+								<input type="hidden" name="proname" value="{{ product.0.name }}">
+								<input type="hidden" name="shortdesc" value="{{ product.0.smallDesc }}">
+								<input type="hidden" name="image" value="{{ product.0.image }}">
+								<input type="hidden" name="price" value="{{ product.0.price }}">
 							</form>
 						{% else %}
 							<h4 class="mt-md-4">Out of stock</h4>
