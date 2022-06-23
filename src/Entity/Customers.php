@@ -56,6 +56,10 @@ class Customers
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 10,
+     *      minMessage = "Your address must be at least {{ limit }} characters long!"
+     * )
      */
     private $address;
 

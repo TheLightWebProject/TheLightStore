@@ -6,6 +6,7 @@ use App\Repository\BrandsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BrandsRepository::class)
@@ -21,11 +22,24 @@ class Brands
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Brand name name must be at least {{ limit }} characters long!"
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Brand name cannot contain a number!"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Description must be at least {{ limit }} characters long!"
+     * )
      */
     private $decrip;
 
