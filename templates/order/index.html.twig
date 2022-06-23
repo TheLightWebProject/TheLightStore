@@ -67,8 +67,10 @@
 								<b>${{ product[4] * product[5] }}</b>
 							</div>
 						</div>
-
-						<input type="submit" class="btn btn-primary btnorder my-3" name="btnPayment" id="btnPayment" value="Payment"/>
+						<input type="hidden" name="proid" value="{{ product[0] }}">
+						<input type="hidden" name="quantity" value="{{ product[4] }}">
+						<input type="hidden" name="price" value="{{ product[5] }}">
+						<input type="submit" class="btn btn-primary btnorder my-3" name="btnPaymentnow" id="btnPaymentnow" value="Payment"/>
 						<p class="text-muted text-center">Complimentary Shipping</p>
 					</div>
 				</div>
