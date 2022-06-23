@@ -14,7 +14,8 @@ class BrandFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Brands::class
+            'data_class' => Brands::class,
+            'csrf_protection' => false
         ]);
     }
 

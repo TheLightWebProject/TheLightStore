@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MigratingSessionHandler;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -44,7 +45,6 @@ class RegistrationController extends AbstractController
                 'id' => $user->getId()
             ]);
         }
-
         return $this->render('registration/index.html.twig', [
             'form_User' => $formUser->createView(),
         ]);

@@ -29,31 +29,10 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/brand/{id}", name="show_detail_brand", methods={"GET"})
-     */
-    // public function showDetail(BrandsRepository $repo, int $id): Response
-    // {
-    //     $brand = $repo->find($id);
-
-    //     if (!$brand) {
-    //         return $this->json('No brand found for id ' . $id, 404);
-    //     }
-
-    //     $data = [
-    //         'id' => $brand->getId(),
-    //         'name' => $brand->getName(),
-    //         'descrip' => $brand->getDecrip(),
-    //         'image' => $brand->getImage()
-    //     ];
-
-    //     return $this->json($data);
-    // }
-
-    /**
      * @Route("/brand/new", name="add_brand")
      */
     public function addBrandAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid): Response
-    {
+    {   
         $brand = new Brands();
         $formBrand = $this->createForm(BrandFormType::class, $brand);
 

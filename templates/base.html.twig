@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Bach hoa si - SecondHand!
+			{% block title %}The Light - SecondHand!
 			{% endblock %}
 		</title>
 		<link
@@ -25,172 +25,231 @@
 			{% block javascripts %}
 				{{ encore_entry_script_tags('app') }}
 			{% endblock %}
-		</head>
-		<body>
-			<div class="container">
-				<header class="d-flex flex-wrap text-center justify-content-md-between py-4" style="background-color: #E0E0E0;">
-					<div class="col-xl-3 col-lg-3 col-md-3 col-12 ms-lg-2 ms-md-2 d-flex justify-content-center text-dark align-items-center">
-						<img title="Bach Hoa Si" onclick="location.href='{{ path('index') }}'" src="../Image/TL.png" height="40" width="40" class="me-2" style="border-radius: 5px" role="button"/>
-						<form class="d-flex input-group w-auto" method="POST" action="/shop">
-							<input name="txtSearch" type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
-							<button class="btn btn-secondary searching" type="submit" name="btnSearch">
-								<i class="bi bi-search"></i>
-							</button>
-						</form>
-					</div>
-					<ul class="nav col-xl-auto col-lg-auto col-md-auto col-12 d-flex justify-content-center align-items-center mt-2 mt-lg-0 mt-md-0">
-						<li>
-							<a href="{{ path('index') }}" class="nav-link px-2 link-dark text-uppercase">Home</a>
-						</li>
-						<li>
-							<a href="{{ path('shop') }}" class="nav-link px-2 link-dark text-uppercase">Shop</a>
-						</li>
-						<!-- <li><a href="?page=contact" class="nav-link px-2 link-dark text-uppercase">Contact</a></li> -->
-						<li>
-							<a href="{{ path('about') }}" class="nav-link px-2 link-dark text-uppercase">About</a>
-						</li>
-					</ul>
-					<div class="col-xl-3 col-lg-3 col-md-3 col-12">
-						{% if app.user %}
-							<div
-								class="nav navbar navbar-expand-md d-flex justify-content-center ps-lg-5 ps-xl-5">
-								<!-- Icon -->
-								<a class="text-reset ms-xl-5" href="{{ path('cart') }}">
-									<i class="bi bi-cart-fill"></i>
-								</a>
-
-								<!-- Notifications -->
-								<a class="text-reset mx-4" href="">
-									<i class="bi bi-bell-fill"></i>
-								</a>
-
-								<!-- Avatar -->
-								<div class="dropdown">
-									<a class="dropdown-toggle d-flex align-items-center text-reset" href="#" id="navbarDropdownMenuAvatar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="bi bi-person-circle" style="color: black;" loading="lazy"></i>
+			<body>
+				<div class="container">
+					<header class="d-flex flex-wrap text-center justify-content-md-between py-4" style="background-color: #E0E0E0;">
+						<div class="col-xl-3 col-lg-3 col-md-3 col-12 ms-lg-2 ms-md-2 d-flex justify-content-center text-dark align-items-center">
+							<img title="Bach Hoa Si" onclick="location.href='{{ path('index') }}'" src="../Image/TL.png" height="40" width="40" class="me-2" style="border-radius: 5px" role="button"/>
+							<form class="d-flex input-group w-auto" method="POST" action="/shop">
+								<input name="txtSearch" type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="search-addon"/>
+								<button class="btn btn-secondary searching" type="submit" name="btnSearch">
+									<i class="bi bi-search"></i>
+								</button>
+							</form>
+						</div>
+						<ul class="nav col-xl-auto col-lg-auto col-md-auto col-12 d-flex justify-content-center align-items-center mt-2 mt-lg-0 mt-md-0">
+							<li>
+								<a href="{{ path('index') }}" class="nav-link px-2 link-dark text-uppercase">Home</a>
+							</li>
+							<li>
+								<a href="{{ path('shop') }}" class="nav-link px-2 link-dark text-uppercase">Shop</a>
+							</li>
+							<!-- <li><a href="?page=contact" class="nav-link px-2 link-dark text-uppercase">Contact</a></li> -->
+							<li>
+								<a href="{{ path('about') }}" class="nav-link px-2 link-dark text-uppercase">About</a>
+							</li>
+						</ul>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-12">
+							{% if app.user %}
+								<div
+									class="nav navbar navbar-expand-md d-flex justify-content-center ps-lg-5 ps-xl-5">
+									<!-- Icon -->
+									<a class="text-reset ms-xl-5" href="{{ path('cart') }}">
+										<i class="bi bi-cart-fill"></i>
 									</a>
-									<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
-										<li>
-											<a class="dropdown-item" href="{{ path('update_profile') }}">Update profile</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="{{ path('change_password') }}">Change Password</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="{{ path('show_all_brands') }}">Brand management</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="{{ path('show_all_supplier') }}">Supplier management</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="{{ path('show_all_product') }}">Product management</a>
-										</li>
-										<div class="dropdown-divider"></div>
-										<li>
-											<a class="dropdown-item" href="{{ path('app_logout') }}">Log out</a>
-										</li>
-									</ul>
-								</div>
 
+									<!-- Notifications -->
+									<a class="text-reset mx-4" href="">
+										<i class="bi bi-bell-fill"></i>
+									</a>
+
+									<!-- Avatar -->
+									<div class="dropdown">
+										<a class="dropdown-toggle d-flex align-items-center text-reset" href="#" id="navbarDropdownMenuAvatar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<i class="bi bi-person-circle" style="color: black;" loading="lazy"></i>
+										</a>
+										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+											<li>
+												<a class="dropdown-item" href="{{ path('update_profile') }}">Update profile</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="{{ path('change_password') }}">Change Password</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="{{ path('show_all_brands') }}">Brand management</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="{{ path('show_all_supplier') }}">Supplier management</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="{{ path('show_all_product') }}">Product management</a>
+											</li>
+											<div class="dropdown-divider"></div>
+											<li>
+												<a class="dropdown-item" href="{{ path('app_logout') }}">Log out</a>
+											</li>
+										</ul>
+									</div>
+
+								</div>
+							{% else %}
+								<div class="mt-2 mt-lg-0 mt-md-0 d-flex justify-content-center justify-content-md-end me-md-3">
+									<a href="{{ path('app_login') }}" class="btn btn-outline-primary me-2" class="btn btn-outline-primary" role="button">
+										Login
+									</a>
+									<a href="{{ path('registration') }}" class="btn btn-primary" class="btn btn-outline-primary" role="button">
+										Sign-up
+									</a>
+								</div>
+							{% endif %}
+						</div>
+					</header>
+					{% block body %}{% endblock %}
+					{# <footer class="footer">
+											<div class="row">
+												<div class="col-sm-6 col-md-4 footer-navigation">
+													<h3>
+														<a href="#">
+															<span>The Light</span>
+															Store
+														</a>
+													</h3>
+													<p class="links">
+														<a href="#">Home</a>
+														<strong>
+															&middot;
+														</strong>
+														<a href="#">Shop</a>
+														<strong>
+															&middot;
+														</strong>
+														<a href="#">About</a>
+													</p>
+													<p class="company-name">THELIGHTSTORE.COM &copy; 2022</p>
+												</div>
+												<div class="col-sm-6 col-md-4 footer-contacts">
+													<div>
+														<i class="bi bi-geo-alt-fill footer-contacts-icon"></i>
+														<p>
+															<span class="new-line-span">21 Revolution Street</span>NY, USA</p>
+													</div>
+													<div class="align-items-center">
+														<i class="bi bi-telephone-fill footer-contacts-icon"></i>
+														<p class="footer-center-info email text-left">
+															+1 9485045958</p>
+													</div>
+													<div>
+														<i class="bi bi-envelope-fill footer-contacts-icon"></i>
+														<p>
+															<a href="#" target="_blank">support@bbbootstrap.com</a>
+														</p>
+													</div>
+												</div>
+												<div class="col-md-4 footer-about">
+													<h4>About the company</h4>
+													<p>BBBootstrap.com is one of the leading website for bootstrap snippets.</p>
+													<div class="social-links social-icons">
+														<a href="#">
+															<i class="fa fa-facebook"></i>
+														</a>
+														<a href="#">
+															<i class="fa fa-twitter"></i>
+														</a>
+														<a href="#">
+															<i class="fa fa-linkedin"></i>
+														</a>
+														<a href="#">
+															<i class="fa fa-github"></i>
+														</a>
+													</div>
+												</div>
+											</div>
+										</footer> #}
+					<footer class="text-center bg-light text-muted">
+						<!-- Section: Social media -->
+						<div class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+							<!-- Left -->
+							<div class="me-5 d-none d-md-block mx-md-4">
+								<span>Get connected with us on social networks:</span>
 							</div>
-						{% else %}
-							<div class="mt-2 mt-lg-0 mt-md-0 d-flex justify-content-center justify-content-md-end me-md-3">
-								<a href="{{ path('app_login') }}" class="btn btn-outline-primary me-2" class="btn btn-outline-primary" role="button">
-									Login
+
+							<!-- Right -->
+							<div class="mx-md-3">
+								<a href="https://www.facebook.com/B%C3%A1ch-Ho%C3%A1-Si-103111491865418/" target="blank" class="me-4 figure" style="color: #3b5998">
+									<i class="bi bi-facebook"></i>
 								</a>
-								<a href="{{ path('registration') }}" class="btn btn-primary" class="btn btn-outline-primary" role="button">
-									Sign-up
+								<!-- <a href="https://twitter.com/?lang=en" target="blank" class="me-4 figure" style="color: #1da1f2">
+																																																																																																																																																				            <i class="bi bi-twitter"></i>
+																																																																																																																																																				          </a> -->
+								<a href="https://www.instagram.com/bachhoasii/?hl=en" target="blank" class="figure" style="color: #d6249f">
+									<i class="bi bi-instagram"></i>
 								</a>
+								<!-- <a href="https://www.pinterest.com/" target="blank" class="me-0 figure" style="color: #bd081c">
+																																																																																																																																																				            <i class="bi bi-pinterest"></i>
+																																																																																																																																																				          </a> -->
 							</div>
-						{% endif %}
-					</div>
-				</header>
-				{% block body %}{% endblock %}
-				<footer
-					class="text-center bg-light text-muted">
-					<!-- Section: Social media -->
-					<div
-						class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-						<!-- Left -->
-						<div class="me-5 d-none d-md-block mx-md-4">
-							<span>Get connected with us on social networks:</span>
 						</div>
 
-						<!-- Right -->
-						<div class="mx-md-3">
-							<a href="https://www.facebook.com/B%C3%A1ch-Ho%C3%A1-Si-103111491865418/" target="blank" class="me-4 figure" style="color: #3b5998">
-								<i class="bi bi-facebook"></i>
-							</a>
-							<!-- <a href="https://twitter.com/?lang=en" target="blank" class="me-4 figure" style="color: #1da1f2">
-																																																																																																																            <i class="bi bi-twitter"></i>
-																																																																																																																          </a> -->
-							<a href="https://www.instagram.com/bachhoasii/?hl=en" target="blank" class="figure" style="color: #d6249f">
-								<i class="bi bi-instagram"></i>
-							</a>
-							<!-- <a href="https://www.pinterest.com/" target="blank" class="me-0 figure" style="color: #bd081c">
-																																																																																																																            <i class="bi bi-pinterest"></i>
-																																																																																																																          </a> -->
-						</div>
-					</div>
-
-					<div
-						class="text-center text-md-start mt-5">
-						<!-- Grid row -->
-						<div
-							class="row">
-							<!-- Grid column -->
-							<div class="col-md-4">
-								<div
-									class="mx-5 text-center">
-									<!-- Content -->
-									<h6 class="text-uppercase fw-bold mb-4">
-										<i class="bi bi-gem me-2"></i>BACH HOA SI
-									</h6>
-									<p>
-										BHS was founded in 2022. Our store offers a
-																																																																																																																																																						huge collection of unisex. What are you waiting for?
-																																																																																																																																																				        Start shopping online today.
-									</p>
+						<div class="text-center text-md-start mt-5">
+							<!-- Grid row -->
+							<div class="row">
+								<!-- Grid column -->
+								<div class="col-md-4">
+									<div class="mx-5 text-center">
+										<h6>
+											<a href="#" class="text-uppercase fw-bold text-reset text-decoration-none">The Light Store</a>
+										</h6>
+										<p class="pt-2">
+											<a href="#" class="text-reset text-decoration-none">Home</a>
+											<strong>
+												&middot;
+											</strong>
+											<a href="#" class="text-reset text-decoration-none">Shop</a>
+											<strong>
+												&middot;
+											</strong>
+											<a href="#" class="text-reset text-decoration-none">About</a>
+										</p>
+										<p>THELIGHTSTORE.COM &copy; 2022</p>
+									</div>
 								</div>
-							</div>
 
-							<!-- Grid column -->
-							<div class="col-md-4">
-								<div class="text-center">
-									<h6 class="text-uppercase fw-bold mb-4">Brands</h6>
-									<p>
-										<a href="" class="text-reset text-decoration-none">Brand 1</a>
-									</p>
+								<!-- Grid column -->
+								<div class="col-md-4">
+									<div class="mx-5 text-center">
+										<!-- Links -->
+										<h6 class="text-uppercase fw-bold pb-2">Contact</h6>
+										<p>
+											<i class="bi bi-house-door me-2"></i>Xuan Khanh, Ninh Kieu, Can Tho
+										</p>
+										<p>
+											<i class="bi bi-envelope me-2"></i>quangndgcc200030@fpt.edu.vn
+										</p>
+										<p>
+											<i class="bi bi-telephone me-2"></i>+84 916 843 367</p>
+									</div>
 								</div>
-							</div>
 
-							<!-- Grid column -->
-							<div class="col-md-4">
-								<div
-									class="mx-5 text-center">
-									<!-- Links -->
-									<h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-									<p>
-										<i class="bi bi-house-door me-2"></i>Xuan Khanh, Ninh Kieu, Can Tho
-									</p>
-									<p>
-										<i class="bi bi-envelope me-2"></i>quangndgcc200030@fpt.edu.vn
-									</p>
-									<p>
-										<i class="bi bi-telephone me-2"></i>+84 916 843 367</p>
-									<p>
-										<i class="bi bi-telephone me-2"></i>+84 327 281 160</p>
+								<!-- Grid column -->
+								<div class="col-md-4">
+									<div
+										class="mx-5 text-center">
+										<!-- Content -->
+										<h6 class="text-uppercase fw-bold pb-2">
+											<i class="bi bi-gem me-2"></i>THE LIGHT STORE
+										</h6>
+										<p>
+											TL was founded in 2022. Our store offers a
+											huge collection of unisex. What are you waiting for?
+											Start shopping online today.
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-
-					<!-- Copyright -->
-					<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05)">© 2022 Copyright:
-						<a class="text-reset fw-bold" href="index.php">bachhoasi.com</a>
-					</div>
-				</footer>
-			</div>
-		</body>
+					</footer>
+				</div>
+			</body>
+		</head>
 	</head>
 </html>
