@@ -52,6 +52,37 @@ class CustomersRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
+    //SELECT u.email, o.order_date, o.delivery_date, p.id, p.name, od.quantity FROM customers c INNER JOIN user u ON c.user_id = u.id INNER JOIN orders o ON c.id = o.username_id INNER JOIN order_details od ON o.id = od.orders_id INNER JOIN products p ON od.product_id = p.id WHERE u.id = 26 ORDER BY o.order_date DESC
+    /**
+     * @return Customer[]
+     */
+    public function findProductOrdered($email): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('u.email, o.orderDate, o.deliveryDate, c.address, p.id, p.name, od.quantity, p.image')
+            ->innerJoin('c.user', 'u')
+            ->innerJoin('c.orders', 'o')
+            ->innerJoin('o.orderDetails', 'od')
+            ->innerJoin('od.product', 'p')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->orderBy('o.orderDate', 'DESC');
+        return $query->getQuery()->execute();
+    }
+
+    //SELECT * FROM order_details od, products p WHERE od.product_id = p.id AND od.orders_id = 17
+    /**
+     * @return Customer[]
+     */
+    public function findProductOrderDetail($id): array
+    {
+        $query = $this->createQueryBuilder('od')
+            ->innerJoin('od.product', 'p')
+            ->where('od.product = :id')
+            ->setParameter('id', $id);
+        return $query->getQuery()->execute();
+    }
+
     //    /**
     //     * @return Customers[] Returns an array of Customers objects
     //     */

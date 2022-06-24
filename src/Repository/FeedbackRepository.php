@@ -39,6 +39,15 @@ class FeedbackRepository extends ServiceEntityRepository
         }
     }
 
+    // /**
+    //  * @return Feedback[]
+    //  */
+    // public function giveFeedback(): array
+    // {
+    //     $query = $this->createQueryBuilder('f')
+    //     ->innerJoin('f.');
+    // }
+
 //    /**
 //     * @return Feedback[] Returns an array of Feedback objects
 //     */

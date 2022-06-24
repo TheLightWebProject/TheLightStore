@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FeedbackController!
+{% endblock %}
+
+{% block body %}
+	<div class="my-3">
+		<h1 class="text-center">GIVE FEEDBACK FOR US</h1>
+		<!--Section description-->
+		<p class="text-center w-responsive mx-3 mx-md-5 mb-4">
+			Do you have any feedback? Please do not hesitate to contact us directly.
+		</p>
+
+		<!--Grid row-->
+		<div
+			class="row">
+			<!--Grid column-->
+			<div class="col-md-6 p-0 pe-1">
+				<label for="name" class="mb-2">Fullname</label>
+				<input type="text" class="form-control mb-4" readonly value='{{ customer.fullname }}'/>
+			</div>
+			<!--Grid column-->
+
+			<!--Grid column-->
+			<div class="col-md-6 p-0 ps-1">
+				<label for="email" class="mb-2">Product</label>
+				<input type="text" class="form-control mb-4" readonly value="{{ product.name }}"/>
+			</div>
+			<!--Grid column-->
+		</div>
+		{{ form_start(form_Feedback) }}
+		{{ form_widget(form_Feedback) }}
+		<div class="text-center">
+			<input class="btn btn-primary mb-3" type="submit" value="Send Feedback">
+		</div>
+		{{ form_end(form_Feedback) }}
+	</div>
+{% endblock %}

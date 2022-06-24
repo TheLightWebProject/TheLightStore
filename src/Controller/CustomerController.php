@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Customers;
+use App\Entity\Orders;
 use App\Entity\User;
 use App\Form\Type\ChangePasswordFormType;
 use App\Form\Type\CustomerFormType;
 use App\Form\Type\UserFormType;
 use App\Repository\CustomersRepository;
+use App\Repository\OrdersRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
@@ -101,8 +103,15 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/ordered", name="product_ordered")
      */
-    public function productOrderedAction(): Response
+    public function productOrderedAction(CustomersRepository $repo, OrdersRepository $repoOrder, AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('customer/productordered.html.twig', []);
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        $customerOrder = $repo->findProductOrdered($lastUsername);
+
+        return $this->render('customer/productordered.html.twig', [
+            'product_ordered' => $customerOrder
+        ]);
+        // return $this->json($customerOrder);
     }
 }
