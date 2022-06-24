@@ -39,28 +39,42 @@ class OrderDetailsRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return OrderDetails[] Returns an array of OrderDetails objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //SELECT * FROM order_details od INNER JOIN products p ON od.product_id = p.id WHERE od.orders_id = 13
+    /**
+     * @return OrderDetails[]
+     */
+    public function showAllOrderDetail($id): array
+    {
+        $query = $this->createQueryBuilder('od')
+            ->select('od.id as odID, od.quantity, od.totalPrice, p.id as proID, p.name, p.price, p.image')
+            ->innerJoin('od.product', 'p')
+            ->where('od.orders = :id')
+            ->setParameter('id', $id);
+        return $query->getQuery()->execute();
+    }
 
-//    public function findOneBySomeField($value): ?OrderDetails
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return OrderDetails[] Returns an array of OrderDetails objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('o.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?OrderDetails
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

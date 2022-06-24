@@ -30,7 +30,7 @@ class CustomerController extends AbstractController
     public function updateProfileAction(Request $req, ManagerRegistry $re, UserRepository $repoUser, CustomersRepository $repo, AuthenticationUtils $authenticationUtils): Response
     {
         $lastUsername = $authenticationUtils->getLastUsername();
-        $user = $repoUser->findBy(['email' => $lastUsername]);
+        $user = $repoUser->findOneBy(['email' => $lastUsername]);
 
         $customer = $repo->findOneBy(['user' => $user]);
 
@@ -39,24 +39,47 @@ class CustomerController extends AbstractController
         $formCus->handleRequest($req);
 
         if ($formCus->isSubmitted() && $formCus->isValid()) {
-            $data = $formCus->getData($req);
+            if ($user != null && $customer != null) {
+                $data = $formCus->getData($req);
 
-            $customer->setFullname($data->getFullname());
-            $customer->setSex($data->isSex());
-            $customer->setTelephone($data->getTelephone());
-            $customer->setAddress($data->getAddress());
-            $customer->setBirthday($data->getBirthday());
+                $customer->setFullname($data->getFullname());
+                $customer->setSex($data->isSex());
+                $customer->setTelephone($data->getTelephone());
+                $customer->setAddress($data->getAddress());
+                $customer->setBirthday($data->getBirthday());
 
-            $em = $re->getManager();
-            $em->persist($customer);
-            $em->flush();
+                $em = $re->getManager();
+                $em->persist($customer);
+                $em->flush();
 
-            $this->addFlash(
-                'success',
-                'Update profile successfully'
-            );
+                $this->addFlash(
+                    'success',
+                    'Update profile successfully'
+                );
 
-            return $this->redirectToRoute('update_profile');
+                return $this->redirectToRoute('update_profile');
+            } else {
+                $addCustomer = new Customers();
+                $data = $formCus->getData($req);
+
+                $addCustomer->setFullname($data->getFullname());
+                $addCustomer->setSex($data->isSex());
+                $addCustomer->setTelephone($data->getTelephone());
+                $addCustomer->setAddress($data->getAddress());
+                $addCustomer->setBirthday($data->getBirthday());
+                $addCustomer->setUser($user);
+
+                $em = $re->getManager();
+                $em->persist($addCustomer);
+                $em->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Add information successfully'
+                );
+
+                return $this->redirectToRoute('update_profile');
+            }
         }
 
         return $this->render('customer/update.html.twig', [

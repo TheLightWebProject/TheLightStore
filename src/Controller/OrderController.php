@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\OrderDetails;
 use App\Entity\Orders;
 use App\Repository\CustomersRepository;
+use App\Repository\OrderDetailsRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\UserRepository;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class OrderController extends AbstractController
 {
     /**
-     * @Route("/order/buynow", name="buynow")
+     * @Route("/buynow", name="buynow")
      */
     public function orderAction(Request $req, ManagerRegistry $res, UserRepository $repoUser, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, AuthenticationUtils $authenticationUtils): Response
     {
@@ -88,7 +89,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/payment", name="payment")
+     * @Route("/payment", name="payment")
      */
     public function paymentCartAction(Request $req, ManagerRegistry $res, UserRepository $repoUser, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, AuthenticationUtils $authenticationUtils): Response
     {
@@ -149,6 +150,76 @@ class OrderController extends AbstractController
         return $this->render('order/payment.html.twig', [
             'customer' => $customer,
             'sessions' => $_SESSION['cart_item']
+        ]);
+    }
+
+    /**
+     * @Route("/order", name="show_all_order")
+     */
+    public function indexOrder(OrdersRepository $repo, Request $req, ManagerRegistry $res): Response
+    {
+        $orders = $repo->showAllOrder();
+
+        if (isset($_POST['btnchecked']) && $_POST['check'] == 1) {
+            $id = $req->request->get('txtido');
+            $order = $repo->find($id);
+
+            $order->setChecked(false);
+
+            $entity = $res->getManager();
+            $entity->persist($order);
+            $entity->flush();
+
+            return $this->redirectToRoute("show_all_order");
+        }
+        
+        if (isset($_POST['btnchecked']) && $_POST['check'] == 0) {
+            $id = $req->request->get('txtido');
+            $order = $repo->find($id);
+
+            $order->setChecked(true);
+
+            $entity = $res->getManager();
+            $entity->persist($order);
+            $entity->flush();
+
+            return $this->redirectToRoute("show_all_order");
+        }
+
+        return $this->render('order/order.html.twig', [
+            'orders' => $orders
+        ]);
+    }
+
+    /**
+     * @Route("/order/delete/{id}", name="delete_order")
+     */
+    public function deleteOrderAction(OrdersRepository $repo, ManagerRegistry $res, int $id): Response
+    {
+        $orders = $repo->find($id);
+
+        // if (!$orders) {
+        //     throw
+        //     $this->createNotFoundException('Invalid ID' . $id);
+        // }
+
+        $entity = $res->getManager();
+
+        $entity->remove($orders);
+        $entity->flush();
+
+        return $this->redirectToRoute("show_all_order");
+    }
+
+    /**
+     * @Route("/order/{id}", name="order_detail")
+     */
+    public function showAllOrderDetail(OrderDetailsRepository $repo, int $id): Response
+    {
+        $orderDetail = $repo->showAllOrderDetail($id);
+
+        return $this->render('order/orderdetail.html.twig', [
+            'orderDetails' => $orderDetail
         ]);
     }
 }
