@@ -49,10 +49,8 @@
 					{% set count = 1 %}
 					{% for product in products %}
 						<tr>
-							<td
-								class="text-center">
-								{# <a href="{{ path('show_detail_brand', { 'id': brand.id }) }}">{{ count }}</a> #}
-								{{ count }}
+							<td class="text-center">
+								<a href="{{ path('view_detail_product', { 'id': product.id }) }}" class="text-decoration-none">{{ count }}</a>
 							</td>
 							<td>{{ product.name }}</td>
 							<td class="text-center">${{ product.price }}</td>
@@ -60,7 +58,7 @@
 							<td class="text-center">{{ product.brand }}</td>
 							<td class="text-center">{{ product.supplier }}</td>
 							<td align='center'>
-								<img src='{{ path('get_product_photo', {'filename' : product.image} ) }}' border='0' width="100" height="100"/>
+								<img src='{{ path('get_product_photo', {'filename' : product.image} ) }}' border='0' width="50" height="50"/>
 							</td>
 							<td style='text-align:center'>
 								<a href="{{ path('edit_product', { 'id': product.id }) }}">

@@ -15,8 +15,7 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 		<link rel="stylesheet" href="../css/style.css"/>
 		<link rel="stylesheet" href="../js/config.js"/>
-		<rel="icon"
-			href="../Image/BHS.png">
+		<link rel="icon" href="../Image/TL.png">
 			{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 			{% block stylesheets %}
 				{{ encore_entry_link_tags('app') }}
@@ -88,7 +87,7 @@
 												<a class="dropdown-item" href="{{ path('show_all_product') }}">Product management</a>
 											</li>
 											<li>
-												<a class="dropdown-item" href="">Feedback management</a>
+												<a class="dropdown-item" href="{{ path('show_all_feedback') }}">Feedback management</a>
 											</li>
 											<div class="dropdown-divider"></div>
 											<li>

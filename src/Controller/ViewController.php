@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\BrandsRepository;
+use App\Repository\FeedbackRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\SuppliersRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -67,13 +68,16 @@ class ViewController extends AbstractController
     /**
      * @Route("/viewdetail/{id}", name="view_detail_product")
      */
-    public function viewDetail(ProductsRepository $repo, int $id): Response
+    public function viewDetail(ProductsRepository $repo, FeedbackRepository $repoFeed, int $id): Response
     {
         $product = $repo->viewDetail($id);
 
+        $showFeedback = $repoFeed->allowDisplayFeedback($id);
+
         // return $this->json($product);
         return $this->render('view/viewdetail.html.twig', [
-            'product' => $product
+            'product' => $product,
+            'show_Feeds' => $showFeedback
         ]);
     }
 }

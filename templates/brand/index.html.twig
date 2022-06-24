@@ -42,8 +42,7 @@
 						<tr>
 							<td
 								class="text-center">
-								{# <a href="{{ path('show_detail_brand', { 'id': brand.id }) }}">{{ count }}</a> #}
-								{{ count }}
+								<a href="{{ path('shop', { 'bid': brand.id }) }}" class="text-decoration-none">{{ count }}</a>
 							</td>
 							<td>{{ brand.name }}</td>
 							<td>{{ brand.decrip }}</td>

@@ -45,12 +45,6 @@ class FeedbackController extends AbstractController
             $feedback->setSendDate(new \DateTime());
             $feedback->setAllow(false);
 
-            // $err = $valid->validate($suppliers);
-            // if (count($err) > 0) {
-            //     $string_err = (string)$err;
-            //     return new Response($string_err, 400);
-            // }
-
             $entity->persist($feedback);
             $entity->flush();
 
@@ -62,5 +56,57 @@ class FeedbackController extends AbstractController
             'product' => $product,
             'customer' => $customer,
         ]);
+    }
+
+    /**
+     * @Route("/feedback", name="show_all_feedback")
+     */
+    public function indexFeedback(ManagerRegistry $res, Request $req, FeedbackRepository $repo): Response
+    {
+        $feedbacks = $repo->showFeedback();
+
+        if (isset($_POST['btnUpdateFeedback']) && $_POST['txtupdateFeed'] == 1) {
+            $id = $req->request->get('txtFeedID');
+            $feedback = $repo->find($id);
+
+            $feedback->setAllow(false);
+
+            $entity = $res->getManager();
+            $entity->persist($feedback);
+            $entity->flush();
+
+            return $this->redirectToRoute("show_all_feedback");
+        }
+        if (isset($_POST['btnUpdateFeedback']) && $_POST['txtupdateFeed'] == 0) {
+            $id = $req->request->get('txtFeedID');
+            $feedback = $repo->find($id);
+
+            $feedback->setAllow(true);
+
+            $entity = $res->getManager();
+            $entity->persist($feedback);
+            $entity->flush();
+
+            return $this->redirectToRoute("show_all_feedback");
+        }
+
+        return $this->render('feedback/feedback.html.twig', [
+            'feedbacks' => $feedbacks
+        ]);
+    }
+
+    /**
+     * @Route("/feedback/delete/{id}", name="delete_feedback")
+     */
+    public function allowFeedbackAction(ManagerRegistry $res, FeedbackRepository $repo, int $id): Response
+    {
+        $feedback = $repo->find($id);
+
+        $entity = $res->getManager();
+
+        $entity->remove($feedback);
+        $entity->flush();
+
+        return $this->redirectToRoute("show_all_feedback");
     }
 }

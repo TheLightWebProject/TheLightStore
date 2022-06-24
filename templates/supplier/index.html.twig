@@ -43,8 +43,7 @@
 							<tr>
 								<td
 									class="text-center">
-									{# <a href="{{ path('show_detail_brand', { 'id': brand.id }) }}">{{ count }}</a> #}
-									{{ count }}
+									<a href="{{ path('shop', { 'sid': supplier.id }) }}" class="text-decoration-none">{{ count }}</a>
 								</td>
 								<td>{{ supplier.name }}</td>
 								<td class="text-center">{{ supplier.telephone }}</td>

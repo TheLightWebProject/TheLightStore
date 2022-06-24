@@ -62,7 +62,7 @@
 										<td width="190">Brand</td>
 										<td>{{ product.0.nameBrand }}</td>
 									</tr>
-                                    <tr>
+									<tr>
 										<td width="190">Supplier</td>
 										<td>{{ product.0.nameSup }}</td>
 									</tr>
@@ -90,14 +90,16 @@
 							</table>
 							<h3 class="box-title mt-5 mb-3">Feedback from customer</h3>
 							<table class="table table-striped table-product">
-
-								<tbody>
-									<tr>
-										<td width="190">Name's feedback</td>
-										<td>Content</td>
-									</tr>
-								</tbody>
-
+								{% for show_Feed in show_Feeds %}
+									{% if show_Feed.allow == 1 %}
+										<tbody>
+											<tr>
+												<td width="190">{{ show_Feed.fullname }}</td>
+												<td>{{ show_Feed.content }}</td>
+											</tr>
+										</tbody>
+									{% endif %}
+								{% endfor %}
 							</table>
 						</div>
 					</div>
