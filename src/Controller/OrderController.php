@@ -52,6 +52,7 @@ class OrderController extends AbstractController
 
             //add order details
             $id = $req->request->get('proid');
+            $quantity = $req->request->get('quantity');
             $price = $req->request->get('price');
             $product = $repoPro->find($id); //get entity product
             $orderID = $repoOrder->find($order->getId()); //get entity order
@@ -66,20 +67,88 @@ class OrderController extends AbstractController
             $entity->flush();
 
             //update product
-            $quantity = $req->request->get('quantity');
-
             $product->setQuantity($product->getQuantity() - $quantity);
             $entity->persist($product);
             $entity->flush();
 
-            return $this->redirectToRoute('shop');
+            $this->addFlash(
+                'success',
+                'Payment successfully'
+            );
+
+            return $this->redirectToRoute('cart');
         }
 
         $product = [$id, $name, $short, $image, $quantity, $price];
 
-        return $this->render('order/index.html.twig', [
+        return $this->render('order/buynow.html.twig', [
             'customer' => $customer,
             'product' => $product
+        ]);
+    }
+
+    /**
+     * @Route("/order/payment", name="payment")
+     */
+    public function paymentCartAction(Request $req, ManagerRegistry $res, UserRepository $repoUser, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, AuthenticationUtils $authenticationUtils): Response
+    {
+        $lastUsername = $authenticationUtils->getLastUsername();
+        $user = $repoUser->findBy(['email' => $lastUsername]);
+
+        $customer = $repoCus->findOneBy(['user' => $user]);
+
+        if (isset($_POST["btnPayment"])) {
+            //add order
+            $customerID = $repoCus->find($customer->getId()); //get entity customer
+
+            $order = new Orders();
+            $order->setOrderDate(new \DateTime());
+            $order->setDeliveryDate(new \DateTime());
+            $order->setChecked(false);
+            $order->setUsername($customerID);
+
+            $entity =  $res->getManager();
+            $entity->persist($order);
+            $entity->flush();
+
+            //add order details
+            for ($item = 0; $item < sizeof($_SESSION['cart_item']); $item++) {
+                $id = $_SESSION['cart_item'][$item][0];
+                $quantity = $_SESSION['cart_item'][$item][4];
+                $price = $_SESSION['cart_item'][$item][5];
+                $allprice = $quantity * $price;
+
+                $product = $repoPro->find($id); //get entity product
+                $orderID = $repoOrder->find($order->getId()); //get entity order
+
+                $orderDetail = new OrderDetails();
+                $orderDetail->setQuantity($quantity);
+                $orderDetail->setTotalPrice($allprice);
+                $orderDetail->setOrders($orderID);
+                $orderDetail->setProduct($product);
+
+                $entity->persist($orderDetail);
+                $entity->flush();
+
+                //update product
+
+                $product->setQuantity($product->getQuantity() - $quantity);
+                $entity->persist($product);
+                $entity->flush();
+            }
+            unset($_SESSION['cart_item']);
+
+            $this->addFlash(
+                'success',
+                'Payment successfully'
+            );
+
+            return $this->redirectToRoute('cart');
+        }
+
+        return $this->render('order/payment.html.twig', [
+            'customer' => $customer,
+            'sessions' => $_SESSION['cart_item']
         ]);
     }
 }

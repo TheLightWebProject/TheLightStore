@@ -6,6 +6,11 @@
 {% block body %}
 	<div class="my-2 border">
 		<h2 class="text-center my-3">My Cart</h2>
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success text-center">
+				{{ message }}
+			</div>
+		{% endfor %}
 		<div class="container">
 			<table id="cart" class="table table-hover table-condensed">
 				<thead>
@@ -17,63 +22,64 @@
 						<th style="width:10%"></th>
 					</tr>
 				</thead>
-				{% if sessions|length > 0 %}
-					{% set all = 0 %}
-					{% for i, session in sessions %}
-						{% set total = session[4] * session[5] %}
-						{% set all = all + total %}
-						<tbody>
+				{% if sessions is defined and sessions is iterable %}
+					{% if sessions|length > 0 %}
+						{% set all = 0 %}
+						{% for i, session in sessions %}
+							{% set total = session[4] * session[5] %}
+							{% set all = all + total %}
+							<tbody>
+								<tr>
+									<td data-th="Product">
+										<div class="row">
+											<div class="col-12 col-md-4 col-lg-3 hidden-xs d-flex align-items-center">
+												<img src="{{ path('get_product_photo', {'filename' : session[3]} ) }}" alt="" class="img-responsive" width="100">
+											</div>
+											<div class="col-12 col-md-7 col-lg-8 mt-3 ms-md-3 ms-lg-0">
+												<h4 class="nomargin">{{ session[1] }}</h4>
+												<p>{{ session[2] }}</p>
+											</div>
+										</div>
+									</td>
+									<td data-th="Price">${{ session[5] }}</td>
+									<td data-th="Quantity"><input type="number" min="1" readonly class="form-control text-center" value="{{ session[4] }}">
+									</td>
+									<td data-th="Total" class="text-center">{{ total }}</td>
+									<td class="actions" data-th="">
+										<a class="btn btn-danger btn-sm" href="{{ path('remove_cart', {'remove' : i } ) }}" onclick="return confirm('Are you sure to delete!')">
+											<i class="bi bi-trash-fill text-white"></i>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						{% endfor %}
+						<tfoot>
 							<tr>
-								<td data-th="Product">
-									<div class="row">
-										<div class="col-12 col-md-4 col-lg-3 hidden-xs d-flex align-items-center">
-											<img src="{{ path('get_product_photo', {'filename' : session[3]} ) }}" alt="" class="img-responsive" width="100">
-										</div>
-										<div class="col-12 col-md-7 col-lg-8 mt-3 ms-md-3 ms-lg-0">
-											<h4 class="nomargin">{{ session[1] }}</h4>
-											<p>{{ session[2] }}</p>
-										</div>
-									</div>
+								<td>
+									<a href="{{ path('shop') }}" class="btn btn-primary mb-2 mb-md-0">
+										<i class="bi bi-caret-left-fill"></i>Keep Buying</a>
+									<a href="{{ path('clear_cart', {'delcard' : 1} ) }}" class="btn btn-warning" onclick="return confirm('Are you sure to clear!')">
+										<i class="bi bi-x-circle-fill"></i>
+										Clear cart
+									</a>
 								</td>
-								<td data-th="Price">${{ session[5] }}</td>
-								<td data-th="Quantity"><input type="number" min="1" readonly class="form-control text-center" value="{{ session[4] }}">
+								<td colspan="2" class="hidden-xs"></td>
+								<td class="hidden-xs text-center">
+									<strong>Order Total ${{ all }}
+									</strong>
 								</td>
-								<td data-th="Total" class="text-center">{{ total }}</td>
-								<td class="actions" data-th="">
-									<a class="btn btn-danger btn-sm" href="{{ path('remove_cart', {'remove' : i } ) }}" onclick="return confirm('Are you sure to delete!')">
-										<i class="bi bi-trash-fill text-white"></i>
+								<td>
+									<a href="{{ path('payment') }}" class="btn btn-success btn-block">Order Now<i class="fa fa-angle-right"></i>
 									</a>
 								</td>
 							</tr>
-						</tbody>
-					{% endfor %}
-					<tfoot>
+						</tfoot>
+					{% else %}
 						<tr>
-							<td>
-								<a href="{{ path('shop') }}" class="btn btn-primary mb-2 mb-md-0">
-									<i class="bi bi-caret-left-fill"></i>Keep Buying</a>
-								<a href="{{ path('clear_cart', {'delcard' : 1} ) }}" class="btn btn-warning" onclick="return confirm('Are you sure to clear!')">
-									<i class="bi bi-x-circle-fill"></i>
-									Clear cart
-								</a>
-							</td>
-							<td colspan="2" class="hidden-xs"></td>
-							<td class="hidden-xs text-center">
-								<strong>Order Total ${{ all }}
-								</strong>
-							</td>
-							<td>
-								<a href="?page=order" class="btn btn-success btn-block">Order Now<i class="fa fa-angle-right"></i>
-								</a>
-							</td>
+							<td colspan='5' class='me-4 text-center fw-bold'>Cart is empty</td>
 						</tr>
-					</tfoot>
-				{% else %}
-					<tr>
-						<td colspan='5' class='me-4 text-center fw-bold'>Cart is empty</td>
-					</tr>
+					{% endif %}
 				{% endif %}
-
 			</table>
 		</div>
 	</div>

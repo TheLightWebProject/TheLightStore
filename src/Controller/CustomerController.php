@@ -97,4 +97,12 @@ class CustomerController extends AbstractController
             'change_password_form' => $formChange->createView(),
         ]);
     }
+
+    /**
+     * @Route("/customer/ordered", name="product_ordered")
+     */
+    public function productOrderedAction(): Response
+    {
+        return $this->render('customer/productordered.html.twig', []);
+    }
 }
