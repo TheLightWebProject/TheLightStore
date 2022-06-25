@@ -50,9 +50,6 @@ class ProductFormType extends AbstractType
             ->add('supplier', EntityType::class, [
                 'class' => Suppliers::class,
                 'choice_label' => 'name'
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => "Save"
             ]);
     }
 }

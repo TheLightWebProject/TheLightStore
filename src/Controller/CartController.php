@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-date_default_timezone_get('Asia/Ho_Chi_Minh');
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 class CartController extends AbstractController
 {
     /**

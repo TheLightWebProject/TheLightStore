@@ -53,6 +53,11 @@ class SupplierController extends AbstractController
             $entity->persist($suppliers);
             $entity->flush();
 
+            $this->addFlash(
+                'success',
+                'New suppiler was added'
+            );
+
             return $this->redirectToRoute("show_all_supplier");
         }
 
@@ -88,10 +93,15 @@ class SupplierController extends AbstractController
             $entity->persist($suppliers);
             $entity->flush();
 
+            $this->addFlash(
+                'success',
+                'Supplier was edited'
+            );
+
             return $this->redirectToRoute("show_all_supplier");
         }
 
-        return $this->render('supplier/add.html.twig', [
+        return $this->render('supplier/edit.html.twig', [
             'form_Supplier' => $formSupplier->createView()
         ]);
     }
@@ -112,6 +122,11 @@ class SupplierController extends AbstractController
 
         $entity->remove($suppliers);
         $entity->flush();
+
+        $this->addFlash(
+            'success',
+            'Supplier was deleted'
+        );
 
         return $this->redirectToRoute("show_all_supplier");
     }

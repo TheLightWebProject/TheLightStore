@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-date_default_timezone_get('Asia/Ho_Chi_Minh');
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 class ProductController extends AbstractController
 {
     /**
@@ -84,6 +84,10 @@ class ProductController extends AbstractController
                 'Your post was added'
             );
 
+            $this->addFlash(
+                'success',
+                'New product was added'
+            );
 
             return $this->redirectToRoute("show_all_product");
         }
@@ -157,7 +161,7 @@ class ProductController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Your post was added'
+                'Product was edited'
             );
 
 
@@ -189,6 +193,11 @@ class ProductController extends AbstractController
         $filePath = $product->getImage();
         $file = $this->getParameter('image_product') . '/' . $filePath;
         unlink($file);
+
+        $this->addFlash(
+            'success',
+            'Product was deleted'
+        );
 
         return $this->redirectToRoute("show_all_product");
     }

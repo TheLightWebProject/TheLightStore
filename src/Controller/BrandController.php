@@ -14,11 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-date_default_timezone_get('Asia/Ho_Chi_Minh');
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 class BrandController extends AbstractController
 {
     /**
-     * @Route("/brand", name="show_all_brands", methods={"GET"})
+     * @Route("/management/brand", name="show_all_brands", methods={"GET"})
      */
     public function indexBrand(BrandsRepository $repo): Response
     {
@@ -30,7 +30,7 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/brand/new", name="add_brand")
+     * @Route("/management/brand/new", name="add_brand")
      */
     public function addBrandAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid): Response
     {   
@@ -73,10 +73,10 @@ class BrandController extends AbstractController
             $entity->persist($brand);
             $entity->flush();
 
-            // $this->addFlash(
-            //     'success',
-            //     'Your post was added'
-            // );
+            $this->addFlash(
+                'success',
+                'New brand was added'
+            );
 
             return $this->redirectToRoute("show_all_brands");
         }
@@ -87,7 +87,7 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/brand/getphoto/{filename}", name="get_brand_photo")
+     * @Route("/management/brand/getphoto/{filename}", name="get_brand_photo")
      */
     public function getBrandPhoto($filename): Response
     {
@@ -110,7 +110,7 @@ class BrandController extends AbstractController
     // }
 
     /**
-     * @Route("/brand/edit/{id}", name="edit_brand")
+     * @Route("/management/brand/edit/{id}", name="edit_brand")
      */
     public function editBrandAction(BrandsRepository $repo, ManagerRegistry $res, Request $req, int $id, SluggerInterface $slugger): Response
     {
@@ -149,7 +149,7 @@ class BrandController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Your post was added'
+                'Brand was edited'
             );
 
             return $this->redirectToRoute("show_all_brands");
@@ -161,7 +161,7 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/brand/delete/{id}", name="delete_brand")
+     * @Route("/management/brand/delete/{id}", name="delete_brand")
      */
     public function deleteBrandAction(BrandsRepository $repo, ManagerRegistry $res, int $id): Response
     {
@@ -180,6 +180,11 @@ class BrandController extends AbstractController
         $filePath = $brand->getImage();
         $file = $this->getParameter('image_brand') . '/' . $filePath;
         unlink($file);
+
+        $this->addFlash(
+            'success',
+            'Brand was deleted'
+        );
 
         return $this->redirectToRoute("show_all_brands");
     }

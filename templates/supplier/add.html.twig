@@ -4,10 +4,18 @@
 {% endblock %}
 
 {% block body %}
-	<div class="my-3">
-		<h1 class="text-center mb-4">Adding Supplier</h2>
-		{{ form_start(form_Supplier) }}
-
-		{{ form_end(form_Supplier) }}
+	{% include "view/management.html.twig" %}
+	<div class="border pt-2 mb-2">
+		<div class="px-5">
+			<h1 class="text-center mb-4">Adding Supplier</h2>
+			{{ form_start(form_Supplier) }}
+			{{ form_row(form_Supplier.name) }}
+			{{ form_row(form_Supplier.telephone) }}
+			{{ form_row(form_Supplier.email) }}
+			<div class="text-center">
+				{{ form_row(form_Supplier.save) }}
+			</div>
+			{{ form_end(form_Supplier) }}
+		</div>
 	</div>
 {% endblock %}

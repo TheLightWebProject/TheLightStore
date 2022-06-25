@@ -1,0 +1,50 @@
+<style>
+	.menu-control {
+		display: flex;
+	}
+
+	.menu-bar {
+		display: block;
+	}
+
+	.menu-bar {
+		display: flex;
+		justify-content: left;
+		list-style-type: none;
+		background-color: #3b4e65;
+	}
+
+	.menu-item {
+		padding: 20px;
+	}
+
+	.menu-item:hover {
+		background-color: #FB8122;
+		transition: 0.3s;
+	}
+
+	.menu-name {
+		color: #fff;
+		text-decoration: none;
+	}
+</style>
+
+<ul class="menu-bar mt-2 mb-0 justify-content-center">
+	<div class="menu-control">
+		<li class="menu-item">
+			<a href="{{ path('show_all_order') }}" class="menu-name">Order management</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ path('show_all_brands') }}" class="menu-name">Brand management</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ path('show_all_supplier') }}" class="menu-name">Supplier management</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ path('show_all_product') }}" class="menu-name">Product management</a>
+		</li>
+		<li class="menu-item">
+			<a href="{{ path('show_all_feedback') }}" class="menu-name">Feedback management</a>
+		</li>
+	</div>
+</ul>

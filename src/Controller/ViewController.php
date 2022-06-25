@@ -80,4 +80,12 @@ class ViewController extends AbstractController
             'show_Feeds' => $showFeedback
         ]);
     }
+
+    /**
+     * @Route("/management", name="index_management")
+     */
+    public function indexManagementAction(): Response
+    {
+        return $this->render('view/management.html.twig');
+    }
 }

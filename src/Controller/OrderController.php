@@ -19,7 +19,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 class OrderController extends AbstractController
 {
     /**
-     * @Route("/buynow", name="buynow")
+     * @Route("/order/buynow", name="buynow")
      */
     public function orderAction(Request $req, ManagerRegistry $res, UserRepository $repoUser, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, AuthenticationUtils $authenticationUtils): Response
     {
@@ -89,7 +89,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/payment", name="payment")
+     * @Route("/order/payment", name="payment")
      */
     public function paymentCartAction(Request $req, ManagerRegistry $res, UserRepository $repoUser, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, AuthenticationUtils $authenticationUtils): Response
     {
@@ -154,7 +154,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order", name="show_all_order")
+     * @Route("/management/order", name="show_all_order")
      */
     public function indexOrder(OrdersRepository $repo, Request $req, ManagerRegistry $res): Response
     {
@@ -193,7 +193,7 @@ class OrderController extends AbstractController
     }
 
     /**
-     * @Route("/order/delete/{id}", name="delete_order")
+     * @Route("/management/order/delete/{id}", name="delete_order")
      */
     public function deleteOrderAction(OrdersRepository $repo, ManagerRegistry $res, int $id): Response
     {
