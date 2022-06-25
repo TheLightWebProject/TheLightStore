@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrderController!
+{% block title %}Order Detail Management
 {% endblock %}
 
 {% block body %}
@@ -29,9 +29,9 @@
 						<th>
 							<strong>Image</strong>
 						</th>
-						{# <th>
-																			<strong>Delete</strong>
-																		</th> #}
+						<th>
+							<strong>Delete</strong>
+						</th>
 					</tr>
 				</thead>
 
@@ -52,13 +52,11 @@
 								</a>
 
 							</td>
-							{# <td style='text-align:center'>
-																						<br>
-																						<a href="" onclick="return confirm('Are you sure to delete!')">
-																							<i class="bi bi-trash-fill" style="color: red;"></i>
-																						</a>
-																						<br>
-																					</td> #}
+							<td style='text-align:center'>
+								<a href="{{ path('delele_oreder_detail', { 'id': orderDetail.odID }) }}" onclick="return confirm('Are you sure to delete!')">
+									<i class="bi bi-trash-fill" style="color: red;"></i>
+								</a>
+							</td>
 						</tr>
 						{% set count = count + 1 %}
 					{% endfor %}

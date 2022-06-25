@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+date_default_timezone_get('Asia/Ho_Chi_Minh');
 class BrandController extends AbstractController
 {
     /**

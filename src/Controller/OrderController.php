@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\OrderDetails;
 use App\Entity\Orders;
 use App\Repository\CustomersRepository;
-use App\Repository\OrderDetailsRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\UserRepository;
@@ -16,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 class OrderController extends AbstractController
 {
     /**
@@ -177,6 +177,7 @@ class OrderController extends AbstractController
             $id = $req->request->get('txtido');
             $order = $repo->find($id);
 
+            $order->setDeliveryDate(new \DateTime());
             $order->setChecked(true);
 
             $entity = $res->getManager();
@@ -209,17 +210,5 @@ class OrderController extends AbstractController
         $entity->flush();
 
         return $this->redirectToRoute("show_all_order");
-    }
-
-    /**
-     * @Route("/order/{id}", name="order_detail")
-     */
-    public function showAllOrderDetail(OrderDetailsRepository $repo, int $id): Response
-    {
-        $orderDetail = $repo->showAllOrderDetail($id);
-
-        return $this->render('order/orderdetail.html.twig', [
-            'orderDetails' => $orderDetail
-        ]);
     }
 }

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+date_default_timezone_get('Asia/Ho_Chi_Minh');
 class FeedbackController extends AbstractController
 {
     /**
