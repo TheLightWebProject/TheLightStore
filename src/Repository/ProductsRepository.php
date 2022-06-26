@@ -92,12 +92,39 @@ class ProductsRepository extends ServiceEntityRepository
     /**
      * @return Product[]
      */
-    public function findBySearch($value): array
+    public function findBySearch($value)
     {
-        $query = $this->createQueryBuilder('p')
-            ->where('p.name LIKE :value')
-            ->setParameter('value', '%' . $value . '%');
-        return $query->getQuery()->execute();
+        // $query = $this->createQueryBuilder('p')
+        //     ->where('p.name LIKE :value')
+        //     ->setParameter('value', '%' . $value . '%');
+        // return $query->getQuery()->execute();
+
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT * FROM products WHERE ' . implode('AND ', $value) . '';
+
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
+
+    //SELECT p.id, p.name, p.price, p.quantity, p.image, b.name as brand, s.name as supplier FROM products p INNER JOIN brands b ON p.brand_id = b.id INNER JOIN suppliers s ON p.supplier_id = s.id WHERE . implode('AND ', $value) . ''
+    /**
+     * @return Products[]
+     */
+    public function findBySearchProduct($name)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = 'SELECT p.id, p.name, p.price, p.quantity, p.image, b.name as brand, s.name as supplier FROM products p INNER JOIN brands b ON p.brand_id = b.id INNER JOIN suppliers s ON p.supplier_id = s.id WHERE ' . implode('AND ', $name) . '';
+
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery();
+
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
     }
 
     //    /**

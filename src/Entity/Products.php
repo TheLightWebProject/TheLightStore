@@ -46,6 +46,7 @@ class Products
 
     /**
      * @ORM\Column(type="integer")
+     * )
      */
     private $quantity;
 

@@ -15,11 +15,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SupplierController extends AbstractController
 {
     /**
-     * @Route("/supplier", name="show_all_supplier")
+     * @Route("/management/supplier", name="show_all_supplier")
      */
-    public function index(SuppliersRepository $repo): Response
+    public function index(Request $req, SuppliersRepository $repo): Response
     {
-        $suppliers = $repo->findAll();
+        if (isset($_POST['btnSearchSupplier'])) {
+            $value = $req->request->get('txtSearchSupplier');
+            $suppliers = $repo->findBySearchSupplier($value);
+        } else {
+            $suppliers = $repo->findAll();
+        }
 
         return $this->render('supplier/index.html.twig', [
             'suppliers' => $suppliers
@@ -27,7 +32,7 @@ class SupplierController extends AbstractController
     }
 
     /**
-     * @Route("/supplier/new", name="add_supplier")
+     * @Route("/management/supplier/new", name="add_supplier")
      */
     public function addAction(ManagerRegistry $res, Request $req, ValidatorInterface $valid): Response
     {
@@ -53,6 +58,11 @@ class SupplierController extends AbstractController
             $entity->persist($suppliers);
             $entity->flush();
 
+            $this->addFlash(
+                'success',
+                'New suppiler was added'
+            );
+
             return $this->redirectToRoute("show_all_supplier");
         }
 
@@ -62,7 +72,7 @@ class SupplierController extends AbstractController
     }
 
     /**
-     * @Route("/supplier/edit/{id}", name="edit_supplier")
+     * @Route("/management/supplier/edit/{id}", name="edit_supplier")
      */
     public function editAction(ManagerRegistry $res, Request $req, ValidatorInterface $valid, SuppliersRepository $repo, $id): Response
     {
@@ -88,16 +98,21 @@ class SupplierController extends AbstractController
             $entity->persist($suppliers);
             $entity->flush();
 
+            $this->addFlash(
+                'success',
+                'Supplier was edited'
+            );
+
             return $this->redirectToRoute("show_all_supplier");
         }
 
-        return $this->render('supplier/add.html.twig', [
+        return $this->render('supplier/edit.html.twig', [
             'form_Supplier' => $formSupplier->createView()
         ]);
     }
 
     /**
-     * @Route("/supplier/delete/{id}", name="delete_supplier")
+     * @Route("/management/supplier/delete/{id}", name="delete_supplier")
      */
     public function deleteSupplierAction(SuppliersRepository $repo, ManagerRegistry $res, int $id): Response
     {
@@ -112,6 +127,11 @@ class SupplierController extends AbstractController
 
         $entity->remove($suppliers);
         $entity->flush();
+
+        $this->addFlash(
+            'success',
+            'Supplier was deleted'
+        );
 
         return $this->redirectToRoute("show_all_supplier");
     }

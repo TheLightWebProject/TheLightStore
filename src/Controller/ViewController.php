@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Repository\BrandsRepository;
+use App\Repository\FeedbackRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\SuppliersRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ViewController extends AbstractController
@@ -41,12 +43,20 @@ class ViewController extends AbstractController
             $products = $repo->findBy(['supplier' => $id]);
         } elseif (isset($_POST['btnSearch'])) {
             $value = $req->request->get('txtSearch');
-            $products = $repo->findBySearch($value);
+
+            $keywords = explode(' ', $value);
+            $searchTermKeywords = array();
+
+            foreach ($keywords as $word) {
+                $searchTermKeywords[] = "name LIKE '%$word%'";
+            }
+
+            $products = $repo->findBySearch($searchTermKeywords);
         } else {
             $products = $repo->showShop();
         }
 
-        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 12);
+        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 18);
 
         return $this->render('view/shop.html.twig', [
             'products' => $paginator,
@@ -66,13 +76,24 @@ class ViewController extends AbstractController
     /**
      * @Route("/viewdetail/{id}", name="view_detail_product")
      */
-    public function viewDetail(ProductsRepository $repo, int $id): Response
+    public function viewDetail(ProductsRepository $repo, FeedbackRepository $repoFeed, int $id): Response
     {
         $product = $repo->viewDetail($id);
 
+        $showFeedback = $repoFeed->allowDisplayFeedback($id);
+
         // return $this->json($product);
         return $this->render('view/viewdetail.html.twig', [
-            'product' => $product
+            'product' => $product,
+            'show_Feeds' => $showFeedback
         ]);
+    }
+
+    /**
+     * @Route("/management", name="index_management")
+     */
+    public function indexManagementAction(): Response
+    {
+        return $this->render('view/management.html.twig');
     }
 }

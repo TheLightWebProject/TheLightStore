@@ -21,7 +21,8 @@ class ProductFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Products::class
+            'data_class' => Products::class,
+            'csrf_protection' => false
         ]);
     }
 
@@ -49,9 +50,6 @@ class ProductFormType extends AbstractType
             ->add('supplier', EntityType::class, [
                 'class' => Suppliers::class,
                 'choice_label' => 'name'
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => "Save"
             ]);
     }
 }

@@ -4,10 +4,16 @@
 {% endblock %}
 
 {% block body %}
-	<div class="m-5">
-		<h1 class="text-center mb-4">Adding Product</h2>
-		{{ form_start(form_Product) }}
-
-		{{ form_end(form_Product) }}
+	{% include "view/management.html.twig" %}
+	<div class="border pt-3 mb-2">
+		<div class="px-5">
+			<h1 class="text-center mb-4">Adding Product</h2>
+			{{ form_start(form_Product) }}
+			{{ form_widget(form_Product) }}
+			<div class="text-center">
+				<input class="btn btn-primary mb-3" type="submit" value="Add">
+			</div>
+			{{ form_end(form_Product) }}
+		</div>
 	</div>
 {% endblock %}
