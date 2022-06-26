@@ -39,6 +39,17 @@ class BrandsRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Brands[]
+     */
+    public function findBySearchBrand($value): array
+    {
+        $query = $this->createQueryBuilder('b')
+            ->where('b.name LIKE :value')
+            ->setParameter('value', '%' . $value . '%');
+        return $query->getQuery()->execute();
+    }
+
     //    /**
     //     * @return Brands[] Returns an array of Brands objects
     //     */

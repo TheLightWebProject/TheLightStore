@@ -43,12 +43,20 @@ class ViewController extends AbstractController
             $products = $repo->findBy(['supplier' => $id]);
         } elseif (isset($_POST['btnSearch'])) {
             $value = $req->request->get('txtSearch');
-            $products = $repo->findBySearch($value);
+
+            $keywords = explode(' ', $value);
+            $searchTermKeywords = array();
+
+            foreach ($keywords as $word) {
+                $searchTermKeywords[] = "name LIKE '%$word%'";
+            }
+
+            $products = $repo->findBySearch($searchTermKeywords);
         } else {
             $products = $repo->showShop();
         }
 
-        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 12);
+        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 18);
 
         return $this->render('view/shop.html.twig', [
             'products' => $paginator,

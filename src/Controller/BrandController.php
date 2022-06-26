@@ -18,11 +18,16 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 class BrandController extends AbstractController
 {
     /**
-     * @Route("/management/brand", name="show_all_brands", methods={"GET"})
+     * @Route("/management/brand", name="show_all_brands")
      */
-    public function indexBrand(BrandsRepository $repo): Response
+    public function indexBrand(Request $req, BrandsRepository $repo): Response
     {
-        $brands = $repo->findAll();
+        if (isset($_POST['btnSearchBrand'])) {
+            $value = $req->request->get('txtSearchBrand');
+            $brands = $repo->findBySearchBrand($value);
+        } else {
+            $brands = $repo->findAll();
+        }
 
         return $this->render('brand/index.html.twig', [
             'brands' => $brands
@@ -33,7 +38,7 @@ class BrandController extends AbstractController
      * @Route("/management/brand/new", name="add_brand")
      */
     public function addBrandAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid): Response
-    {   
+    {
         $brand = new Brands();
         $formBrand = $this->createForm(BrandFormType::class, $brand);
 

@@ -18,11 +18,24 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/product", name="show_all_product")
+     * @Route("/management/product", name="show_all_product")
      */
-    public function indexProduct(ProductsRepository $repo): Response
+    public function indexProduct(Request $req, ProductsRepository $repo): Response
     {
-        $products = $repo->showAllProduct();
+        if (isset($_POST['btnSearchProduct'])) {
+            $value = $req->request->get('txtSearchProduct');
+
+            $keywords = explode(' ', $value);
+            $searchTermKeywords = array();
+
+            foreach ($keywords as $word) {
+                $searchTermKeywords[] = "p.name LIKE '%$word%'";
+            }
+
+            $products = $repo->findBySearchProduct($searchTermKeywords);
+        } else {
+            $products = $repo->showAllProduct();
+        }
 
         return $this->render('product/index.html.twig', [
             'products' => $products
@@ -30,7 +43,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/new", name="add_product")
+     * @Route("/management/product/new", name="add_product")
      */
     public function addProductAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid): Response
     {
@@ -110,7 +123,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/edit/{id}", name="edit_product")
+     * @Route("/management/product/edit/{id}", name="edit_product")
      */
     public function editProductAction(ProductsRepository $repo, ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid, int $id): Response
     {
@@ -174,7 +187,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/delete/{id}", name="delete_product")
+     * @Route("/management/product/delete/{id}", name="delete_product")
      */
     public function deleteBrandAction(ProductsRepository $repo, ManagerRegistry $res, int $id): Response
     {

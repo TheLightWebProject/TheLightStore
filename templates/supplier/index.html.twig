@@ -12,10 +12,20 @@
 				{{ message }}
 			</div>
 		{% endfor %}
-		<div class="text-center mb-2">
-			<a href="{{ path('add_supplier') }}" class="btn btn-outline-primary">
-				<img src="Image/add.png" alt="Add new" width="16" height="16" border="0"/>Add
-			</a>
+		<div class="text-center mb-2 d-flex row align-items-center">
+			<div class="col-6 text-start">
+				<a href="{{ path('add_supplier') }}" class="btn btn-outline-primary">
+					<img src="../Image/add.png" alt="Add new" width="16" height="16" border="0"/>Add
+				</a>
+			</div>
+			<div class="col-6 d-flex justify-content-end align-items-center">
+				<form action="/management/supplier" method="POST" class="d-flex input-group w-auto">
+					<input name="txtSearchSupplier" type="search" class="form-control" placeholder="Search by name" aria-label="Search" aria-describedby="search-addon"/>
+					<button class="btn btn-secondary searching" type="submit" name="btnSearchSupplier">
+						<i class="bi bi-search"></i>
+					</button>
+				</form>
+			</div>
 		</div>
 		<table id="tablecategory" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
 			<thead class="justify-content-md-between justify-content-sm-center align-content-center border-bottom border-2 my-2 bg-dark text-light p-3 rounded-3">
@@ -45,21 +55,19 @@
 				{% if suppliers %}
 					{% set count = 1 %}
 					{% for supplier in suppliers %}
-						<tr>
-							<td class="text-center">
+						<tr class="text-center">
+							<td>
 								<a href="{{ path('shop', { 'sid': supplier.id }) }}" class="text-decoration-none">{{ count }}</a>
 							</td>
 							<td>{{ supplier.name }}</td>
-							<td class="text-center">{{ supplier.telephone }}</td>
-							<td align='center'>
-								{{ supplier.email }}
-							</td>
-							<td style='text-align:center'>
+							<td>{{ supplier.telephone }}</td>
+							<td>{{ supplier.email }}</td>
+							<td>
 								<a href="{{ path('edit_supplier', { 'id': supplier.id }) }}">
 									<i class="bi bi-pen-fill" style="color: black;"></i>
 								</a>
 							</td>
-							<td style='text-align:center'>
+							<td>
 								<a href="{{ path('delete_supplier', { 'id': supplier.id }) }}" onclick="return confirm('Are you sure to delete!')">
 									<i class="bi bi-trash-fill" style="color: red;"></i>
 								</a>
