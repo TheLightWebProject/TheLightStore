@@ -1,144 +1,137 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
 {% block body %}
-	<style>
-		h2 {
-			color: #000;
-			font-size: 26px;
-			font-weight: 300;
-			text-align: center;
-			text-transform: uppercase;
-			position: relative;
-			margin-top: 30px;
-		}
+	<!-- home section starts  -->
+	<section class="home" id="home" style="background-image: url(Image/home.jpg)">
+		<div class="content">
+			<h3>TheLight Store</h3>
+			<span>
+				Luxurious &  elegant
+			</span>
+			<h4>The quality of our products and the customer experience are always our top priority.</h4>
+			<a href="#" class="btn">shop now</a>
+		</div>
+	</section>
+	<!-- home section ends -->
 
-		h2::after {
-			content: "";
-			width: 100px;
-			position: absolute;
-			margin: 0 auto;
-			height: 4px;
-			border-radius: 1px;
-			background: wheat;
-			left: 0;
-			right: 0;
-			bottom: -20px;
-		}
-	</style>
-	<div id="myCarousel" class="carousel slide" data-ride="carousel">
-		<ol class="carousel-indicators">
-			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<li data-target="#myCarousel" data-slide-to="1"></li>
-			<li data-target="#myCarousel" data-slide-to="2"></li>
-		</ol>
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img class="d-block w-100" src="../Image/clothes2.jpg" alt="First slide"/>
+
+	<!-- about section starts  -->
+	<section class="about" id="about">
+		<h1 class="heading">
+			<span>
+				about
+			</span>
+			us
+		</h1>
+		<div class="row">
+			<div class="video-container">
+				<video src="Image/about.mp4" loop autoplay muted></video>
+				<h3>TheLight Store</h3>
 			</div>
-			<div class="carousel-item">
-				<img class="d-block w-100" src="../Image/clothes.png" alt="Second slide"/>
-			</div>
-			<div class="carousel-item">
-				<img class="d-block w-100" src="../Image/clothes1.jpg" alt="Third slide"/>
+			<div class="content">
+				<h3>why choose us?</h3>
+				<p></p>
+				<p>TheLight Store is one of the largest and most prestigious 2hand stores in Cantho. At The light Store customers will be able to shop comfortably without worrying about price because we always put quality, and user experience first...</p>
+				<a href="#" class="btn">learn more</a>
 			</div>
 		</div>
-		<a class="carousel-control-prev text-decoration-none" href="#myCarousel" role="button" data-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="sr-only d-none d-md-block">Previous</span>
-		</a>
-		<section class="my-2">
-			<header>
-				<!-- Background image -->
-				<div class="p-5 text-center bg-image text" style="
-								  height: 800px; background-size: 100% 130%;">
-					<div class="mask mt-5 m-5 p-5 class="container-fluid">
-						<div class=" mt-5 d-flex justify-content-center align-items-center h-100">
-							<div class="text-white">
-								<h2 class="mb-3">
-									<b>WELLCOME TO<b></h2>
-										<h1 class="mb-3" id="home">
-											<span>The Light Shop</span>
-										</h1>
-										<h4 class="mb-3 text-dark" >Clothes isn't really my thing, but I've always got my eye on people's watches.</h4>
-										<a class="btn btn-outline-light btn-lg" role="button">SHOP NOW</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</header>
-					<a class="carousel-control-next text-decoration-none" href="#myCarousel" role="button" data-slide="next">
-						<span class="sr-only d-none d-md-block">Next</span>
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					</a>
+	</section>
+	<!-- about section ends -->
+
+
+	<!-- icons section starts  -->
+	<section class="icons-container">
+		<div class="icons">
+			<img src="Image/icon-1.png" alt="">
+			<div class="info">
+				<h3>free delivery</h3>
+				<span>In Cantho City</span>
+			</div>
+		</div>
+		<div class="icons">
+			<img src="Image/icon-2.png" alt="">
+			<div class="info">
+				<h3>10 days returns</h3>
+				<span>moneyback guarantee</span>
+			</div>
+		</div>
+		<div class="icons">
+			<img src="Image/icon-3.png" alt="">
+			<div class="info">
+				<h3>offer & gifts</h3>
+				<span>More than 5 orders in 1 month</span>
+			</div>
+		</div>
+		<div class="icons">
+			<img src="Image/icon-4.png" alt="">
+			<div class="info">
+				<h3>secure paymens</h3>
+				<span>Payment via ATM, Momo, Viettelpay</span>
+			</div>
+		</div>
+	</section>
+	<!-- icons section ends -->
+
+
+	<!-- review section starts  -->
+	<section class="review" id="review">
+		<h1 class="heading">
+			customer's
+			<span>review</span>
+		</h1>
+		<div class="box-container">
+			<div class="box">
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
 				</div>
-				<hr>
-
-
-				<section id="new" class="container-fluid w-100 ">
-					<div class="row p-0 m-0">
-						<div class="one col-lg-4 col-md-12 col-12 p-0">
-							<img class="img-fluid" src="Image/new1.jpg" alt="">
-							<div class="details">
-								<h3>New Product</h3>
-								<a href="?page=content">
-									<button class="text-uppercase">
-										Shop Now</button>
-								</a>
-							</div>
-						</div>
-						<div class="one col-lg-4 col-md-12 col-12 p-0">
-							<img class="img-fluid" src="Image/new2.png " alt="">
-							<div class="details">
-								<h3>Trending</h3>
-								<a href="?page=content">
-									<button class="text-uppercase">
-										Shop Now</button>
-								</a>
-							</div>
-						</div>
-						<div class="one col-lg-4 col-md-12 col-12 p-0">
-							<img class="img-fluid" src="Image/new3.png" alt="">
-							<div class="details">
-								<h3>Best Saller</h3>
-								<a href="?page=content">
-									<button class="text-uppercase">
-										Shop Now</button>
-								</a>
-							</div>
-						</div>
-					</div>
-				</section>
-
-
-				<hr>
-				<div class="mt-2">
-					<h2>
-						<b>Top 4 - Products</b>
-					</h2>
-					<div class="d-flex justify-content-center mt-50">
-						<div class="row">
-							{% for product in products %}
-								<div class="col-12 col-lg-3 col-sm-6">
-									<div class="product-grid">
-										<div class="product-image">
-											<a href="" class="image">
-												<img class="img-1" src="{{ path('get_product_photo', {'filename' : product.image} ) }}">
-											</a>
-										</div>
-										<div class="product-content">
-											<div class="price">
-												<b>${{ product.price }}</b>
-											</div>
-											<h3 class="title">
-												<a href="" class="text-decoration-none">{{ product.name }}</a>
-											</h3>
-										</div>
-									</div>
-								</div>
-							{% endfor %}
-
-						</div>
+				<p>ĐẸP VCL.</p>
+				<div class="user">
+					<div class="user-info">
+						<h3>Thai Duong</h3>
 					</div>
 				</div>
-			</section>
-		{% endblock %}
+				<span class="fas fa-quote-right"></span>
+			</div>
+
+			<div class="box">
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+				</div>
+				<p>Ờ mây zing, gút chóp !!!!.</p>
+				<div class="user">
+					<div class="user-info">
+						<h3>Duy Quang</h3>
+					</div>
+				</div>
+				<span class="fas fa-quote-right"></span>
+			</div>
+
+			<div class="box">
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+				</div>
+				<p>Duma hết nước chấm!!!!.</p>
+				<div class="user">
+					<div class="user-info">
+						<h3>Tuan Anh</h3>
+					</div>
+				</div>
+				<span class="fas fa-quote-right"></span>
+			</div>
+
+		</div>
+	</section>
+	<!-- review section ends -->
+{% endblock %}
