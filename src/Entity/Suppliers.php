@@ -6,6 +6,7 @@ use App\Repository\SuppliersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SuppliersRepository::class)
@@ -21,11 +22,29 @@ class Suppliers
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Suppliers name must be at least {{ limit }} characters long!"
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Suppliers name cannot contain a number!"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 10
+     * )
+     * @Assert\Regex(
+     *     pattern="/\D/",
+     *     match=false,
+     *     message="Suppliers telephone is invlaid!"
+     * )
      */
     private $telephone;
 

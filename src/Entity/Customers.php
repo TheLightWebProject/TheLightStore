@@ -6,6 +6,7 @@ use App\Repository\CustomersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CustomersRepository::class)
@@ -21,6 +22,15 @@ class Customers
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long!"
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Your name cannot contain a number!"
+     * )
      */
     private $fullname;
 
@@ -31,17 +41,31 @@ class Customers
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 10
+     * )
+     * @Assert\Regex(
+     *     pattern="/\D/",
+     *     match=false,
+     *     message="Your telephone is invlaid!"
+     * )
      */
     private $telephone;
 
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 10,
+     *      minMessage = "Your address must be at least {{ limit }} characters long!"
+     * )
      */
     private $address;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\LessThan("today")
      */
     private $birthday;
 

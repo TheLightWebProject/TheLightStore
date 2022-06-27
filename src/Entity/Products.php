@@ -6,6 +6,8 @@ use App\Repository\ProductsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ProductsRepository::class)
@@ -21,21 +23,39 @@ class Products
 
     /**
      * @ORM\Column(type="string", length=100)
+     *  @Assert\Length(
+     *      min = 3,
+     *      minMessage = "Product name must be at least {{ limit }} characters long!"
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Product name cannot contain a number!"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Positive
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Description must be at least {{ limit }} characters long!"
+     * )
      */
     private $smallDesc;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 4,
+     *      minMessage = "Description must be at least {{ limit }} characters long!"
+     * )
      */
     private $detailDesc;
 
@@ -46,7 +66,7 @@ class Products
 
     /**
      * @ORM\Column(type="integer")
-     * )
+     * @Assert\Positive
      */
     private $quantity;
 

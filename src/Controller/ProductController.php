@@ -94,11 +94,6 @@ class ProductController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Your post was added'
-            );
-
-            $this->addFlash(
-                'success',
                 'New product was added'
             );
 

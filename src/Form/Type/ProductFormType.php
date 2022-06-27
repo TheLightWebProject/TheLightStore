@@ -30,7 +30,7 @@ class ProductFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('price', TextType::class)
+            ->add('price', IntegerType::class)
             ->add('smallDesc', TextType::class, [
                 'label' => 'Small description'
             ])
