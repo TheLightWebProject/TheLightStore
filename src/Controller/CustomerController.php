@@ -20,66 +20,78 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 class CustomerController extends AbstractController
 {
     /**
-     * @Route("/profile/update", name="update_profile")
+     * @Route("/customer/update", name="update_profile")
      */
     public function updateProfileAction(Request $req, ManagerRegistry $re, UserRepository $repoUser, CustomersRepository $repo, AuthenticationUtils $authenticationUtils): Response
     {
-        $lastUsername = $authenticationUtils->getLastUsername();
-        $user = $repoUser->findOneBy(['email' => $lastUsername]);
+        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+            $lastUsername = $authenticationUtils->getLastUsername();
+            $user = $repoUser->findOneBy(['email' => $lastUsername]);
 
-        $customer = $repo->findOneBy(['user' => $user]);
+            $customer = $repo->findOneBy(['user' => $user]);
 
-        $formCus = $this->createForm(CustomerFormType::class, $customer);
+            $formCus = $this->createForm(CustomerFormType::class, $customer);
 
-        $formCus->handleRequest($req);
+            $formCus->handleRequest($req);
 
-        if ($formCus->isSubmitted() && $formCus->isValid()) {
-            if ($user != null && $customer != null) {
-                $data = $formCus->getData($req);
+            if ($formCus->isSubmitted() && $formCus->isValid()) {
+                if ($user != null && $customer != null) {
+                    $data = $formCus->getData($req);
 
-                $customer->setFullname($data->getFullname());
-                $customer->setSex($data->isSex());
-                $customer->setTelephone($data->getTelephone());
-                $customer->setAddress($data->getAddress());
-                $customer->setBirthday($data->getBirthday());
+                    $customer->setFullname($data->getFullname());
+                    $customer->setSex($data->isSex());
+                    $customer->setTelephone($data->getTelephone());
+                    $customer->setAddress($data->getAddress());
+                    $customer->setBirthday($data->getBirthday());
 
-                $em = $re->getManager();
-                $em->persist($customer);
-                $em->flush();
+                    $em = $re->getManager();
+                    $em->persist($customer);
+                    $em->flush();
 
-                $this->addFlash(
-                    'success',
-                    'Update profile successfully'
-                );
+                    $this->addFlash(
+                        'success',
+                        'Update profile successfully'
+                    );
 
-                return $this->redirectToRoute('update_profile');
-            } else {
-                $addCustomer = new Customers();
-                $data = $formCus->getData($req);
+                    return $this->redirectToRoute('update_profile');
+                } else {
+                    $addCustomer = new Customers();
+                    $data = $formCus->getData($req);
 
-                $addCustomer->setFullname($data->getFullname());
-                $addCustomer->setSex($data->isSex());
-                $addCustomer->setTelephone($data->getTelephone());
-                $addCustomer->setAddress($data->getAddress());
-                $addCustomer->setBirthday($data->getBirthday());
-                $addCustomer->setUser($user);
+                    $addCustomer->setFullname($data->getFullname());
+                    $addCustomer->setSex($data->isSex());
+                    $addCustomer->setTelephone($data->getTelephone());
+                    $addCustomer->setAddress($data->getAddress());
+                    $addCustomer->setBirthday($data->getBirthday());
+                    $addCustomer->setUser($user);
 
-                $em = $re->getManager();
-                $em->persist($addCustomer);
-                $em->flush();
+                    $em = $re->getManager();
+                    $em->persist($addCustomer);
+                    $em->flush();
 
-                $this->addFlash(
-                    'success',
-                    'Add information successfully'
-                );
+                    $this->addFlash(
+                        'success',
+                        'Add information successfully'
+                    );
 
-                return $this->redirectToRoute('update_profile');
+                    return $this->redirectToRoute('update_profile');
+                }
             }
-        }
 
-        return $this->render('customer/update.html.twig', [
-            'update_profile' => $formCus->createView(),
-        ]);
+            return $this->render('customer/update.html.twig', [
+                'update_profile' => $formCus->createView(),
+            ]);
+        } else {
+            // $this->addFlash(
+            //     'danger',
+            //     'You must be login to access this page'
+            // );
+            // return $this->redirectToRoute("app_login");
+            $error = "You must be login to access this page";
+            return $this->render('security/login.html.twig', [
+                'error' => $error
+            ]);
+        }
     }
 
     /**
@@ -87,35 +99,47 @@ class CustomerController extends AbstractController
      */
     public function changePasswordAction(ManagerRegistry $re, Request $req, UserRepository $repo, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils): Response
     {
-        $lastUsername = $authenticationUtils->getLastUsername();
+        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+            $lastUsername = $authenticationUtils->getLastUsername();
 
-        $user = $repo->findOneBy(['email' => $lastUsername]);
+            $user = $repo->findOneBy(['email' => $lastUsername]);
 
-        $formChange = $this->createForm(ChangePasswordFormType::class, $user);
-        $formChange->handleRequest($req);
-        if ($formChange->isSubmitted() && $formChange->isValid()) {
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $formChange->get('password')->getData()
-                )
-            );
+            $formChange = $this->createForm(ChangePasswordFormType::class, $user);
+            $formChange->handleRequest($req);
+            if ($formChange->isSubmitted() && $formChange->isValid()) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $formChange->get('password')->getData()
+                    )
+                );
 
-            $em = $re->getManager();
-            $em->persist($user);
-            $em->flush();
+                $em = $re->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            $this->addFlash(
-                'success',
-                'Change password successfully'
-            );
+                $this->addFlash(
+                    'success',
+                    'Change password successfully'
+                );
 
-            return $this->redirectToRoute('change_password');
+                return $this->redirectToRoute('change_password');
+            }
+
+            return $this->render('customer/changepassword.html.twig', [
+                'change_password_form' => $formChange->createView(),
+            ]);
+        } else {
+            // $this->addFlash(
+            //     'danger',
+            //     'You must be login to access this page'
+            // );
+            // return $this->redirectToRoute("app_login");
+            $error = "You must be login to access this page";
+            return $this->render('security/login.html.twig', [
+                'error' => $error
+            ]);
         }
-
-        return $this->render('customer/changepassword.html.twig', [
-            'change_password_form' => $formChange->createView(),
-        ]);
     }
 
     /**
@@ -123,13 +147,24 @@ class CustomerController extends AbstractController
      */
     public function productOrderedAction(CustomersRepository $repo, OrdersRepository $repoOrder, AuthenticationUtils $authenticationUtils): Response
     {
-        $lastUsername = $authenticationUtils->getLastUsername();
+        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+            $lastUsername = $authenticationUtils->getLastUsername();
 
-        $customerOrder = $repo->findProductOrdered($lastUsername);
+            $customerOrder = $repo->findProductOrdered($lastUsername);
 
-        return $this->render('customer/productordered.html.twig', [
-            'product_ordered' => $customerOrder
-        ]);
-        // return $this->json($customerOrder);
+            return $this->render('customer/productordered.html.twig', [
+                'product_ordered' => $customerOrder
+            ]);
+        } else {
+            // $this->addFlash(
+            //     'danger',
+            //     'You must be login to access this page'
+            // );
+            // return $this->redirectToRoute("app_login");
+            $error = "You must be login to access this page";
+            return $this->render('security/login.html.twig', [
+                'error' => $error
+            ]);
+        }
     }
 }

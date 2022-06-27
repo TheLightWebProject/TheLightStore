@@ -22,16 +22,28 @@ class BrandController extends AbstractController
      */
     public function indexBrand(Request $req, BrandsRepository $repo): Response
     {
-        if (isset($_POST['btnSearchBrand'])) {
-            $value = $req->request->get('txtSearchBrand');
-            $brands = $repo->findBySearchBrand($value);
-        } else {
-            $brands = $repo->findAll();
-        }
+        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+            if (isset($_POST['btnSearchBrand'])) {
+                $value = $req->request->get('txtSearchBrand');
+                $brands = $repo->findBySearchBrand($value);
+            } else {
+                $brands = $repo->findAll();
+            }
 
-        return $this->render('brand/index.html.twig', [
-            'brands' => $brands
-        ]);
+            return $this->render('brand/index.html.twig', [
+                'brands' => $brands
+            ]);
+        } else {
+            // $this->addFlash(
+            //     'danger',
+            //     'You must be login to access this page'
+            // );
+            // return $this->redirectToRoute("app_login");
+            $error = "You must be login to access this page";
+            return $this->render('security/login.html.twig', [
+                'error' => $error
+            ]);
+        }
     }
 
     /**

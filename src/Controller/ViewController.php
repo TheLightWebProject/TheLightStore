@@ -78,15 +78,27 @@ class ViewController extends AbstractController
      */
     public function viewDetail(ProductsRepository $repo, FeedbackRepository $repoFeed, int $id): Response
     {
-        $product = $repo->viewDetail($id);
+        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+            $product = $repo->viewDetail($id);
 
-        $showFeedback = $repoFeed->allowDisplayFeedback($id);
+            $showFeedback = $repoFeed->allowDisplayFeedback($id);
 
-        // return $this->json($product);
-        return $this->render('view/viewdetail.html.twig', [
-            'product' => $product,
-            'show_Feeds' => $showFeedback
-        ]);
+            // return $this->json($product);
+            return $this->render('view/viewdetail.html.twig', [
+                'product' => $product,
+                'show_Feeds' => $showFeedback
+            ]);
+        } else {
+            // $this->addFlash(
+            //     'danger',
+            //     'You must be login to access this page'
+            // );
+            // return $this->redirectToRoute("app_login");
+            $error = "You must be login to access this page";
+            return $this->render('security/login.html.twig', [
+                'error' => $error
+            ]);
+        }
     }
 
     /**
@@ -96,4 +108,11 @@ class ViewController extends AbstractController
     {
         return $this->render('view/management.html.twig');
     }
+
+    // public function adminDashboard(): Response
+    // {
+    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+    //     return $this->render('security/login.html.twig');
+    // }
 }

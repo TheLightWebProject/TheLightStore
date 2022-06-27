@@ -15,39 +15,51 @@ class CartController extends AbstractController
      */
     public function cartAction(Request $req): Response
     {
-        //Cart initialization
-        if (!isset($_SESSION['cart_item'])) $_SESSION['cart_item'] = [];
+        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+            //Cart initialization
+            if (!isset($_SESSION['cart_item'])) $_SESSION['cart_item'] = [];
 
-        //Get information from form
-        if (isset($_POST['addcart']) && ($_POST['addcart'])) {
-            $id = $req->request->get('proid');
-            $name = $req->request->get('proname');
-            $short = $req->request->get('shortdesc');
-            $image = $req->request->get('image');
-            $quantity = $req->request->get('quantity');
-            $price = $req->request->get('price');
+            //Get information from form
+            if (isset($_POST['addcart']) && ($_POST['addcart'])) {
+                $id = $req->request->get('proid');
+                $name = $req->request->get('proname');
+                $short = $req->request->get('shortdesc');
+                $image = $req->request->get('image');
+                $quantity = $req->request->get('quantity');
+                $price = $req->request->get('price');
 
-            //Check whether or not the product has in the cart
-            $fl = 0;
-            //Check whether or not the product has been duplicated
-            for ($i = 0; $i < sizeof($_SESSION['cart_item']); $i++) {
-                if ($_SESSION['cart_item'][$i][1] == $name) {
-                    $fl = 1;
-                    $newqty = $quantity + $_SESSION['cart_item'][$i][4];
-                    $_SESSION['cart_item'][$i][4] = $newqty;
-                    break;
+                //Check whether or not the product has in the cart
+                $fl = 0;
+                //Check whether or not the product has been duplicated
+                for ($i = 0; $i < sizeof($_SESSION['cart_item']); $i++) {
+                    if ($_SESSION['cart_item'][$i][1] == $name) {
+                        $fl = 1;
+                        $newqty = $quantity + $_SESSION['cart_item'][$i][4];
+                        $_SESSION['cart_item'][$i][4] = $newqty;
+                        break;
+                    }
+                }
+
+                if ($fl == 0) {
+                    $item = [$id, $name, $short, $image, $quantity, $price];
+                    $_SESSION['cart_item'][] = $item;
+                    //var_dump($_SESSION['cart_item']);
                 }
             }
-
-            if ($fl == 0) {
-                $item = [$id, $name, $short, $image, $quantity, $price];
-                $_SESSION['cart_item'][] = $item;
-                //var_dump($_SESSION['cart_item']);
-            }
+            return $this->render('cart/cart.html.twig', [
+                'sessions' => $_SESSION['cart_item']
+            ]);
+        } else {
+            // $this->addFlash(
+            //     'danger',
+            //     'You must be login to access this page'
+            // );
+            // return $this->redirectToRoute("app_login");
+            $error = "You must be login to access this page";
+            return $this->render('security/login.html.twig', [
+                'error' => $error
+            ]);
         }
-        return $this->render('cart/cart.html.twig', [
-            'sessions' => $_SESSION['cart_item']
-        ]);
     }
 
     /**

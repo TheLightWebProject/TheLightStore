@@ -54,12 +54,22 @@ class ProductsRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
+    // SELECT * , COUNT(od.product_id), SUM(od.quantity)
+    // FROM order_details od, products p
+    // WHERE od.product_id = p.id
+    // GROUP BY od.product_id
+    // ORDER BY SUM(od.quantity)
+    // DESC
+    // LIMIT 4;
     /**
      * @return Products[]
      */
     public function showTop4BestSelling(): array
     {
         $query = $this->createQueryBuilder('p')
+            ->innerJoin('p.orderDetails', 'od')
+            ->groupBy('od.product')
+            ->orderBy('SUM(od.quantity)', 'DESC')
             ->setMaxResults(4);
         return $query->getQuery()->execute();
     }
