@@ -104,6 +104,11 @@
 					{% endif %}
 				</div>
 			</header>
+			{% for message in app.flashes('success') %}
+					<div class="alert alert-success text-center mt-2">
+						{{ message }}
+					</div>
+				{% endfor %}
 			{% block body %}{% endblock %}
 			<footer
 				class="text-center bg-light text-muted">
