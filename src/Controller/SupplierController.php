@@ -34,7 +34,7 @@ class SupplierController extends AbstractController
     /**
      * @Route("/management/supplier/new", name="add_supplier")
      */
-    public function addAction(ManagerRegistry $res, Request $req, ValidatorInterface $valid): Response
+    public function addAction(ManagerRegistry $res, Request $req): Response
     {
         $suppliers = new Suppliers();
         $formSupplier = $this->createForm(SupplierFormType::class, $suppliers);
@@ -48,12 +48,6 @@ class SupplierController extends AbstractController
             $suppliers->setName($data->getName());
             $suppliers->setTelephone($data->getTelephone());
             $suppliers->setEmail($data->getEmail());
-
-            $err = $valid->validate($suppliers);
-            if (count($err) > 0) {
-                $string_err = (string)$err;
-                return new Response($string_err, 400);
-            }
 
             $entity->persist($suppliers);
             $entity->flush();
@@ -74,7 +68,7 @@ class SupplierController extends AbstractController
     /**
      * @Route("/management/supplier/edit/{id}", name="edit_supplier")
      */
-    public function editAction(ManagerRegistry $res, Request $req, ValidatorInterface $valid, SuppliersRepository $repo, $id): Response
+    public function editAction(ManagerRegistry $res, Request $req, SuppliersRepository $repo, $id): Response
     {
         $suppliers = $repo->find($id);
         $formSupplier = $this->createForm(SupplierFormType::class, $suppliers);
@@ -88,12 +82,6 @@ class SupplierController extends AbstractController
             $suppliers->setName($data->getName());
             $suppliers->setTelephone($data->getTelephone());
             $suppliers->setEmail($data->getEmail());
-
-            $err = $valid->validate($suppliers);
-            if (count($err) > 0) {
-                $string_err = (string)$err;
-                return new Response($string_err, 400);
-            }
 
             $entity->persist($suppliers);
             $entity->flush();

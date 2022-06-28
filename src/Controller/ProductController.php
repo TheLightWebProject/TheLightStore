@@ -45,7 +45,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/management/product/new", name="add_product")
      */
-    public function addProductAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid): Response
+    public function addProductAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger): Response
     {
         $products = new Products();
         $formProduct = $this->createForm(ProductFormType::class, $products);
@@ -83,12 +83,6 @@ class ProductController extends AbstractController
                 $products->setImage($newFilename);
             }
 
-            $err = $valid->validate($products);
-            if (count($err) > 0) {
-                $string_err = (string)$err;
-                return new Response($string_err, 400);
-            }
-
             $entity->persist($products);
             $entity->flush();
 
@@ -120,7 +114,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/management/product/edit/{id}", name="edit_product")
      */
-    public function editProductAction(ProductsRepository $repo, ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid, int $id): Response
+    public function editProductAction(ProductsRepository $repo, ManagerRegistry $res, Request $req, SluggerInterface $slugger, int $id): Response
     {
         $products = $repo->find($id);
         $formProduct = $this->createForm(ProductFormType::class, $products);
@@ -156,12 +150,6 @@ class ProductController extends AbstractController
                     echo $e;
                 }
                 $products->setImage($newFilename);
-            }
-
-            $err = $valid->validate($products);
-            if (count($err) > 0) {
-                $string_err = (string)$err;
-                return new Response($string_err, 400);
             }
 
             $entity->persist($products);

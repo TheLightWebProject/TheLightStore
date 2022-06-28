@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -97,25 +98,25 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/changepassword", name="change_password")
      */
-    public function changePasswordAction(ManagerRegistry $re, Request $req, UserRepository $repo, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils): Response
+    public function changePasswordAction(UserRepository $repo, ManagerRegistry $re, Request $req, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
-            $lastUsername = $authenticationUtils->getLastUsername();
-
-            $user = $repo->findOneBy(['email' => $lastUsername]);
-
-            $formChange = $this->createForm(ChangePasswordFormType::class, $user);
+            $user = $this->getUser();
+            $userEntity = $repo->find($user);
+            $formChange = $this->createForm(ChangePasswordFormType::class, $userEntity);
             $formChange->handleRequest($req);
+
             if ($formChange->isSubmitted() && $formChange->isValid()) {
-                $user->setPassword(
+                $newPass = $formChange->get('password')->getData();
+                $userEntity->setPassword(
                     $userPasswordHasher->hashPassword(
-                        $user,
-                        $formChange->get('password')->getData()
+                        $userEntity,
+                        $newPass
                     )
                 );
 
                 $em = $re->getManager();
-                $em->persist($user);
+                $em->persist($userEntity);
                 $em->flush();
 
                 $this->addFlash(
@@ -124,6 +125,36 @@ class CustomerController extends AbstractController
                 );
 
                 return $this->redirectToRoute('change_password');
+
+                // $oldPass = $req->request->get('txtOldPass');
+                // if ($userPasswordHasher->isPasswordValid($user, $oldPass)) {
+                //     $newPass = $formChange->get('password')->getData();
+                //     // $user->setPassword(
+                //     //     $userPasswordHasher->hashPassword(
+                //     //         $user,
+                //     //         $newPass
+                //     //     )
+                //     // );
+
+                //     // $em = $re->getManager();
+                //     // $em->persist($user);
+                //     // $em->flush();
+
+                //     // $this->addFlash(
+                //     //     'success',
+                //     //     'Change password successfully'
+                //     // );
+
+                //     // return $this->redirectToRoute('change_password');
+                //     return $this->json(['oldPass' => $oldPass, 'newPass' => $newPass]);
+                // } else {
+                //     // $this->addFlash(
+                //     //     'danger',
+                //     //     'Old password does not match'
+                //     // );
+                //     // return $this->redirectToRoute('change_password');
+                //     return $this->json(['property'=>'false']);
+                // }
             }
 
             return $this->render('customer/changepassword.html.twig', [

@@ -26,11 +26,8 @@ class ChangePasswordFormType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
                 'first_options' => ['label' => 'New Password'],
-                'second_options' => ['label' => 'Repeat Password'],
-                'attr' => ['autocomplete' => 'off'],
+                'second_options' => ['label' => 'Repeat Password']
             ]);
     }
 }

@@ -35,13 +35,13 @@ class ViewController extends AbstractController
         $suppliers = $repoSup->findAll();
         $brands = $repoBrand->findAll();
 
-        if (isset($_GET['bid'])) {
+        if (isset($_GET['bid'])) { //show products of brands
             $id = $req->query->get('bid');
             $products = $repo->findBy(['brand' => $id]);
-        } elseif (isset($_GET['sid'])) {
+        } elseif (isset($_GET['sid'])) { //show products of supplier
             $id = $req->query->get('sid');
             $products = $repo->findBy(['supplier' => $id]);
-        } elseif (isset($_POST['btnSearch'])) {
+        } elseif (isset($_POST['btnSearch'])) { //show products by searching
             $value = $req->request->get('txtSearch');
 
             $keywords = explode(' ', $value);
@@ -56,7 +56,7 @@ class ViewController extends AbstractController
             $products = $repo->showShop();
         }
 
-        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 18);
+        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 18); //create paginator
 
         return $this->render('view/shop.html.twig', [
             'products' => $paginator,

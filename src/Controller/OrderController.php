@@ -91,11 +91,11 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/payment", name="payment")
      */
-    public function paymentCartAction(Request $req, ManagerRegistry $res, UserRepository $repoUser, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, AuthenticationUtils $authenticationUtils): Response
+    public function paymentCartAction(ManagerRegistry $res, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro): Response
     {
-        $lastUsername = $authenticationUtils->getLastUsername();
-        $user = $repoUser->findBy(['email' => $lastUsername]);
-
+        //Get user Customer
+        $user = $this->getUser();
+        //Get customer entity
         $customer = $repoCus->findOneBy(['user' => $user]);
 
         if (isset($_POST["btnPayment"])) {
@@ -198,11 +198,6 @@ class OrderController extends AbstractController
     public function deleteOrderAction(OrdersRepository $repo, ManagerRegistry $res, int $id): Response
     {
         $orders = $repo->find($id);
-
-        // if (!$orders) {
-        //     throw
-        //     $this->createNotFoundException('Invalid ID' . $id);
-        // }
 
         $entity = $res->getManager();
 

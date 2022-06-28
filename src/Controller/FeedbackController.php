@@ -21,7 +21,7 @@ class FeedbackController extends AbstractController
     /**
      * @Route("/givefeedback/{id}", name="give_feedback")
      */
-    public function giveFeedbackAction(Request $req, ManagerRegistry $res, ProductsRepository $repoPro, UserRepository $repoUser, CustomersRepository $repoCus, AuthenticationUtils $authenticationUtils, $id): Response
+    public function giveFeedbackAction(Request $req, ManagerRegistry $res, ProductsRepository $repoPro, CustomersRepository $repoCus, $id): Response
     {
         $feedback = new Feedback();
         $formFeedback = $this->createForm(FeedbackFormType::class, $feedback);
@@ -31,10 +31,9 @@ class FeedbackController extends AbstractController
 
         //Get Product entity
         $product = $repoPro->find($id);
-
         //Get user Customer
-        $lastUsername = $authenticationUtils->getLastUsername();
-        $user = $repoUser->findBy(['email' => $lastUsername]);
+        $user = $this->getUser();
+        //Get customer entity
         $customer = $repoCus->findOneBy(['user' => $user]);
 
         if ($formFeedback->isSubmitted() && $formFeedback->isValid()) {
