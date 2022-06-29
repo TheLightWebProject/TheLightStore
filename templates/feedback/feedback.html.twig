@@ -61,7 +61,7 @@
 							<img src='{{ path('get_product_photo', {'filename' : feedback.image} ) }}' border='0' width="50" height="50"/>
 						</td>
 						<td class="text-center">
-							<form action="/feedback" method="POST">
+							<form action="{{ path('show_all_feedback') }}" method="POST">
 								<input type="hidden" id="txtFeedID" name="txtFeedID" value="{{ feedback.feedID }}">
 								<input type="hidden" id="txtupdateFeed" name="txtupdateFeed" value="{{ feedback.allow }}">
 								{% if feedback.allow == 1 %}

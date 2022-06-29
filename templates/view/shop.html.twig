@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+	{% for message in app.flashes('danger') %}
+		<div class="alert alert-danger text-center mt-2 mb-0">
+			{{ message }}
+		</div>
+	{% endfor %}
 	<div class="row">
 		<div
 			class="col-lg-2 col-md-3 ps-0">

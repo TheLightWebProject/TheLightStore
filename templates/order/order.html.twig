@@ -51,7 +51,7 @@
 						<td>{{ order.address }}</td>
 
 						<td class="text-center">
-							<form action="/order" method="POST">
+							<form action="{{ path('show_all_order') }}" method="POST">
 								<input type="hidden" id="check" name="check" value="{{ order.checked }}">
 								<label for="check" class="mb-2 fw-bold">
 									{% if order.checked ? "Checked" : "Unchecked" %}{% endif %}

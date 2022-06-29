@@ -6,6 +6,7 @@ use App\Repository\BrandsRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\SuppliersRepository;
+use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,18 +77,28 @@ class ViewController extends AbstractController
     /**
      * @Route("/viewdetail/{id}", name="view_detail_product")
      */
-    public function viewDetail(ProductsRepository $repo, FeedbackRepository $repoFeed, int $id): Response
+    public function viewDetail(UserRepository $repoUser, ProductsRepository $repo, FeedbackRepository $repoFeed, int $id): Response
     {
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
-            $product = $repo->viewDetail($id);
+            $user = $this->getUser();
+            $userEntity = $repoUser->find($user);
+            if ($userEntity->isVerified() == 1) {
+                $product = $repo->viewDetail($id);
 
-            $showFeedback = $repoFeed->allowDisplayFeedback($id);
+                $showFeedback = $repoFeed->allowDisplayFeedback($id);
 
-            // return $this->json($product);
-            return $this->render('view/viewdetail.html.twig', [
-                'product' => $product,
-                'show_Feeds' => $showFeedback
-            ]);
+                // return $this->json($product);
+                return $this->render('view/viewdetail.html.twig', [
+                    'product' => $product,
+                    'show_Feeds' => $showFeedback,
+                ]);
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'You must be verify the account to see more'
+                );
+                return $this->redirectToRoute("shop");
+            }
         } else {
             // $this->addFlash(
             //     'danger',

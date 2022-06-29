@@ -23,65 +23,73 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/update", name="update_profile")
      */
-    public function updateProfileAction(Request $req, ManagerRegistry $re, UserRepository $repoUser, CustomersRepository $repo, AuthenticationUtils $authenticationUtils): Response
+    public function updateProfileAction(Request $req, ManagerRegistry $re, UserRepository $repoUser, CustomersRepository $repo): Response
     {
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
-            $lastUsername = $authenticationUtils->getLastUsername();
-            $user = $repoUser->findOneBy(['email' => $lastUsername]);
+            $user = $this->getUser();
+            $userEntity = $repoUser->find($user);
 
-            $customer = $repo->findOneBy(['user' => $user]);
+            if ($userEntity->isVerified() == 1) {
+                $customer = $repo->findOneBy(['user' => $userEntity]);
 
-            $formCus = $this->createForm(CustomerFormType::class, $customer);
+                $formCus = $this->createForm(CustomerFormType::class, $customer);
 
-            $formCus->handleRequest($req);
+                $formCus->handleRequest($req);
 
-            if ($formCus->isSubmitted() && $formCus->isValid()) {
-                if ($user != null && $customer != null) {
-                    $data = $formCus->getData($req);
+                if ($formCus->isSubmitted() && $formCus->isValid()) {
+                    if ($userEntity != null && $customer != null) {
+                        $data = $formCus->getData($req);
 
-                    $customer->setFullname($data->getFullname());
-                    $customer->setSex($data->isSex());
-                    $customer->setTelephone($data->getTelephone());
-                    $customer->setAddress($data->getAddress());
-                    $customer->setBirthday($data->getBirthday());
+                        $customer->setFullname($data->getFullname());
+                        $customer->setSex($data->isSex());
+                        $customer->setTelephone($data->getTelephone());
+                        $customer->setAddress($data->getAddress());
+                        $customer->setBirthday($data->getBirthday());
 
-                    $em = $re->getManager();
-                    $em->persist($customer);
-                    $em->flush();
+                        $em = $re->getManager();
+                        $em->persist($customer);
+                        $em->flush();
 
-                    $this->addFlash(
-                        'success',
-                        'Update profile successfully'
-                    );
+                        $this->addFlash(
+                            'success',
+                            'Update profile successfully'
+                        );
 
-                    return $this->redirectToRoute('update_profile');
-                } else {
-                    $addCustomer = new Customers();
-                    $data = $formCus->getData($req);
+                        return $this->redirectToRoute('update_profile');
+                    } else {
+                        $addCustomer = new Customers();
+                        $data = $formCus->getData($req);
 
-                    $addCustomer->setFullname($data->getFullname());
-                    $addCustomer->setSex($data->isSex());
-                    $addCustomer->setTelephone($data->getTelephone());
-                    $addCustomer->setAddress($data->getAddress());
-                    $addCustomer->setBirthday($data->getBirthday());
-                    $addCustomer->setUser($user);
+                        $addCustomer->setFullname($data->getFullname());
+                        $addCustomer->setSex($data->isSex());
+                        $addCustomer->setTelephone($data->getTelephone());
+                        $addCustomer->setAddress($data->getAddress());
+                        $addCustomer->setBirthday($data->getBirthday());
+                        $addCustomer->setUser($userEntity);
 
-                    $em = $re->getManager();
-                    $em->persist($addCustomer);
-                    $em->flush();
+                        $em = $re->getManager();
+                        $em->persist($addCustomer);
+                        $em->flush();
 
-                    $this->addFlash(
-                        'success',
-                        'Add information successfully'
-                    );
+                        $this->addFlash(
+                            'success',
+                            'Add information successfully'
+                        );
 
-                    return $this->redirectToRoute('update_profile');
+                        return $this->redirectToRoute('update_profile');
+                    }
                 }
-            }
 
-            return $this->render('customer/update.html.twig', [
-                'update_profile' => $formCus->createView(),
-            ]);
+                return $this->render('customer/update.html.twig', [
+                    'update_profile' => $formCus->createView(),
+                ]);
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'You must be verify the account to see more'
+                );
+                return $this->redirectToRoute("shop");
+            }
         } else {
             // $this->addFlash(
             //     'danger',
@@ -103,89 +111,91 @@ class CustomerController extends AbstractController
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
             $user = $this->getUser();
             $userEntity = $repo->find($user);
-            $formChange = $this->createForm(ChangePasswordFormType::class, $userEntity);
-            $formChange->handleRequest($req);
+            if ($userEntity->isVerified() == 1) {
+                if (isset($_POST['btnConfirm'])) {
+                    $oldPass = $req->request->get('txtOldPass');
+                    $newPass = $req->request->get('txtNewPass');
+                    $confirmPass = $req->request->get('txtConfirmPass');
+                    if ($oldPass != "" || $newPass != "" || $confirmPass != "") {
+                        if ($userPasswordHasher->isPasswordValid($user, $oldPass)) {
+                            if ($newPass == $confirmPass) {
+                                $userEntity->setPassword(
+                                    $userPasswordHasher->hashPassword(
+                                        $userEntity,
+                                        $newPass
+                                    )
+                                );
 
-            if ($formChange->isSubmitted() && $formChange->isValid()) {
-                $newPass = $formChange->get('password')->getData();
-                $userEntity->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $userEntity,
-                        $newPass
-                    )
-                );
+                                $em = $re->getManager();
+                                $em->persist($userEntity);
+                                $em->flush();
 
-                $em = $re->getManager();
-                $em->persist($userEntity);
-                $em->flush();
-
+                                $this->addFlash(
+                                    'success',
+                                    'Change password successfully'
+                                );
+                                return $this->redirectToRoute('change_password');
+                            } else {
+                                $this->addFlash(
+                                    'danger',
+                                    'Password and confirm password does not match'
+                                );
+                                return $this->redirectToRoute('change_password');
+                            }
+                        } else {
+                            $this->addFlash(
+                                'danger',
+                                'Old password does not match'
+                            );
+                            return $this->redirectToRoute('change_password');
+                        }
+                    } else {
+                        $this->addFlash(
+                            'danger',
+                            'Please do not leave fields blank'
+                        );
+                        return $this->redirectToRoute('change_password');
+                    }
+                }
+                return $this->render('customer/changepassword.html.twig');
+            } else {
                 $this->addFlash(
-                    'success',
-                    'Change password successfully'
+                    'danger',
+                    'You must be verify the account to see more'
                 );
-
-                return $this->redirectToRoute('change_password');
-
-                // $oldPass = $req->request->get('txtOldPass');
-                // if ($userPasswordHasher->isPasswordValid($user, $oldPass)) {
-                //     $newPass = $formChange->get('password')->getData();
-                //     // $user->setPassword(
-                //     //     $userPasswordHasher->hashPassword(
-                //     //         $user,
-                //     //         $newPass
-                //     //     )
-                //     // );
-
-                //     // $em = $re->getManager();
-                //     // $em->persist($user);
-                //     // $em->flush();
-
-                //     // $this->addFlash(
-                //     //     'success',
-                //     //     'Change password successfully'
-                //     // );
-
-                //     // return $this->redirectToRoute('change_password');
-                //     return $this->json(['oldPass' => $oldPass, 'newPass' => $newPass]);
-                // } else {
-                //     // $this->addFlash(
-                //     //     'danger',
-                //     //     'Old password does not match'
-                //     // );
-                //     // return $this->redirectToRoute('change_password');
-                //     return $this->json(['property'=>'false']);
-                // }
+                return $this->redirectToRoute("shop");
             }
-
-            return $this->render('customer/changepassword.html.twig', [
-                'change_password_form' => $formChange->createView(),
-            ]);
         } else {
-            // $this->addFlash(
-            //     'danger',
-            //     'You must be login to access this page'
-            // );
-            // return $this->redirectToRoute("app_login");
-            $error = "You must be login to access this page";
-            return $this->render('security/login.html.twig', [
-                'error' => $error
-            ]);
+            $this->addFlash(
+                'danger',
+                'You must be login to access this page'
+            );
+            return $this->redirectToRoute("app_login");
         }
     }
 
     /**
      * @Route("/customer/ordered", name="product_ordered")
      */
-    public function productOrderedAction(CustomersRepository $repo, OrdersRepository $repoOrder, AuthenticationUtils $authenticationUtils): Response
+    public function productOrderedAction(UserRepository $repoUser, CustomersRepository $repo, OrdersRepository $repoOrder): Response
     {
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
-            $lastUsername = $authenticationUtils->getLastUsername();
+            $user = $this->getUser();
+            $userEntity = $repoUser->find($user);
 
-            $customerOrder = $repo->findProductOrdered($lastUsername);
+            if ($userEntity->isVerified() == 1) {
+                $customerOrder = $repo->findProductOrdered($userEntity->getEmail());
 
-            return $this->render('customer/productordered.html.twig', [
-                'product_ordered' => $customerOrder
-            ]);
+                return $this->render('customer/productordered.html.twig', [
+                    'product_ordered' => $customerOrder
+                ]);
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'You must be verify the account to see more'
+                );
+                return $this->redirectToRoute("shop");
+            }
         } else {
             // $this->addFlash(
             //     'danger',

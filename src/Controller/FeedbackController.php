@@ -59,7 +59,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/feedback", name="show_all_feedback")
+     * @Route("/management/feedback", name="show_all_feedback")
      */
     public function indexFeedback(ManagerRegistry $res, Request $req, FeedbackRepository $repo): Response
     {
@@ -96,7 +96,7 @@ class FeedbackController extends AbstractController
     }
 
     /**
-     * @Route("/feedback/delete/{id}", name="delete_feedback")
+     * @Route("/management/feedback/delete/{id}", name="delete_feedback")
      */
     public function allowFeedbackAction(ManagerRegistry $res, FeedbackRepository $repo, int $id): Response
     {

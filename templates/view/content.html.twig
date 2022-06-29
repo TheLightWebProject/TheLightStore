@@ -25,6 +25,11 @@
 			bottom: -20px;
 		}
 	</style>
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-success text-center mt-2 mb-0">
+			{{ message }}
+		</div>
+	{% endfor %}
 	<section class="my-2">
 		<div class="p-5 mb-2 text-center bg-image" style="background-image: url(Image/backgroung.jpg);">
 			<div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
