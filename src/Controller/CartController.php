@@ -65,10 +65,6 @@ class CartController extends AbstractController
                 'You must be login to access this page'
             );
             return $this->redirectToRoute("app_login");
-            $error = "You must be login to access this page";
-            return $this->render('security/login.html.twig', [
-                'error' => $error
-            ]);
         }
     }
 

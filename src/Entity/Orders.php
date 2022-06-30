@@ -44,6 +44,21 @@ class Orders
      */
     private $orderDetails;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $deliveryLocal;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $custName;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $custPhone;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -128,6 +143,42 @@ class Orders
                 $orderDetail->setOrders(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDeliveryLocal(): ?string
+    {
+        return $this->deliveryLocal;
+    }
+
+    public function setDeliveryLocal(string $deliveryLocal): self
+    {
+        $this->deliveryLocal = $deliveryLocal;
+
+        return $this;
+    }
+
+    public function getCustName(): ?string
+    {
+        return $this->custName;
+    }
+
+    public function setCustName(string $custName): self
+    {
+        $this->custName = $custName;
+
+        return $this;
+    }
+
+    public function getCustPhone(): ?string
+    {
+        return $this->custPhone;
+    }
+
+    public function setCustPhone(string $custPhone): self
+    {
+        $this->custPhone = $custPhone;
 
         return $this;
     }

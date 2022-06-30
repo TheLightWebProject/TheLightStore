@@ -28,8 +28,8 @@
 								<div class="row d-flex">
 									<input type="number" name="quantity" class="col-md-2" value="1" min="1" max="{{ product.0.quantity }}">
 									<input type="submit" name="addcart" class="btn btn-dark btn-rounded mx-md-2 my-2 my-md-0 col-md-3" value="Add to cart">
-									<input type="submit" name="btnBuynow" formaction="/order/buynow" class="btn btn-primary btn-rounded me-md-2 my-md-0 mb-2 col-md-3" value="Buy Now">
-									<input type="submit" name="btnFeedback" formaction="/givefeedback/{{ product.0.id }}" class="btn btn-warning btn-rounded col-md-3" value="Feedback">
+									<input type="submit" name="btnBuynow" formaction="{{ path('buynow') }}" class="btn btn-primary btn-rounded me-md-2 my-md-0 mb-2 col-md-3" value="Buy Now">
+									<input type="submit" name="btnFeedback" formaction="{{ path('give_feedback', { 'id': product.0.id }) }}" class="btn btn-warning btn-rounded col-md-3" value="Feedback">
 								</div>
 								<input type="hidden" name="proid" value="{{ product.0.id }}">
 								<input type="hidden" name="proname" value="{{ product.0.name }}">
@@ -90,18 +90,25 @@
 								</tbody>
 							</table>
 							<h3 class="box-title mt-5 mb-3">Feedback from customer</h3>
-							<table class="table table-striped table-product">
-								{% for show_Feed in show_Feeds %}
-									{% if show_Feed.allow == 1 %}
-										<tbody>
-											<tr>
-												<td width="190">{{ show_Feed.fullname }}</td>
-												<td>{{ show_Feed.content }}</td>
-											</tr>
-										</tbody>
-									{% endif %}
-								{% endfor %}
-							</table>
+							{% if show_Feeds %}
+								<table class="table table-striped table-product">
+									{% for show_Feed in show_Feeds %}
+										{% if show_Feed.allow == 1 %}
+											<tbody>
+												<tr>
+													<td width="190">{{ show_Feed.fullname }}</td>
+													<td>{{ show_Feed.content }}</td>
+												</tr>
+											</tbody>
+										{% endif %}
+									{% endfor %}
+								</table>
+							{% else %}
+								<div class="fw-bold">
+									No feedback
+								</div>
+							{% endif %}
+
 						</div>
 					</div>
 				</div>

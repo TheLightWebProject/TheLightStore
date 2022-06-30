@@ -44,11 +44,11 @@
 						<td class="text-center">
 							<a href="{{ path('order_detail', { 'id': order.id }) }}" class="text-decoration-none">{{ count }}</a>
 						</td>
-						<td align='center'>{{ order.orderDate|date('y-m-d H:i:s') }}</td>
-						<td align='center'>{{ order.deliveryDate|date('y-m-d H:i:s') }}</td>
-						<td class="text-center">{{ order.fullname }}</td>
-						<td align='center'>{{ order.telephone }}</td>
-						<td>{{ order.address }}</td>
+						<td class="text-center">{{ order.orderDate|date('y-m-d H:i:s') }}</td>
+						<td class="text-center">{{ order.deliveryDate|date('y-m-d H:i:s') }}</td>
+						<td class="text-center">{{ order.custName }}</td>
+						<td class="text-center">{{ order.custPhone }}</td>
+						<td>{{ order.deliveryLocal }}</td>
 
 						<td class="text-center">
 							<form action="{{ path('show_all_order') }}" method="POST">
@@ -69,13 +69,9 @@
 							</form>
 						</td>
 						<td style='text-align:center'>
-
-							<br>
 							<a href="{{ path('delete_order', { 'id': order.id }) }}" onclick="return confirm('Are you sure to delete!')">
 								<i class="bi bi-trash-fill" style="color: red;"></i>
 							</a>
-							<br><br>
-
 						</td>
 					</tr>
 					{% set count = count + 1 %}

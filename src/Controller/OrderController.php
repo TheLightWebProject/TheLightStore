@@ -36,6 +36,9 @@ class OrderController extends AbstractController
         $price = $req->request->get('price');
 
         if (isset($_POST["btnPaymentnow"])) {
+            $custName = $req->request->get('txtFullname');
+            $custAddress = $req->request->get('txtAddress');
+            $custPhone = $req->request->get('txtPhonenumber');
             //add order
             $customerID = $repoCus->find($customer->getId()); //get entity customer
 
@@ -44,6 +47,9 @@ class OrderController extends AbstractController
             $order->setDeliveryDate(new \DateTime());
             $order->setChecked(false);
             $order->setUsername($customerID);
+            $order->setDeliveryLocal($custAddress);
+            $order->setCustName($custName);
+            $order->setCustPhone($custPhone);
 
             $entity =  $res->getManager();
             $entity->persist($order);
@@ -89,7 +95,7 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/payment", name="payment")
      */
-    public function paymentCartAction(ManagerRegistry $res, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro): Response
+    public function paymentCartAction(ManagerRegistry $res, Request $req, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro): Response
     {
         //Get user Customer
         $user = $this->getUser();
@@ -97,6 +103,9 @@ class OrderController extends AbstractController
         $customer = $repoCus->findOneBy(['user' => $user]);
 
         if (isset($_POST["btnPayment"])) {
+            $custName = $req->request->get('txtFullname');
+            $custAddress = $req->request->get('txtAddress');
+            $custPhone = $req->request->get('txtPhonenumber');
             //add order
             $customerID = $repoCus->find($customer->getId()); //get entity customer
 
@@ -105,6 +114,9 @@ class OrderController extends AbstractController
             $order->setDeliveryDate(new \DateTime());
             $order->setChecked(false);
             $order->setUsername($customerID);
+            $order->setDeliveryLocal($custAddress);
+            $order->setCustName($custName);
+            $order->setCustPhone($custPhone);
 
             $entity =  $res->getManager();
             $entity->persist($order);
@@ -135,6 +147,7 @@ class OrderController extends AbstractController
                 $entity->persist($product);
                 $entity->flush();
             }
+            
             unset($_SESSION['cart_item']);
 
             $this->addFlash(
