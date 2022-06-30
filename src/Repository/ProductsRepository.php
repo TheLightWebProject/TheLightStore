@@ -84,6 +84,17 @@ class ProductsRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
+    /**
+     * @return Products[]
+     */
+    public function noti(): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->orderBy('p.createdDate', 'DESC')
+            ->setMaxResults(10);
+        return $query->getQuery()->execute();
+    }
+
     //SELECT p.id, p.name, p.price, p.small_desc, p.detail_desc, p.quantity, p.image, b.name, s.name FROM products p INNER JOIN brands b ON p.brand_id = b.id INNER JOIN suppliers s ON p.supplier_id = s.id WHERE p.id = 5
     /**
      * @return Product[]

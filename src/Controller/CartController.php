@@ -27,6 +27,7 @@ class CartController extends AbstractController
                 $image = $req->request->get('image');
                 $quantity = $req->request->get('quantity');
                 $price = $req->request->get('price');
+                $qty = $req->request->get('qty');
 
                 //Check whether or not the product has in the cart
                 $fl = 0;
@@ -35,8 +36,17 @@ class CartController extends AbstractController
                     if ($_SESSION['cart_item'][$i][1] == $name) {
                         $fl = 1;
                         $newqty = $quantity + $_SESSION['cart_item'][$i][4];
-                        $_SESSION['cart_item'][$i][4] = $newqty;
-                        break;
+                        //check whether or not the purchase quantity is greater than the inventory quantity
+                        if ($newqty > $qty) {
+                            $this->addFlash(
+                                'danger',
+                                'The purchase quantity is greater than the inventory quantity'
+                            );
+                            return $this->redirectToRoute("cart");
+                        } else {
+                            $_SESSION['cart_item'][$i][4] = $newqty;
+                            break;
+                        }
                     }
                 }
 
@@ -50,11 +60,11 @@ class CartController extends AbstractController
                 'sessions' => $_SESSION['cart_item']
             ]);
         } else {
-            // $this->addFlash(
-            //     'danger',
-            //     'You must be login to access this page'
-            // );
-            // return $this->redirectToRoute("app_login");
+            $this->addFlash(
+                'danger',
+                'You must be login to access this page'
+            );
+            return $this->redirectToRoute("app_login");
             $error = "You must be login to access this page";
             return $this->render('security/login.html.twig', [
                 'error' => $error

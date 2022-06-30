@@ -24,7 +24,7 @@
 									${{ product.0.price }}
 								</h2>
 							</div>
-							<form action="/cart" method="POST" class="mb-2">
+							<form action="{{ path('cart') }}" method="POST" class="mb-2">
 								<div class="row d-flex">
 									<input type="number" name="quantity" class="col-md-2" value="1" min="1" max="{{ product.0.quantity }}">
 									<input type="submit" name="addcart" class="btn btn-dark btn-rounded mx-md-2 my-2 my-md-0 col-md-3" value="Add to cart">
@@ -36,6 +36,7 @@
 								<input type="hidden" name="shortdesc" value="{{ product.0.smallDesc }}">
 								<input type="hidden" name="image" value="{{ product.0.image }}">
 								<input type="hidden" name="price" value="{{ product.0.price }}">
+								<input type="hidden" name="qty" value="{{ product.0.quantity }}">
 							</form>
 						{% else %}
 							<h4 class="mt-md-4">Out of stock</h4>
@@ -43,13 +44,13 @@
 						<h3 class="box-title mt-5">Key Highlights</h3>
 						<ul class="list-unstyled">
 							<li>
-								<i class="fa fa-check text-success"></i>
+								<i class="bi bi-check text-success"></i>
 								Quality fabric is cool</li>
 							<li>
-								<i class="fa fa-check text-success"></i>
+								<i class="bi bi-check text-success"></i>
 								Designed to fit all sizes</li>
 							<li>
-								<i class="fa fa-check text-success"></i>
+								<i class="bi bi-check text-success"></i>
 								The perfect product to flaunt your amazing collection</li>
 						</ul>
 					</div>

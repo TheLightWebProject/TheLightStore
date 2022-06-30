@@ -11,6 +11,11 @@
 				{{ message }}
 			</div>
 		{% endfor %}
+		{% for message in app.flashes('danger') %}
+			<div class="alert alert-danger text-center mt-2 mb-0">
+				{{ message }}
+			</div>
+		{% endfor %}
 		<div class="container">
 			<table id="cart" class="table table-hover table-condensed">
 				<thead>

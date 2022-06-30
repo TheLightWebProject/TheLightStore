@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderDetailController extends AbstractController
 {
     /**
-     * @Route("/orderdetail/{id}", name="order_detail")
+     * @Route("/management/orderdetail/{id}", name="order_detail")
      */
     public function showAllOrderDetail(OrderDetailsRepository $repo, int $id): Response
     {
@@ -23,17 +23,12 @@ class OrderDetailController extends AbstractController
     }
 
     /**
-     * @Route("/orderdetail/delete/{id}", name="delele_oreder_detail")
+     * @Route("/management/orderdetail/delete/{id}", name="delele_oreder_detail")
      */
     public function deleteOrderDetailAction(OrderDetailsRepository $repo, ManagerRegistry $res, int $id): Response
     {
         $orderDetail = $repo->find($id);
-
-        // if (!$orders) {
-        //     throw
-        //     $this->createNotFoundException('Invalid ID' . $id);
-        // }
-
+        
         $entity = $res->getManager();
 
         $entity->remove($orderDetail);

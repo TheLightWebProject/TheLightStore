@@ -120,10 +120,14 @@ class ViewController extends AbstractController
         return $this->render('view/management.html.twig');
     }
 
-    // public function adminDashboard(): Response
-    // {
-    //     $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-    //     return $this->render('security/login.html.twig');
-    // }
+    /**
+     * @Route("/notification", name="notification")
+     */
+    public function notificationAction(ProductsRepository $repo): Response
+    {
+        $notis = $repo->noti();
+        return $this->render('view/noti.html.twig', [
+            'notis' => $notis
+        ]);
+    }
 }

@@ -21,14 +21,12 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/buynow", name="buynow")
      */
-    public function orderAction(Request $req, ManagerRegistry $res, UserRepository $repoUser, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, AuthenticationUtils $authenticationUtils): Response
+    public function orderAction(Request $req, ManagerRegistry $res, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro): Response
     {
-        $lastUsername = $authenticationUtils->getLastUsername();
-        $user = $repoUser->findBy(['email' => $lastUsername]);
-
+        //Get user Customer
+        $user = $this->getUser();
+        //Get customer entity
         $customer = $repoCus->findOneBy(['user' => $user]);
-
-        $product = [];
 
         $id = $req->request->get('proid');
         $name = $req->request->get('proname');
