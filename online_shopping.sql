@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 29, 2022 at 12:12 PM
+-- Generation Time: Jul 01, 2022 at 03:55 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.28
 
@@ -71,7 +71,8 @@ INSERT INTO `customers` (`id`, `fullname`, `sex`, `telephone`, `address`, `birth
 (15, 'Nguyen Thai Duong', 1, '0375741165', 'An Binh, Vinh Long', '2002-03-15', 39),
 (16, 'Nguyen Duy Quang', 1, '0916843367', 'Ninh Kieu, Can Tho city', '2002-08-05', 33),
 (17, 'Nguyen Que Tran', 0, '0706546651', 'Tan Hanh, Vinh Long', '2003-03-09', 40),
-(18, 'Nguyen Tuan Anh', 1, '0123456789', 'Phung Hiep, Hau Giang', '2022-06-27', 41);
+(18, 'Nguyen Tuan Anh', 1, '0123456789', 'Phung Hiep, Hau Giang', '2022-06-27', 41),
+(20, 'Huynh Bao Trong', 1, '0123456789', 'Long Ho, Vinh Long', '2002-06-15', 43);
 
 -- --------------------------------------------------------
 
@@ -101,7 +102,11 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20220617114723', '2022-06-17 13:47:26', 135),
 ('DoctrineMigrations\\Version20220628090159', '2022-06-28 11:02:06', 503),
 ('DoctrineMigrations\\Version20220628100439', '2022-06-28 12:04:47', 61),
-('DoctrineMigrations\\Version20220629080940', '2022-06-29 10:09:45', 119);
+('DoctrineMigrations\\Version20220629080940', '2022-06-29 10:09:45', 119),
+('DoctrineMigrations\\Version20220630075152', '2022-06-30 14:51:58', 358),
+('DoctrineMigrations\\Version20220630075239', '2022-06-30 14:52:42', 33),
+('DoctrineMigrations\\Version20220630075323', '2022-06-30 14:53:26', 40),
+('DoctrineMigrations\\Version20220630075536', '2022-06-30 14:55:39', 32);
 
 -- --------------------------------------------------------
 
@@ -123,7 +128,7 @@ CREATE TABLE `feedback` (
 --
 
 INSERT INTO `feedback` (`id`, `customer_id`, `product_id`, `content`, `send_date`, `allow`) VALUES
-(12, 16, 6, 'wqwfqfqwf', '2022-06-29 15:25:39', 1);
+(13, 16, 23, 'Good', '2022-06-30 16:03:00', 1);
 
 -- --------------------------------------------------------
 
@@ -136,17 +141,21 @@ CREATE TABLE `orders` (
   `username_id` int(11) DEFAULT NULL,
   `order_date` datetime NOT NULL,
   `delivery_date` datetime NOT NULL,
-  `checked` tinyint(1) NOT NULL
+  `checked` tinyint(1) NOT NULL,
+  `delivery_local` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `cust_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `cust_phone` varchar(15) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `username_id`, `order_date`, `delivery_date`, `checked`) VALUES
-(23, 16, '2022-06-28 19:14:35', '2022-06-29 17:02:13', 1),
-(24, 16, '2022-06-28 19:14:58', '2022-06-29 17:04:25', 1),
-(25, 15, '2022-06-29 14:55:47', '2022-06-29 17:01:37', 1);
+INSERT INTO `orders` (`id`, `username_id`, `order_date`, `delivery_date`, `checked`, `delivery_local`, `cust_name`, `cust_phone`) VALUES
+(29, 16, '2022-06-30 15:42:43', '2022-07-01 08:16:32', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367'),
+(30, 16, '2022-06-30 15:43:11', '2022-07-01 08:16:33', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367'),
+(31, 16, '2022-06-30 15:50:46', '2022-07-01 08:16:35', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367'),
+(32, 16, '2022-06-30 15:51:20', '2022-07-01 08:16:36', 1, 'Tan Hanh, Vinh Long', 'Nguyen Que Tran', '0706546651');
 
 -- --------------------------------------------------------
 
@@ -167,10 +176,11 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`id`, `orders_id`, `product_id`, `quantity`, `total_price`) VALUES
-(28, 23, 13, 1, 23),
-(29, 24, 15, 1, 11),
-(30, 24, 5, 1, 9),
-(31, 25, 6, 1, 20);
+(36, 29, 23, 1, 35),
+(37, 30, 21, 2, 60),
+(38, 31, 20, 2, 44),
+(39, 32, 21, 1, 30),
+(40, 32, 11, 1, 15);
 
 -- --------------------------------------------------------
 
@@ -196,24 +206,25 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `brand_id`, `supplier_id`, `name`, `price`, `small_desc`, `detail_desc`, `created_date`, `quantity`, `image`) VALUES
-(5, 10, 4, 'Black T-shirt', 9, 'Small Desc Black T-shirt', 'Detail Desc Black T-shirt', '2022-06-21 02:39:17', 0, 'pro1-62b113355390d.jpg'),
+(5, 10, 4, 'Black T-shirt', 9, 'Small Desc Black T-shirt', 'Detail Desc Black T-shirt', '2022-06-21 02:39:17', 5, 'pro1-62b113355390d.jpg'),
 (6, 11, 4, 'Black jeans', 20, 'Small Desc Black jeans', 'Detail Desc Black jeans', '2022-06-21 02:40:25', 1, 'pro2-62b11379d2fbe.jpg'),
 (7, 13, 4, 'Light blue jeans', 10, 'Small Desc Light blue jeans', 'Detail Desc Light blue jeans', '2022-06-21 02:41:04', 2, 'pro3-62b113a0482df.jpg'),
-(8, 14, 4, 'Loose jeans', 25, 'Small Desc Loose jeans', 'Detail Desc Loose jeans', '2022-06-21 02:42:10', 2, 'pro4-62b113e28709e.jpg'),
-(9, 16, 5, 'Green T-shirt', 10, 'Small Desc Green T-shirt', 'Detail Desc Green T-shirt', '2022-06-21 02:42:51', 0, 'download-62b1140b9713a.jpg'),
-(10, 15, 5, 'White T-shirt', 20, 'Small Desc White T-shirt', 'Detail Desc White T-shirt', '2022-06-21 02:44:07', 0, 'z3398765216804-bbd37e95412ae276b0740ed82e342127-62b11457561d8.jpg'),
-(11, 13, 5, 'Checkered shirt', 15, 'Small Desc Checkered shirt', 'Detail Desc Checkered shirt', '2022-06-21 02:45:42', 2, 'z3398766422532-ede724b6a5829547fd899e7c185a16c8-62b114b6ab823.jpg'),
+(8, 14, 4, 'Loose jeans', 25, 'Small Desc Loose jeans', 'Detail Desc Loose jeans', '2022-06-21 02:42:10', 1, 'pro4-62b113e28709e.jpg'),
+(9, 16, 5, 'Green T-shirt', 10, 'Small Desc Green T-shirt', 'Detail Desc Green T-shirt', '2022-06-21 02:42:51', 4, 'download-62b1140b9713a.jpg'),
+(10, 15, 5, 'White T-shirt', 20, 'Small Desc White T-shirt', 'Detail Desc White T-shirt', '2022-06-21 02:44:07', 3, 'z3398765216804-bbd37e95412ae276b0740ed82e342127-62b11457561d8.jpg'),
+(11, 13, 5, 'Checkered shirt', 15, 'Small Desc Checkered shirt', 'Detail Desc Checkered shirt', '2022-06-21 02:45:42', 1, 'z3398766422532-ede724b6a5829547fd899e7c185a16c8-62b114b6ab823.jpg'),
 (12, 16, 6, 'Shorts', 20, 'Small Desc Shorts', 'Detail Desc Shorts', '2022-06-21 02:46:22', 1, 'z3398766617127-271089c387fd75d4a1bcc129e6b7e14e-62b114de4e57b.jpg'),
 (13, 13, 4, 'Moss green shirt', 23, 'Small Desc Moss green shirt', 'Detail Desc Moss green shirt', '2022-06-21 02:47:50', 3, 'download-1-62b11536a566a.jpg'),
 (14, 10, 6, 'Navy swim short', 9, 'Small Desc Navy swim short', 'Detail Desc Navy swim short', '2022-06-21 02:48:35', 1, 'navyswimshorts-62b1156326539.jpg'),
 (15, 16, 4, 'Shorts stock', 11, 'Small Desc Shorts stock', 'Detail Desc Shorts stock', '2022-06-21 02:49:45', 3, 'ShortsStock-62b115a9f407e.jpg'),
 (16, 11, 5, 'Plaid shirt', 28, 'Small Desc Plaid shirt', 'Detail Desc Plaid shirt', '2022-06-21 02:50:57', 1, 'images-62b115f1bde19.jpg'),
 (17, 13, 5, 'Blue t-shirt', 8, 'Small Desc Blue t-shirt', 'Detail Desc Blue t-shirt', '2022-06-21 02:51:40', 2, '9088-62b1161c57045.png'),
-(18, 15, 4, 'Leather jacket', 30, 'Small Desc Leather jacket', 'Detail Desc Leather jacket', '2022-06-21 02:52:22', 0, 'LeatherJacket-62b1164657953.jpg'),
+(18, 15, 4, 'Leather jacket', 30, 'Small Desc Leather jacket', 'Detail Desc Leather jacket', '2022-06-21 02:52:22', 5, 'LeatherJacket-62b1164657953.jpg'),
 (19, 14, 6, 'Bomber jacket', 25, 'Small Desc Bomber jacket', 'Detail Desc Bomber jacket', '2022-06-21 02:53:10', 1, 'BomberJacket-62b11676d7309.jpg'),
-(20, 10, 5, 'Plain Hoodie', 22, 'Small Desc Plain Hoodie', 'Detail Desc Plain Hoodie', '2022-06-21 02:54:11', 0, 'PlainHoodie-62b116b352aa6.jpg'),
-(21, 12, 5, 'Denim jacket', 30, 'Small Desc Denim jacket', 'Detail Desc Denim jacket', '2022-06-25 15:01:39', 3, 'DenimJacket-62b116dedaac6.jpg'),
-(23, 12, 6, 'Denim jacket', 35, 'Small Desc Denim jeans', 'Detail Desc Denim jeans', '2022-06-25 15:17:12', 2, 'denim-jeans-large-black-62b11db08450e.jpg');
+(20, 10, 5, 'Plain Hoodie', 22, 'Small Desc Plain Hoodie', 'Detail Desc Plain Hoodie', '2022-06-21 02:54:11', 4, 'PlainHoodie-62b116b352aa6.jpg'),
+(21, 12, 5, 'Denim jacket', 30, 'Small Desc Denim jacket', 'Detail Desc Denim jacket', '2022-06-25 15:01:39', 0, 'DenimJacket-62b116dedaac6.jpg'),
+(23, 12, 6, 'Denim jacket', 35, 'Small Desc Denim jeans', 'Detail Desc Denim jeans', '2022-06-25 15:17:12', 4, 'denim-jeans-large-black-62b11db08450e.jpg'),
+(24, 14, 5, 'T-shirt chaintrang', 13, 'Small Desc T-shirt stay chaintrang', 'Detail Desc T-shirt stay chaintrang', '2022-06-30 16:06:56', 3, 't-shirt-stay-chaintrang-62bd6778b8b21.webp');
 
 -- --------------------------------------------------------
 
@@ -271,11 +282,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`) VALUES
-(33, 'quangndgcc200030@fpt.edu.vn', '[\"ROLE_ADMIN\"]', '$2y$13$PkgCXQI0DTWeq3o.I0CYo.nSC94UWbYiZhERVhez0.q/dMmi3gmSa', 1),
-(38, 'tronghbgcc200034@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$tu5NEk1ic.jbZON7XrZNROCdPXrkLczJXl1UYqVU6wdK9HRaFtBLi', 1),
+(33, 'quangndgcc200030@fpt.edu.vn', '[\"ROLE_ADMIN\"]', '$2y$13$ZMC0vswJFdqGtxfrVTJet.nhY7gCeEVdC5ioDEjMlQ9BdZR1LyObG', 1),
 (39, 'duongntgcc200026@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$Mjgfqf0Av6LIjWV3KaJHweE8RpMaNHbdnaz/J/EwP0VmR94jQo/3a', 1),
 (40, 'trannqgcc210042@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$f6A6Ap8gaP8xzoNyZVXGkukBTMw0aLcY0TyqNrJ74ocAIKz6jPSPW', 1),
-(41, 'anhntgcc200302@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$lS2llNH7Z7hZUW1TUmmn7ubQvzg5bf.V4Wu8LgmXb0gRkLPkXF4TK', 1);
+(41, 'anhntgcc200302@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$lS2llNH7Z7hZUW1TUmmn7ubQvzg5bf.V4Wu8LgmXb0gRkLPkXF4TK', 1),
+(43, 'tronghbgcc200034@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$F3RKudUZb.i/qRJ6SLxEZ.2lcDrLacYILgY0ym..R5m6O2hCdMiiC', 1);
 
 --
 -- Indexes for dumped tables
@@ -365,37 +376,37 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `reset_password_request`
 --
 ALTER TABLE `reset_password_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
@@ -407,7 +418,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- Constraints for dumped tables
@@ -417,14 +428,14 @@ ALTER TABLE `user`
 -- Constraints for table `customers`
 --
 ALTER TABLE `customers`
-  ADD CONSTRAINT `FK_62534E21A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `FK_62534E21A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `feedback`
 --
 ALTER TABLE `feedback`
-  ADD CONSTRAINT `FK_D22944584584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
-  ADD CONSTRAINT `FK_D22944589395C3F3` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`);
+  ADD CONSTRAINT `FK_D22944584584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_D22944589395C3F3` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
@@ -436,8 +447,8 @@ ALTER TABLE `orders`
 -- Constraints for table `order_details`
 --
 ALTER TABLE `order_details`
-  ADD CONSTRAINT `FK_845CA2C14584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
-  ADD CONSTRAINT `FK_845CA2C1CFFE9AD6` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`id`);
+  ADD CONSTRAINT `FK_845CA2C14584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_845CA2C1CFFE9AD6` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`

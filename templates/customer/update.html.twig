@@ -4,16 +4,19 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class="text-center my-3">Update Profile</h2>
 	{% for message in app.flashes('success') %}
-		<div class="alert alert-success mt-3 text-center">
+		<div class="alert alert-success mt-2 mb-0 text-center">
 			{{ message }}
 		</div>
 	{% endfor %}
-	{{ form_start(update_profile) }}
-	{{ form_widget(update_profile) }}
-	<div class="text-center mb-3">
-		<input class="btn btn-primary" type="submit" value="Confirm">
+	<div class="border px-5 my-2">
+		<h1 class="text-center my-3">Update Profile</h2>
+
+		{{ form_start(update_profile) }}
+		{{ form_widget(update_profile) }}
+		<div class="text-center mb-3">
+			<input class="btn btn-primary" type="submit" value="Confirm">
+		</div>
+		{{ form_end(update_profile) }}
 	</div>
-	{{ form_end(update_profile) }}
 {% endblock %}

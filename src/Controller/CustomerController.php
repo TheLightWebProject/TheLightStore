@@ -116,6 +116,7 @@ class CustomerController extends AbstractController
                     $oldPass = $req->request->get('txtOldPass');
                     $newPass = $req->request->get('txtNewPass');
                     $confirmPass = $req->request->get('txtConfirmPass');
+                    
                     if ($oldPass != "" || $newPass != "" || $confirmPass != "") {
                         if ($userPasswordHasher->isPasswordValid($user, $oldPass)) {
                             if ($newPass == $confirmPass) {

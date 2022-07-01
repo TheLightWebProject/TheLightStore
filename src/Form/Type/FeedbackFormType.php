@@ -13,8 +13,7 @@ class FeedbackFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Feedback::class,
-            'csrf_protection' => false
+            'data_class' => Feedback::class
         ]);
     }
 

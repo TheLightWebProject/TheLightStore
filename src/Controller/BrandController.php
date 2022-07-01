@@ -49,7 +49,7 @@ class BrandController extends AbstractController
     /**
      * @Route("/management/brand/new", name="add_brand")
      */
-    public function addBrandAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger, ValidatorInterface $valid): Response
+    public function addBrandAction(ManagerRegistry $res, Request $req, SluggerInterface $slugger): Response
     {
         $brand = new Brands();
         $formBrand = $this->createForm(BrandFormType::class, $brand);

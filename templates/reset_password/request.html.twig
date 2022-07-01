@@ -5,9 +5,9 @@
 
 {% block body %}
 	{% for flash_error in app.flashes('reset_password_error') %}
-		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+		<div class="alert alert-danger mt-2 mb-0" role="alert">{{ flash_error }}</div>
 	{% endfor %}
-	<div class="px-5 border">
+	<div class="px-5 my-2 border">
 		<h1 class="text-center mt-2">Reset your password</h1>
 		{{ form_start(requestForm) }}
 		{{ form_row(requestForm.email) }}
