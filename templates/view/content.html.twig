@@ -1,120 +1,412 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<style>
-		h2 {
-			color: #000;
-			font-size: 26px;
-			font-weight: 300;
-			text-align: center;
-			text-transform: uppercase;
-			position: relative;
-			margin-top: 30px;
-		}
+	<style>:root
+	{
+		--orange: coral;
+	}
 
-		h2::after {
-			content: "";
-			width: 100px;
-			position: absolute;
-			margin: 0 auto;
-			height: 4px;
-			border-radius: 1px;
-			background: wheat;
-			left: 0;
-			right: 0;
-			bottom: -20px;
-		}
-	</style>
-	<section class="my-2">
-		<div class="p-5 mb-2 text-center bg-image" style="background-image: url(Image/backgroung.jpg);">
-			<div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
-				<div class="d-flex justify-content-center align-items-center h-100">
-					<div class="text-white">
-						<h1>SUMMER - AUTUMN</h1>
-						<h1 class="mb-3">2022</h1>
-						<a class="btn btn-outline-light btn-lg mb-3" href="{{ path('shop') }}" role="button">Shop Now</a>
-					</div>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		font-family: Verdana, Geneva, Tahoma, sans-serif;
+		outline: none;
+		border: none;
+		text-decoration: none;
+		text-transform: capitalize;
+		transition: 0.2s linear;
+	}
+
+
+	section {
+		padding: 2rem 9%;
+	}
+
+	.heading {
+		text-align: center;
+		font-size: 4rem;
+		color: #333;
+		padding: 1rem;
+		margin: 2rem 0;
+		background: rgba(209, 12, 12, 0.05);
+	}
+
+	.heading span {
+		color: var(--orange);
+	}
+
+	p.lowercaseText {
+		text-transform: lowercase;
+	}
+
+	.btnhome {
+		display: inline-block;
+		margin-top: 1rem;
+		border-radius: 5rem;
+		background: rgb(19, 18, 18);
+		color: #fff;
+		padding: 0.9rem 3.5rem;
+		cursor: pointer;
+		font-size: 1.7rem;
+	}
+
+	.btnhome:hover {
+		background: var(--orange);
+	}
+
+	header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		background: #fff;
+		margin: 0 12px 0 12px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		z-index: 1000;
+		box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+	}
+
+	header .logo {
+		font-size: 2rem;
+		color: #333;
+		font-weight: bolder;
+	}
+
+	header .logo span {
+		color: var(--orange);
+	}
+
+	header .navbar a:hover {
+		color: var(--orange);
+	}
+
+	header .icons a {
+		font-size: 2.5rem;
+		color: #333;
+		margin-left: 1.5rem;
+	}
+
+	header .icons a:hover {
+		color: var(--orange);
+	}
+
+	header #toggler {
+		display: none;
+	}
+
+	header .fa-bars {
+		font-size: 3rem;
+		color: #333;
+		border-radius: 0.5rem;
+		padding: 0.5rem 1.5rem;
+		cursor: pointer;
+		border: 0.1rem solid rgba(0, 0, 0, 0.3);
+		display: none;
+	}
+
+	.home {
+		display: flex;
+		align-items: center;
+		min-height: 100vh;
+		background-size: cover;
+		background-position: center;
+	}
+
+	.home .content {
+		max-width: 50rem;
+	}
+
+
+	.home .content h3 {
+		font-size: 5rem;
+		color: #333;
+	}
+
+	.home .content span {
+		font-size: 2.5rem;
+		color: var(--orange);
+		padding: 1rem 0;
+		line-height: 1.5;
+	}
+
+	.home .content p {
+		font-size: 1.5rem;
+		color: #999;
+		padding: 1rem 0;
+		line-height: 1.5;
+	}
+
+	.home .content h4 {
+		font-size: 1rem;
+		color: rgb(19, 13, 13);
+	}
+
+	.about .row {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		flex-wrap: wrap;
+		padding: 2rem 0 3rem;
+	}
+
+	.about .row .video-container {
+		flex: 1 1 40rem;
+		position: relative;
+	}
+
+	.about .row .video-container video {
+		width: 100%;
+		border: 1.5rem solid #fff;
+		border-radius: 0.5rem;
+		box-shadow: 0 0.5rem 1rem rgba(255, 187, 187, 0.1);
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.about .row .video-container h3 {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 3rem;
+		background: #fff;
+		width: 100%;
+		padding: 1rem 2rem;
+		text-align: center;
+		mix-blend-mode: screen;
+	}
+
+	.about .row .content {
+		flex: 1 1 40rem;
+	}
+
+	.about .row .content h3 {
+		font-size: 3rem;
+		color: #333;
+	}
+
+	.about .row .content p {
+		font-size: 1.5rem;
+		color: #999;
+		padding: 1rem 0 0.5rem;
+		line-height: 1.5;
+	}
+
+	.icons-container {
+		background: #eee;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		padding-top: 3.5rem;
+		padding-bottom: 3.5rem;
+	}
+
+	.icons-container .icons {
+		background: #fff;
+		border: 0.1rem solid rgba(0, 0, 0, 0.1);
+		padding: 1.8rem;
+		display: flex;
+		align-items: center;
+		flex: 1 1 22rem;
+	}
+
+	.icons-container .icons img {
+		height: 5rem;
+		margin-right: 2rem;
+	}
+
+	.icons-container .icons h3 {
+		color: #333;
+		padding-bottom: 0.5rem;
+		font-size: 1.5rem;
+	}
+
+	.icons-container .icons span {
+		color: #555;
+		font-size: 1.3rem;
+	}
+
+
+	.review .box-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+	}
+
+	.review .box-container .box {
+		flex: 1 1 30rem;
+		box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+		border-radius: 0.5rem;
+		padding: 3rem 2rem;
+		position: relative;
+		border: 0.1rem solid rgba(0, 0, 0, 0.1);
+	}
+
+	.review .box-container .box .fa-quote-right {
+		position: absolute;
+		bottom: 3rem;
+		right: 3rem;
+		font-size: 6rem;
+		color: #eee;
+	}
+
+	.review .box-container .box .stars i {
+		color: var(--orange);
+		font-size: 1.5rem;
+	}
+
+	.review .box-container .box p {
+		color: #999;
+		font-size: 1rem;
+		line-height: 1.5;
+		padding-top: 2rem;
+	}
+
+
+	.review .box-container .box .user h3 {
+		font-size: 1.2rem;
+		color: #333;
+	}
+
+	.review .box-container .box .user span {
+		font-size: 1.8rem;
+		color: #999;
+	}
+
+	
+</style>
+<!-- home section starts  -->
+<section class="home" id="home" style="background-image: url(Image/home.jpg)">
+	<div class="content">
+		<h3>TheLight Store</h3>
+		<span>
+			Luxurious &  elegant
+		</span>
+		<h4>The quality of our products and the customer experience are always our top priority.</h4>
+		<a href="#" class="btn btnhome">shop now</a>
+	</div>
+</section>
+<!-- home section ends -->
+
+
+<!-- about section starts  -->
+<section class="about" id="about">
+	<h1 class="heading">
+		<span>
+			about
+		</span>
+		us
+	</h1>
+	<div class="row">
+		<div class="video-container">
+			<video src="Image/about.mp4" loop autoplay muted></video>
+			<h3>TheLight Store</h3>
+		</div>
+		<div class="content">
+			<h3>why choose us?</h3>
+			<p></p>
+			<p>TheLight Store is one of the largest and most prestigious 2hand stores in Cantho. At The light Store customers will be able to shop comfortably without worrying about price because we always put quality, and user experience first...</p>
+			<a href="#" class="btn">learn more</a>
+		</div>
+	</div>
+</section>
+<!-- about section ends -->
+
+
+<!-- icons section starts  -->
+<section class="icons-container">
+	<div class="icons">
+		<img src="Image/icon-1.png" alt="">
+		<div class="info">
+			<h3>free delivery</h3>
+			<span>In Cantho City</span>
+		</div>
+	</div>
+	<div class="icons">
+		<img src="Image/icon-2.png" alt="">
+		<div class="info">
+			<h3>10 days returns</h3>
+			<span>moneyback guarantee</span>
+		</div>
+	</div>
+	<div class="icons">
+		<img src="Image/icon-3.png" alt="">
+		<div class="info">
+			<h3>offer & gifts</h3>
+			<span>More than 5 orders in 1 month</span>
+		</div>
+	</div>
+	<div class="icons">
+		<img src="Image/icon-4.png" alt="">
+		<div class="info">
+			<h3>secure paymens</h3>
+			<span>Payment via ATM, Momo, Viettelpay</span>
+		</div>
+	</div>
+</section>
+<!-- icons section ends -->
+
+
+<!-- review section starts  -->
+<section class="review" id="review">
+	<h1 class="heading">
+		customer's
+		<span>review</span>
+	</h1>
+	<div class="box-container">
+		<div class="box">
+			<div class="stars">
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+			</div>
+			<p>ĐẸP VCL.</p>
+			<div class="user">
+				<div class="user-info">
+					<h3>Thai Duong</h3>
 				</div>
 			</div>
+			<span class="fas fa-quote-right"></span>
 		</div>
-		<div id="myCarousel" class="carousel slide" data-ride="carousel">
-			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-				<li data-target="#myCarousel" data-slide-to="1"></li>
-				<li data-target="#myCarousel" data-slide-to="2"></li>
-			</ol>
-			<div class="carousel-inner">
-				<div class="carousel-item active">
-					<img class="d-block w-100" src="../Image/clothes.png" alt="First slide"/>
-				</div>
-				<div class="carousel-item">
-					<img class="d-block w-100" src="../Image/clothes1.jpg" alt="Second slide"/>
-				</div>
-				<div class="carousel-item">
-					<img class="d-block w-100" src="../Image/clothes2.jpg" alt="Third slide"/>
+
+		<div class="box">
+			<div class="stars">
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+			</div>
+			<p>Ờ mây zing, gút chóp !!!!.</p>
+			<div class="user">
+				<div class="user-info">
+					<h3>Duy Quang</h3>
 				</div>
 			</div>
-			<a class="carousel-control-prev text-decoration-none" href="#myCarousel" role="button" data-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="sr-only d-none d-md-block">Previous</span>
-			</a>
-			<a class="carousel-control-next text-decoration-none" href="#myCarousel" role="button" data-slide="next">
-				<span class="sr-only d-none d-md-block">Next</span>
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			</a>
+			<span class="fas fa-quote-right"></span>
 		</div>
-		<hr>
-		<div class="promo-area mt-2">
-			<div class="zigzag-bottom"></div>
-			<div class="row">
-				<div class="col-md-4 col-sm-12">
-					<div class="single-promo promo1">
-						<i class="bi bi-truck"></i>
-						<p>Free ship</p>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-12 my-2 my-lg-0 my-md-0">
-					<div class="single-promo promo2">
-						<i class="bi bi-lock-fill"></i>
-						<p>Payment security</p>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-12">
-					<div class="single-promo promo3">
-						<i class="bi bi-gift-fill"></i>
-						<p>New Product</p>
-					</div>
+
+		<div class="box">
+			<div class="stars">
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+				<i class="fas fa-star"></i>
+			</div>
+			<p>Duma hết nước chấm!!!!.</p>
+			<div class="user">
+				<div class="user-info">
+					<h3>Tuan Anh</h3>
 				</div>
 			</div>
+			<span class="fas fa-quote-right"></span>
 		</div>
-		<hr>
-		<div class="mt-2">
-			<h2>
-				<b>Top 4 - Products</b>
-			</h2>
-			<div class="d-flex justify-content-center mt-50">
-				<div class="row">
-					{% for product in products %}
-						<div class="col-12 col-lg-3 col-sm-6">
-							<div class="product-grid">
-								<div class="product-image">
-									<a href="{{ path('view_detail_product', { 'id': product.id }) }}" class="image">
-										<img class="img-1" src="{{ path('get_product_photo', {'filename' : product.image} ) }}">
-									</a>
-								</div>
-								<div class="product-content">
-									<div class="price">
-										<b>${{ product.price }}</b>
-									</div>
-									<h3 class="title">
-										<a href="{{ path('view_detail_product', { 'id': product.id }) }}" class="text-decoration-none">{{ product.name }}</a>
-									</h3>
-								</div>
-							</div>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
-		</div>
-	</section>
-{% endblock %}
+
+	</div>
+</section>
+<!-- review section ends --></section>{% endblock %}

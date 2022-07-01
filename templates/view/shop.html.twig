@@ -1,7 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div class="row">
+	<style>
+		header {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			background: #fff;
+			margin: 0 12px 0 12px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			z-index: 1000;
+			box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+		}
+
+		.shopname{
+			margin-top: 6rem;
+		}
+	</style>
+	<div class="row shopname">
 		<div
 			class="col-lg-2 col-md-3 ps-0">
 			<!-- Navbar -->
