@@ -29,6 +29,9 @@
 						<strong>Address</strong>
 					</th>
 					<th>
+						<strong>Total Price</strong>
+					</th>
+					<th>
 						<strong>Checked</strong>
 					</th>
 					<th>
@@ -49,7 +52,7 @@
 						<td class="text-center">{{ order.custName }}</td>
 						<td class="text-center">{{ order.custPhone }}</td>
 						<td>{{ order.deliveryLocal }}</td>
-
+						<td class="text-center">${{ order.totalPrice }}</td>
 						<td class="text-center">
 							<form action="{{ path('show_all_order') }}" method="POST">
 								<input type="hidden" id="check" name="check" value="{{ order.checked }}">

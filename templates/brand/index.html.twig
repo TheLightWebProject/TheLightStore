@@ -1,93 +1,107 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Brands Management
+{% block title %}
+  Brands Management
 {% endblock %}
 
 {% block body %}
-	{% include "view/management.html.twig" %}
-	<div class="border pt-2 mb-2">
-		<h1 class="text-center">Brand List</h1>
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success text-center">
-				{{ message }}
-			</div>
-		{% endfor %}
-		<div class="text-center mb-2 d-flex row align-items-center">
-			<div class="col-6 text-start">
-				<a href="{{ path('add_brand') }}" class="btn btn-outline-primary">
-					<img src="../Image/add.png" alt="Add new" width="16" height="16" border="0"/>Add
-				</a>
-			</div>
-			<div class="col-6 d-flex justify-content-end align-items-center">
-				<form action="/management/brand" method="POST" class="d-flex input-group w-auto">
-					<input name="txtSearchBrand" type="search" class="form-control" placeholder="Search by name" aria-label="Search" aria-describedby="search-addon"/>
-					<button class="btn btn-secondary searching" type="submit" name="btnSearchBrand">
-						<i class="bi bi-search"></i>
-					</button>
-				</form>
-			</div>
-		</div>
-		<table id="tablecategory" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
-			<thead class="justify-content-md-between justify-content-sm-center align-content-center border-bottom border-2 my-2 bg-dark text-light p-3 rounded-3">
-				<tr class="text-center">
-					<th>
-						<strong>No.</strong>
-					</th>
-					<th>
-						<strong>Brand Name</strong>
-					</th>
-					<th>
-						<strong>Description</strong>
-					</th>
-					<th>
-						<strong>Image</strong>
-					</th>
-					<th>
-						<strong>Edit</strong>
-					</th>
-					<th>
-						<strong>Delete</strong>
-					</th>
-				</tr>
-			</thead>
+  {% include 'view/management.html.twig' %}
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('table#tablebrand td a.trash').click(function () {
+        var el = this
+        if (confirm('Are you sure you want to delete this brand?')) {
+          var id = $(this).attr('id')
+          $.ajax({
+            type: 'DELETE',
+            url: '/management/brand/delete/' + id,
+            data: {
+              id: id
+            },
+            cache: false,
+            success: function () {
+              $(el).closest('tr').css('background', 'tomato')
+              $(el)
+                .closest('tr')
+                .fadeOut(800, function () {
+                  $('#brand' + id).remove()
+                })
+            }
+          })
+        }
+      })
+    })
+  </script>
+  <div class="border pt-2 mb-2">
+    <h1 class="text-center">Brand List</h1>
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success text-center">{{ message }}</div>
+    {% endfor %}
+    <div class="text-center mb-2 d-flex row align-items-center">
+      <div class="col-6 text-start">
+        <a href="{{ path('add_brand') }}" class="btn btn-outline-primary"><img src="../Image/add.png" alt="Add new" width="16" height="16" border="0" />Add</a>
+      </div>
+      <div class="col-6 d-flex justify-content-end align-items-center">
+        <form action="/management/brand" method="POST" class="d-flex input-group w-auto">
+          <input name="txtSearchBrand" type="search" class="form-control" placeholder="Search by name" aria-label="Search" aria-describedby="search-addon" />
+          <button class="btn btn-secondary searching" type="submit" name="btnSearchBrand"><i class="bi bi-search"></i></button>
+        </form>
+      </div>
+    </div>
+    <table id="tablebrand" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
+      <thead class="justify-content-md-between justify-content-sm-center align-content-center border-bottom border-2 my-2 bg-dark text-light p-3 rounded-3">
+        <tr class="text-center">
+          <th>
+            <strong>No.</strong>
+          </th>
+          <th>
+            <strong>Brand Name</strong>
+          </th>
+          <th>
+            <strong>Description</strong>
+          </th>
+          <th>
+            <strong>Image</strong>
+          </th>
+          <th>
+            <strong>Edit</strong>
+          </th>
+          <th>
+            <strong>Delete</strong>
+          </th>
+        </tr>
+      </thead>
 
-			<tbody class="justify-content-md-between justify-content-sm-center border-bottom border-2 my-2 bg-light p-2 rounded-3">
-				{% if brands %}
-					{% set count = 1 %}
-					{% for brand in brands %}
-						<tr>
-							<td class="text-center">
-								<a href="{{ path('shop', { 'bid': brand.id }) }}" class="text-decoration-none">{{ count }}</a>
-							</td>
-							<td class="text-center">{{ brand.name }}</td>
-							<td>{{ brand.decrip }}</td>
-							<td class="text-center">
-								<a href="{{ path('shop', { 'bid': brand.id }) }}">
-									<img src='{{ path('get_brand_photo', {'filename' : brand.image} ) }}' border='0' width="100" height="50"/>
-								</a>
-							</td>
-							<td style='text-align:center'>
-								<a href="{{ path('edit_brand', { 'id': brand.id }) }}">
-									<i class="bi bi-pen-fill" style="color: black;"></i>
-								</a>
-							</td>
-							<td style='text-align:center'>
-								<a href="{{ path('delete_brand', { 'id': brand.id }) }}" onclick="return confirm('Are you sure to delete!')">
-									<i class="bi bi-trash-fill" style="color: red;"></i>
-								</a>
-							</td>
-						</tr>
-						{% set count = count + 1 %}
-					{% endfor %}
-				{% else %}
-					<tr>
-						<td colspan="6" class="text-center fw-bold">
-							Brand product is empty
-						</td>
-					</tr>
-				{% endif %}
-
-			</tbody>
-		</table>
-	</div>
+      <tbody class="justify-content-md-between justify-content-sm-center border-bottom border-2 my-2 bg-light p-2 rounded-3">
+        {% if brands %}
+          {% set count = 1 %}
+          {% for brand in brands %}
+            <tr>
+              <td class="text-center" id="brand{{ brand.id }}">
+                <a href="{{ path('shop', { bid: brand.id }) }}" class="text-decoration-none">{{ count }}</a>
+              </td>
+              <td class="text-center">{{ brand.name }}</td>
+              <td>{{ brand.decrip }}</td>
+              <td class="text-center">
+                <a href="{{ path('shop', { bid: brand.id }) }}"><img src="{{ path('get_brand_photo', { filename: brand.image }) }}" width="100" height="50" /></a>
+              </td>
+              <td class="text-center">
+                <a href="{{ path('edit_brand', { id: brand.id }) }}"><i class="bi bi-pen-fill" style="color: black;"></i></a>
+              </td>
+              <td class="text-center">
+                <a href="#" class="trash" id="{{ brand.id }}"><i class="bi bi-trash-fill" style="color: red;"></i></a>
+              </td>
+            </tr>
+            {% set count = count + 1 %}
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="6" class="text-center fw-bold">Brand product is empty</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

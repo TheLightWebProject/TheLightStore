@@ -8,6 +8,7 @@ use App\Repository\BrandsRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -191,12 +192,7 @@ class BrandController extends AbstractController
         $filePath = $brand->getImage();
         $file = $this->getParameter('image_brand') . '/' . $filePath;
         unlink($file);
-
-        $this->addFlash(
-            'success',
-            'Brand was deleted'
-        );
-
-        return $this->redirectToRoute("show_all_brands");
+        return new JsonResponse();
+        // return $this->redirectToRoute("show_all_brands");
     }
 }

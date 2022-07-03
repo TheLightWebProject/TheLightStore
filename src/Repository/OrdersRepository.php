@@ -46,7 +46,7 @@ class OrdersRepository extends ServiceEntityRepository
     public function showAllOrder(): array
     {
         $query = $this->createQueryBuilder('o')
-            ->select('o.id, o.orderDate, o.deliveryDate, o.checked, o.deliveryLocal, o.custName, o.custPhone')
+            ->select('o.id, o.orderDate, o.deliveryDate, o.checked, o.deliveryLocal, o.custName, o.custPhone, o.totalPrice')
             ->innerJoin('o.username', 'c')
             ->orderBy('o.orderDate', 'DESC');
         return $query->getQuery()->execute();

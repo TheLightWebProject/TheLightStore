@@ -39,6 +39,7 @@ class OrderController extends AbstractController
             $custName = $req->request->get('txtFullname');
             $custAddress = $req->request->get('txtAddress');
             $custPhone = $req->request->get('txtPhonenumber');
+            $totalprice = $req->request->get('totalprice');
             //add order
             $customerID = $repoCus->find($customer->getId()); //get entity customer
 
@@ -50,6 +51,7 @@ class OrderController extends AbstractController
             $order->setDeliveryLocal($custAddress);
             $order->setCustName($custName);
             $order->setCustPhone($custPhone);
+            $order->setTotalPrice($totalprice);
 
             $entity =  $res->getManager();
             $entity->persist($order);
@@ -106,6 +108,7 @@ class OrderController extends AbstractController
             $custName = $req->request->get('txtFullname');
             $custAddress = $req->request->get('txtAddress');
             $custPhone = $req->request->get('txtPhonenumber');
+            $totalprice = $req->request->get('totalprice');
             //add order
             $customerID = $repoCus->find($customer->getId()); //get entity customer
 
@@ -117,6 +120,7 @@ class OrderController extends AbstractController
             $order->setDeliveryLocal($custAddress);
             $order->setCustName($custName);
             $order->setCustPhone($custPhone);
+            $order->setTotalPrice($totalprice);
 
             $entity =  $res->getManager();
             $entity->persist($order);

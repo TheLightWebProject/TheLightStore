@@ -7,6 +7,7 @@ use App\Form\Type\SupplierFormType;
 use App\Repository\SuppliersRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class SupplierController extends AbstractController
     /**
      * @Route("/management/supplier", name="show_all_supplier")
      */
-    public function index(Request $req, SuppliersRepository $repo): Response
+    public function indexSupplier(Request $req, SuppliersRepository $repo): Response
     {
         if (isset($_POST['btnSearchSupplier'])) {
             $value = $req->request->get('txtSearchSupplier');
@@ -34,7 +35,7 @@ class SupplierController extends AbstractController
     /**
      * @Route("/management/supplier/new", name="add_supplier")
      */
-    public function addAction(ManagerRegistry $res, Request $req): Response
+    public function addSupplierAction(ManagerRegistry $res, Request $req): Response
     {
         $suppliers = new Suppliers();
         $formSupplier = $this->createForm(SupplierFormType::class, $suppliers);
@@ -68,7 +69,7 @@ class SupplierController extends AbstractController
     /**
      * @Route("/management/supplier/edit/{id}", name="edit_supplier")
      */
-    public function editAction(ManagerRegistry $res, Request $req, SuppliersRepository $repo, $id): Response
+    public function editSupplierAction(ManagerRegistry $res, Request $req, SuppliersRepository $repo, $id): Response
     {
         $suppliers = $repo->find($id);
         $formSupplier = $this->createForm(SupplierFormType::class, $suppliers);
@@ -116,11 +117,7 @@ class SupplierController extends AbstractController
         $entity->remove($suppliers);
         $entity->flush();
 
-        $this->addFlash(
-            'success',
-            'Supplier was deleted'
-        );
-
-        return $this->redirectToRoute("show_all_supplier");
+        return new JsonResponse();
+        // return $this->redirectToRoute("show_all_supplier");
     }
 }

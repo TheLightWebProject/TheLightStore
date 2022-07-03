@@ -59,6 +59,11 @@ class Orders
      */
     private $custPhone;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $totalPrice;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -179,6 +184,18 @@ class Orders
     public function setCustPhone(string $custPhone): self
     {
         $this->custPhone = $custPhone;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?int
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(int $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }

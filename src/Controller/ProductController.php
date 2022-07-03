@@ -8,6 +8,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -172,15 +173,15 @@ class ProductController extends AbstractController
     /**
      * @Route("/management/product/delete/{id}", name="delete_product")
      */
-    public function deleteBrandAction(ProductsRepository $repo, ManagerRegistry $res, int $id): Response
+    public function deleteProductAction(ProductsRepository $repo, ManagerRegistry $res, int $id): Response
     {
         $product = $repo->find($id);
 
         if (!$product) {
             throw
-            $this->createNotFoundException('Invalid ID' . $id);
+            $this->createNotFoundException('Invalid ID ' . $id);
         }
-        
+
         $entity = $res->getManager();
 
         $entity->remove($product);
@@ -189,12 +190,8 @@ class ProductController extends AbstractController
         $filePath = $product->getImage();
         $file = $this->getParameter('image_product') . '/' . $filePath;
         unlink($file);
-
-        $this->addFlash(
-            'success',
-            'Product was deleted'
-        );
-
-        return $this->redirectToRoute("show_all_product");
+        
+        return new JsonResponse();
+        // return $this->redirectToRoute("show_all_product");
     }
 }
