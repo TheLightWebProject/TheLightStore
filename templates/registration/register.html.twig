@@ -1,26 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register
+{% block title %}
+  Register
 {% endblock %}
 
 {% block body %}
-	{% for flash_error in app.flashes('verify_email_error') %}
-		<div class="alert alert-danger mt-2" role="alert">{{ flash_error }}</div>
-	{% endfor %}
+  <section class="d-flex justify-content-center align-items-center border my-2">
+    <div class="row my-4 mx-2">
+      <div class="col-md-6 d-flex align-items-center">
+        <img src="Image/register.jpg" width="100%" />
+      </div>
+      <div class="col-md-6">
+        <h1 class="text-center my-3 d-none d-md-block fw-bold">Register</h1>
+        {% for flash_error in app.flashes('verify_email_error') %}
+          <div class="alert alert-danger mt-2" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+        {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, { label: 'Password' }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
 
-	<div class="border px-5 my-2">
-		<h1 class="text-center mt-3">Register</h1>
-
-		{{ form_start(registrationForm) }}
-		{{ form_row(registrationForm.email) }}
-		{{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-		{{ form_row(registrationForm.agreeTerms) }}
-
-		<div class="text-center">
-			<input class="btn btn-primary mb-3" type="submit" value="Register">
-		</div>
-		{{ form_end(registrationForm) }}
-	</div>
+        <div class="text-center">
+          <input class="btn btn-primary mb-3" type="submit" value="Register" />
+        </div>
+        {{ form_end(registrationForm) }}
+      </div>
+    </div>
+  </section>
 {% endblock %}

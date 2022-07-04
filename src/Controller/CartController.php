@@ -74,9 +74,8 @@ class CartController extends AbstractController
     public function removeCartAction(): Response
     {
         //Delete a product in cart
-        if (isset($_GET['remove']) && is_numeric($_GET['remove']) && isset($_SESSION['cart_item']) && isset($_SESSION['cart_item'][$_GET['remove']])) {
-            // Remove the product from the shopping cart
-            unset($_SESSION['cart_item'][$_GET['remove']]);
+        if (isset($_GET['remove']) && ($_GET['remove'] >= 0)) {
+            array_splice($_SESSION['cart_item'], $_GET['remove'], 1);
         }
         return $this->redirectToRoute("cart");
     }

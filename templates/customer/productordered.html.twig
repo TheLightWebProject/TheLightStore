@@ -1,53 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product Ordered
+{% block title %}
+  Product Ordered
 {% endblock %}
 
 {% block body %}
-	<div class="border my-2">
-		<h1 class="text-center mb-4">Product Ordered</h1>
-		<table id="tablecategory" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
-			<thead>
-				<tr class="text-center">
-					<th>
-						<strong>No.</strong>
-					</th>
-					<th>
-						<strong>Order date</strong>
-					</th>
-					<th>
-						<strong>Delivery date</strong>
-					</th>
-					<th>
-						<strong>Delivery local</strong>
-					</th>
-					<th>
-						<strong>Product</strong>
-					</th>
-					<th>
-						<strong>Quantity</strong>
-					</th>
-				</tr>
-			</thead>
+  <div class="border my-2">
+    <h1 class="text-center mb-4">Product Ordered</h1>
+    <table id="tablecategory" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
+      <thead>
+        <tr class="text-center">
+          <th>
+            <strong>No.</strong>
+          </th>
+          <th>
+            <strong>Order date</strong>
+          </th>
+          <th>
+            <strong>Delivery date</strong>
+          </th>
+          <th>
+            <strong>Name</strong>
+          </th>
+          <th>
+            <strong>Delivery local</strong>
+          </th>
+          <th>
+            <strong>Telephone</strong>
+          </th>
+          <th>
+            <strong>Total Price</strong>
+          </th>
+        </tr>
+      </thead>
 
-			<tbody>
-				{% set count = 1 %}
-				{% for i, order in product_ordered %}
-					<tr>
-						<td class="text-center">{{ count }}</td>
-						<td align='center'>{{ order.orderDate|date('Y-m-d H:i:s') }}</td>
-						<td align='center'>{{ order.deliveryDate|date('Y-m-d H:i:s') }}</td>
-						<td>{{ order.address }}</td>
-						<td align='center'>
-							<a href="{{ path('view_detail_product', { 'id': order.id }) }}">
-								<img src='{{ path('get_product_photo', {'filename' : order.image} ) }}' border='0' width="100" height="100"/>
-							</a>
-						</td>
-						<td align='center'>{{ order.quantity }}</td>
-					</tr>
-					{% set count = count + 1 %}
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+      <tbody>
+        {% if product_ordered %}
+          {% set count = 1 %}
+          {% for order in product_ordered %}
+            <tr>
+              <td class="text-center"><a href="{{ path('product_ordered_detail', { 'id': order.id }) }}" class="text-decoration-none">{{ count }}</a></td>
+              <td class="text-center">{{ order.orderDate|date('Y-m-d H:i:s') }}</td>
+              <td class="text-center">{{ order.deliveryDate|date('Y-m-d H:i:s') }}</td>
+              <td class="text-center">{{ order.custName }}</td>
+              <td>{{ order.deliveryLocal }}</td>
+              <td class="text-center">{{ order.custPhone }}</td>
+              {# <td class="text-center">
+                <a href="{{ path('view_detail_product', { id: order.id }) }}"><img src="{{ path('get_product_photo', { filename: order.image }) }}" width="100" height="100" /></a>
+              </td> #}
+              <td class="text-center">${{ order.totalPrice }}</td>
+            </tr>
+            {% set count = count + 1 %}
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="9" class="text-center fw-bold">Product ordered is empty</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

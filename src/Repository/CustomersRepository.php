@@ -52,21 +52,34 @@ class CustomersRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
-    //SELECT u.email, o.order_date, o.delivery_date, p.id, p.name, od.quantity FROM customers c INNER JOIN user u ON c.user_id = u.id INNER JOIN orders o ON c.id = o.username_id INNER JOIN order_details od ON o.id = od.orders_id INNER JOIN products p ON od.product_id = p.id WHERE u.id = 26 ORDER BY o.order_date DESC
+    //SELECT * FROM customers c INNER JOIN user u ON c.user_id = u.id INNER JOIN orders o ON c.id = o.username_id WHERE u.email = 'quangndgcc200030@fpt.edu.vn' ORDER BY o.order_date DESC
     /**
      * @return Customer[]
      */
-    public function findProductOrdered($email): array
+    public function showProductOrdered($email): array
     {
         $query = $this->createQueryBuilder('c')
-            ->select('u.email, o.orderDate, o.deliveryDate, c.address, p.id, p.name, od.quantity, p.image')
+            ->select('o.id, o.orderDate, o.deliveryDate, o.deliveryLocal, o.custName, o.custPhone, o.totalPrice')
             ->innerJoin('c.user', 'u')
             ->innerJoin('c.orders', 'o')
-            ->innerJoin('o.orderDetails', 'od')
-            ->innerJoin('od.product', 'p')
             ->where('u.email = :email')
             ->setParameter('email', $email)
             ->orderBy('o.orderDate', 'DESC');
+        return $query->getQuery()->execute();
+    }
+
+    //SELECT * FROM orders o INNER JOIN order_details od ON o.id = od.orders_id INNER JOIN products p ON od.product_id = p.id WHERE od.orders_id = 32
+    /**
+     * @return Customer[]
+     */
+    public function showProductOrderedDetail($odID): array
+    {
+        $query = $this->createQueryBuilder('o')
+            ->select()
+            ->innerJoin('o.orderDetails', 'od')
+            ->innerJoin('od.product', 'p')
+            ->where('od.orders = :odID')
+            ->setParameter('odID', $odID);
         return $query->getQuery()->execute();
     }
 

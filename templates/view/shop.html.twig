@@ -1,92 +1,101 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	{% for message in app.flashes('danger') %}
-		<div class="alert alert-danger text-center mt-2 mb-0">
-			{{ message }}
-		</div>
-	{% endfor %}
-	<div class="row">
-		<div
-			class="col-lg-2 col-md-3 ps-0">
-			<!-- Navbar -->
-			<nav
-				class="navbar navbar-expand-md bg-light navbar-light bg-white">
-				<!-- Toggle button -->
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+  <style>
+    header {
+      position: fixed;
+      margin: 0 12px 0 12px;
+    }
+    
+    .shopname {
+      margin-top: 6rem;
+    }
+    
+    @media only screen and (max-width: 768px) {
+      .content-left {
+        margin-top: 6rem;
+      }
+    }
+  </style>
+  <div class="row shopname">
+    {% for message in app.flashes('danger') %}
+      <div class="alert alert-danger text-center mb-0">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success text-center mb-0">{{ message }}</div>
+    {% endfor %}
+    <div class="col-lg-2 col-md-3 ps-0 content-left">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-md bg-light navbar-light bg-white">
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarMenu"><span class="navbar-toggler-icon"></span></button>
 
-				<!-- Brand -->
-				<a class="text-decoration-none text-black ps-3 d-none d-md-block" href="{{ path('index') }}">
-					<h3 class="fw-bold">The Light Store</h3>
-				</a>
-			</nav>
-			<!-- Navbar -->
+        <!-- Brand -->
+        <a class="text-decoration-none text-black ps-3" href="{{ path('index') }}"><h3 class="fw-bold">The Light SecondHand</h3></a>
+      </nav>
+      <!-- Navbar -->
 
-			<!-- Sidebar -->
-			<nav id="sidebarMenu" class="collapse d-md-block bg-white">
-				<h5 class="ms-3 mt-4 fw-bold">Brand</h5>
-				<div class="position-sticky">
-					<div class="list-group list-group-flush">
-						<a href="{{ path('shop') }}" class="list-group-item list-group-item-action py-2">All</a>
-						{% for brand in brands %}
-							<a href="{{ path('shop', { 'bid': brand.id }) }}" class="list-group-item list-group-item-action py-2">{{ brand.name }}</a>
-						{% endfor %}
-					</div>
-				</div>
-				<h5 class="ms-3 mt-4 fw-bold">Supplier</h5>
-				<div class="position-sticky">
-					<div class="list-group list-group-flush">
-						<a href="{{ path('shop') }}" class="list-group-item list-group-item-action py-2">All</a>
-						{% for supplier in suppliers %}
-							<a href="{{ path('shop', { 'sid': supplier.id }) }}" class="list-group-item list-group-item-action py-2">{{ supplier.name }}</a>
-						{% endfor %}
-					</div>
-				</div>
-			</nav>
-			<!-- Sidebar -->
-		</div>
-		<div class="col-lg-10 col-md-9 col-12 pe-0">
-			<div id="carouselExampleSlidesOnly" class="carousel slide mb-3 mt-2" data-ride="carousel">
-				<div class="carousel-inner">
-					<div class="carousel-item active">
-						<img class="d-block w-100" src="../Image/Fashion-ads-3.jpg" alt="First slide">
-					</div>
-					<div class="carousel-item">
-						<img class="d-block w-100" src="../Image/Fashion-ads-2.png" alt="Second slide">
-					</div>
-					<div class="carousel-item">
-						<img class="d-block w-100" src="../Image/Fashion-ads-1.jpg" alt="Third slide">
-					</div>
-				</div>
-			</div>
-			<section>
-				<div class="row">
-					{% for product in products %}
-						<div class="col-12 col-lg-2 col-md-3 col-sm-6 mb-xl-4 mb-lg-4">
-							<div class="product-grid">
-								<div class="product-image">
-									<a href="{{ path('view_detail_product', { 'id': product.id }) }}" class="image">
-										<img class="img-1" src="{{ path('get_product_photo', {'filename' : product.image} ) }}">
-									</a>
-								</div>
-								<div class="product-content">
-									<div class="price">
-										<b>${{ product.price }}</b>
-									</div>
-									<h3 class="title">
-										<a href="{{ path('view_detail_product', { 'id': product.id }) }}" class="text-decoration-none">{{ product.name }}</a>
-									</h3>
-								</div>
-							</div>
-						</div>
-					{% endfor %}
-				</div>
-				<div class="pagination justify-content-center">
-					{{ knp_pagination_render(products, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
-				</div>
-			</section>
-		</div>
-	</div>
+      <!-- Sidebar -->
+      <nav id="sidebarMenu" class="collapse d-md-block bg-white">
+        <h5 class="ms-3 mt-4 fw-bold">Brand</h5>
+        <div class="position-sticky">
+          <div class="list-group list-group-flush">
+            <a href="{{ path('shop') }}" class="list-group-item list-group-item-action py-2">All</a>
+            {% for brand in brands %}
+              <a href="{{ path('shop', { bid: brand.id }) }}" class="list-group-item list-group-item-action py-2">{{ brand.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+        <h5 class="ms-3 mt-4 fw-bold">Supplier</h5>
+        <div class="position-sticky">
+          <div class="list-group list-group-flush">
+            <a href="{{ path('shop') }}" class="list-group-item list-group-item-action py-2">All</a>
+            {% for supplier in suppliers %}
+              <a href="{{ path('shop', { sid: supplier.id }) }}" class="list-group-item list-group-item-action py-2">{{ supplier.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </nav>
+      <!-- Sidebar -->
+    </div>
+    <div class="col-lg-10 col-md-9 col-12 pe-0">
+      <div id="carouselExampleSlidesOnly" class="carousel slide mb-3 mt-2" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="../Image/Fashion-ads-3.jpg" alt="First slide" />
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="../Image/Fashion-ads-2.png" alt="Second slide" />
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="../Image/Fashion-ads-1.jpg" alt="Third slide" />
+          </div>
+        </div>
+      </div>
+      <section>
+        {% if products|length > 0 %}
+          <div class="row">
+            {% for product in products %}
+              <div class="col-12 col-lg-2 col-md-3 col-sm-6 mb-xl-4 mb-lg-4">
+                <div class="product-grid">
+                  <div class="product-image">
+                    <a href="{{ path('view_detail_product', { id: product.id }) }}" class="image"><img class="img-1" src="{{ path('get_product_photo', { filename: product.image }) }}" /></a>
+                  </div>
+                  <div class="product-content">
+                    <div class="price">
+                      <b>${{ product.price }}</b>
+                    </div>
+                    <h3 class="title"><a href="{{ path('view_detail_product', { id: product.id }) }}" class="text-decoration-none">{{ product.name }}</a></h3>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="pagination justify-content-center">{{ knp_pagination_render(products, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}</div>
+        {% else %}
+          <h2 class="fw-bold text-center pt-5">Product does not exist</h2>
+        {% endif %}
+      </section>
+    </div>
+  </div>
 {% endblock %}

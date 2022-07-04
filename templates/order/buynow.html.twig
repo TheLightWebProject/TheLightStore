@@ -1,82 +1,117 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Payment
+{% block title %}
+  Payment
 {% endblock %}
 
 {% block body %}
-	<div class="cardorder border my-2 p-md-3">
-		<div class="cardorder-top border-bottom text-center mb-4">
-			<span id="logo">The Light Store</span>
-		</div>
-		<form action="" method="POST" class="cardorder-body">
-			<div class="row">
-				<div class="col-md-6">
-					<div class="left border">
-						<div class="header fw-bold ms-2">Customer's infomation</div>
-						<div class="row mt-3">
-							<div>
-								<span>Order's name:</span>
-								<input class="input" name="txtFullname" placeholder="Full name" value="{{ customer.fullname }}">
-							</div>
-							<div>
-								<span>Phone Number:</span>
-								<input class="input" name="txtPhonenumber" placeholder="Phone Number" value="{{ customer.telephone }}">
-							</div>
-							<div>
-								<span>Address:</span>
-								<input class="input" name="txtAddress" placeholder="Address" value="{{ customer.address }}">
-							</div>
-						</div>
-					</div>
-				</div>
+  <script>
+    function formValid() {
+      f = document.formPayment
+      var validname = /^[A-Za-z]+|(\s)$/
+      var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/
+      var phone_pattern = /^(\(0\d{1,3}\)\d{7})|(0\d{9,10})$/
+    
+      if (f.txtFullname.value == '' || format.test(f.txtFullname.value) || validname.test(f.txtFullname.value) == false) {
+        alert("Full name can't be empty, number, and special character. Please enter again")
+        f.txtFullname.focus()
+        return false
+      }
+    
+      // Telephone validation
+      if (phone_pattern.test(f.txtPhonenumber.value) == false) {
+        alert('Invalid phone number, please enter again')
+        f.txtPhonenumber.focus()
+        return false
+      }
+    
+      if (f.txtAddress.value == '') {
+        alert("Address can't be empty, please enter again")
+        f.txtAddress.focus()
+        return false
+      }
+      if (format.test(f.txtAddress.value)) {
+        alert('Invalid Address, please enter again')
+        f.txtAddress.focus()
+        return false
+      }
+      return true
+    }
+  </script>
+  <div class="cardorder border my-2 p-md-3">
+    <div class="cardorder-top border-bottom text-center mb-4">
+      <span id="logo">The Light SecondHand</span>
+    </div>
+    <form action="" id="formPayment" name="formPayment" method="POST" class="cardorder-body" onsubmit="return formValid()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="left border">
+            <div class="header fw-bold ms-2">Customer's infomation</div>
+            <div class="row mt-3">
+              <div>
+                <span>Order's name:</span>
+                <input class="input" name="txtFullname" placeholder="Full name" value="{{ customer.fullname }}" />
+              </div>
+              <div>
+                <span>Phone Number:</span>
+                <input class="input" name="txtPhonenumber" placeholder="Phone Number" value="{{ customer.telephone }}" />
+              </div>
+              <div>
+                <span>Address:</span>
+                <input class="input" name="txtAddress" placeholder="Address" value="{{ customer.address }}" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-				<div class="col-md-6">
-					<div class="right border">
-						<div class="header fw-bold">Order Summary</div>
-						<hr>
+        <div class="col-md-6">
+          <div class="right border">
+            <div class="header fw-bold">Order Summary</div>
+            <hr />
 
-						<div class="row item">
-							<div class="col-4 align-self-center"><img class="img-fluid" src="{{ path('get_product_photo', {'filename' : product[3]} ) }}"></div>
-							<div class="col-8">
-								<b>${{ product[5] }}</b>
-								<div class="row text-muted">{{ product[1] }}</div>
-								<div class="row">Qty:
-									{{ product[4] }}</div>
-							</div>
-						</div>
-						<hr>
+            <div class="row item">
+              <div class="col-4 align-self-center">
+                <img class="img-fluid" src="{{ path('get_product_photo', { filename: product[3] }) }}" />
+              </div>
+              <div class="col-8">
+                <b>${{ product[5] }}</b>
+                <div class="row text-muted">{{ product[1] }}</div>
+                <div class="row">Qty:
+                  {{ product[4] }}</div>
+              </div>
+            </div>
+            <hr />
 
-						<div class="row lower">
-							<div class="col text-left">item</div>
-							<div class="col text-right">1</div>
-						</div>
-						<div class="row lower">
-							<div class="col text-left">Subtotal</div>
-							<div class="col text-right">$
-								{{ product[4] * product[5] }}</div>
-						</div>
-						<div class="row lower">
-							<div class="col text-left">Delivery</div>
-							<div class="col text-right">Free</div>
-						</div>
-						<div class="row lower">
-							<div class="col text-left">
-								<b>Total to pay</b>
-							</div>
-							<div class="col text-right">
-								<b>${{ product[4] * product[5] }}</b>
-							</div>
-						</div>
-						<input type="hidden" name="proid" value="{{ product[0] }}">
-						<input type="hidden" name="quantity" value="{{ product[4] }}">
-						<input type="hidden" name="price" value="{{ product[5] }}">
-						<input type="hidden" name="totalprice" value="{{ product[4] * product[5] }}">
-						<input type="submit" class="btn btn-primary btnorder my-3" name="btnPaymentnow" id="btnPaymentnow" value="Payment"/>
-						<p class="text-muted text-center">Complimentary Shipping</p>
-					</div>
-				</div>
-
-			</div>
-		</form>
-	</div>
+            <div class="row lower">
+              <div class="col text-left">item</div>
+              <div class="col text-right">1</div>
+            </div>
+            <div class="row lower">
+              <div class="col text-left">Subtotal</div>
+              <div class="col text-right">$
+                {{ product[4] * product[5] }}</div>
+            </div>
+            <div class="row lower">
+              <div class="col text-left">Delivery</div>
+              <div class="col text-right">Free</div>
+            </div>
+            <div class="row lower">
+              <div class="col text-left">
+                <b>Total to pay</b>
+              </div>
+              <div class="col text-right">
+                <b>${{ product[4] * product[5] }}</b>
+              </div>
+            </div>
+            <input type="hidden" name="proid" value="{{ product[0] }}" />
+            <input type="hidden" name="quantity" value="{{ product[4] }}" />
+            <input type="hidden" name="price" value="{{ product[5] }}" />
+            <input type="hidden" name="totalprice" value="{{ product[4] * product[5] }}" />
+            <input type="submit" class="btn btn-primary btnorder my-3" name="btnPaymentnow" id="btnPaymentnow" value="Payment" />
+            <p class="text-muted text-center">Complimentary Shipping</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 {% endblock %}

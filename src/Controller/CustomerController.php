@@ -6,6 +6,7 @@ use App\Entity\Customers;
 use App\Form\Type\ChangePasswordFormType;
 use App\Form\Type\CustomerFormType;
 use App\Repository\CustomersRepository;
+use App\Repository\OrderDetailsRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -178,17 +179,52 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer/ordered", name="product_ordered")
      */
-    public function productOrderedAction(UserRepository $repoUser, CustomersRepository $repo, OrdersRepository $repoOrder): Response
+    public function productOrderedAction(UserRepository $repoUser, CustomersRepository $repo): Response
     {
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
             $user = $this->getUser();
             $userEntity = $repoUser->find($user);
 
             if ($userEntity->isVerified() == 1) {
-                $customerOrder = $repo->findProductOrdered($userEntity->getEmail());
+                $customerOrder = $repo->showProductOrdered($userEntity->getEmail());
 
                 return $this->render('customer/productordered.html.twig', [
                     'product_ordered' => $customerOrder
+                ]);
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'You must be verify the account to see more'
+                );
+                return $this->redirectToRoute("shop");
+            }
+        } else {
+            // $this->addFlash(
+            //     'danger',
+            //     'You must be login to access this page'
+            // );
+            // return $this->redirectToRoute("app_login");
+            $error = "You must be login to access this page";
+            return $this->render('security/login.html.twig', [
+                'error' => $error
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/customer/ordered/{id}", name="product_ordered_detail")
+     */
+    public function productOrderedDetailAction(UserRepository $repoUser, OrderDetailsRepository $repo, int $id): Response
+    {
+        if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
+            $user = $this->getUser();
+            $userEntity = $repoUser->find($user);
+
+            if ($userEntity->isVerified() == 1) {
+                $customerOrderDetail = $repo->showProductOrderedDetail($id);
+
+                return $this->render('customer/productodetail.html.twig', [
+                    'product_ordered_detail' => $customerOrderDetail
                 ]);
             } else {
                 $this->addFlash(
