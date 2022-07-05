@@ -1,84 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Order Management
+{% block title %}
+  Order Management
 {% endblock %}
 
 {% block body %}
-	<div class="border pt-2 mb-2">
-		<h1 class="text-center mb-4">Order Management</h1>
-		<table id="tablecategory" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
-			<thead class="justify-content-md-between justify-content-sm-center align-content-center border-bottom border-2 my-2 bg-dark text-light p-3 rounded-3">
-				<tr class="text-center">
-					<th>
-						<strong>No.</strong>
-					</th>
-					<th>
-						<strong>Order date</strong>
-					</th>
-					<th>
-						<strong>Delivery date</strong>
-					</th>
-					<th>
-						<strong>Customer Name</strong>
-					</th>
-					<th>
-						<strong>Telephone</strong>
-					</th>
-					<th>
-						<strong>Address</strong>
-					</th>
-					<th>
-						<strong>Total Price</strong>
-					</th>
-					<th>
-						<strong>Checked</strong>
-					</th>
-					<th>
-						<strong>Delete</strong>
-					</th>
-				</tr>
-			</thead>
+  <div class="border pt-2 mb-2">
+    <h1 class="text-center mb-4">Order Management</h1>
+    <table id="tablecategory" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
+      <thead class="justify-content-md-between justify-content-sm-center align-content-center border-bottom border-2 my-2 bg-dark text-light p-3 rounded-3">
+        <tr class="text-center">
+          <th>
+            <strong>No.</strong>
+          </th>
+          <th>
+            <strong>Order date</strong>
+          </th>
+          <th>
+            <strong>Delivery date</strong>
+          </th>
+          <th>
+            <strong>Customer Name</strong>
+          </th>
+          <th>
+            <strong>Telephone</strong>
+          </th>
+          <th>
+            <strong>Address</strong>
+          </th>
+          <th>
+            <strong>Total Price</strong>
+          </th>
+          <th>
+            <strong>Checked</strong>
+          </th>
+          <th>
+            <strong>Delete</strong>
+          </th>
+        </tr>
+      </thead>
 
-			<tbody class="justify-content-md-between justify-content-sm-center border-bottom border-2 my-2 bg-light p-2 rounded-3">
-				{% set count = 1 %}
-				{% for order in orders %}
-					<tr>
-						<td class="text-center">
-							<a href="{{ path('order_detail', { 'id': order.id }) }}" class="text-decoration-none">{{ count }}</a>
-						</td>
-						<td class="text-center">{{ order.orderDate|date('y-m-d H:i:s') }}</td>
-						<td class="text-center">{{ order.deliveryDate|date('y-m-d H:i:s') }}</td>
-						<td class="text-center">{{ order.custName }}</td>
-						<td class="text-center">{{ order.custPhone }}</td>
-						<td>{{ order.deliveryLocal }}</td>
-						<td class="text-center">${{ order.totalPrice }}</td>
-						<td class="text-center">
-							<form action="{{ path('show_all_order') }}" method="POST">
-								<input type="hidden" id="check" name="check" value="{{ order.checked }}">
-								{# <label for="check" class="mb-2 fw-bold">
+      <tbody class="justify-content-md-between justify-content-sm-center border-bottom border-2 my-2 bg-light p-2 rounded-3">
+        {% if orders %}
+          {% set count = 1 %}
+          {% for order in orders %}
+            <tr>
+              <td class="text-center">
+                <a href="{{ path('order_detail', { id: order.id }) }}" class="text-decoration-none">{{ count }}</a>
+              </td>
+              <td class="text-center">{{ order.orderDate|date('y-m-d H:i:s') }}</td>
+              <td class="text-center">{{ order.deliveryDate|date('y-m-d H:i:s') }}</td>
+              <td class="text-center">{{ order.custName }}</td>
+              <td class="text-center">{{ order.custPhone }}</td>
+              <td>{{ order.deliveryLocal }}</td>
+              <td class="text-center">${{ order.totalPrice }}</td>
+              <td class="text-center">
+                <form action="{{ path('show_all_order') }}" method="POST">
+                  <input type="hidden" id="check" name="check" value="{{ order.checked }}" />
+                  {# <label for="check" class="mb-2 fw-bold">
 									{% if order.checked ? "Checked" : "Unchecked" %}{% endif %}
 								</label> #}
-								<input type="hidden" id="ido" name="txtido" value="{{ order.id }}">
-								{% if order.checked == 1 %}
-									<button type="submit" class="btn btn-success" name="btnchecked" width="10" height="10">
-										<i class="bi bi-check-lg"></i>
-									</button>
-								{% else %}
-									<button type="submit" class="btn btn-danger" name="btnchecked">
-										<i class="bi bi-x-lg"></i>
-									</button>
-								{% endif %}
-							</form>
-						</td>
-						<td style='text-align:center'>
-							<a href="{{ path('delete_order', { 'id': order.id }) }}" onclick="return confirm('Are you sure to delete!')">
-								<i class="bi bi-trash-fill" style="color: red;"></i>
-							</a>
-						</td>
-					</tr>
-					{% set count = count + 1 %}
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+                  <input type="hidden" id="ido" name="txtido" value="{{ order.id }}" />
+                  {% if order.checked == 1 %}
+                    <button type="submit" class="btn btn-success" name="btnchecked" width="10" height="10"><i class="bi bi-check-lg"></i></button>
+                  {% else %}
+                    <button type="submit" class="btn btn-danger" name="btnchecked"><i class="bi bi-x-lg"></i></button>
+                  {% endif %}
+                </form>
+              </td>
+              <td class="text-center">
+                <a href="{{ path('delete_order', { id: order.id }) }}" onclick="return confirm('Are you sure to delete!')"><i class="bi bi-trash-fill" style="color: red;"></i></a>
+              </td>
+            </tr>
+            {% set count = count + 1 %}
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="6" class="text-center fw-bold">Order list is empty</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+    <div class="pagination justify-content-center mt-3">{{ knp_pagination_render(orders, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}</div>
+  </div>
 {% endblock %}

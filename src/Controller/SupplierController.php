@@ -6,6 +6,7 @@ use App\Entity\Suppliers;
 use App\Form\Type\SupplierFormType;
 use App\Repository\SuppliersRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ class SupplierController extends AbstractController
     /**
      * @Route("/management/supplier", name="show_all_supplier")
      */
-    public function indexSupplier(Request $req, SuppliersRepository $repo): Response
+    public function indexSupplier(Request $req, SuppliersRepository $repo, PaginatorInterface $paginator): Response
     {
         if (isset($_POST['btnSearchSupplier'])) {
             $value = $req->request->get('txtSearchSupplier');
@@ -26,9 +27,10 @@ class SupplierController extends AbstractController
         } else {
             $suppliers = $repo->findAll();
         }
+        $paginator = $paginator->paginate($suppliers, $req->query->getInt('page', 1), 15); //create paginator
 
         return $this->render('supplier/index.html.twig', [
-            'suppliers' => $suppliers
+            'suppliers' => $paginator
         ]);
     }
 

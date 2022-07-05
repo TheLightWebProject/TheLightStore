@@ -9,6 +9,7 @@ use App\Repository\FeedbackRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,9 +62,10 @@ class FeedbackController extends AbstractController
     /**
      * @Route("/management/feedback", name="show_all_feedback")
      */
-    public function indexFeedback(ManagerRegistry $res, Request $req, FeedbackRepository $repo): Response
+    public function indexFeedback(ManagerRegistry $res, Request $req, FeedbackRepository $repo, PaginatorInterface $paginator): Response
     {
         $feedbacks = $repo->showFeedback();
+        $paginator = $paginator->paginate($feedbacks, $req->query->getInt('page', 1), 15); //create paginator
 
         if (isset($_POST['btnUpdateFeedback']) && $_POST['txtupdateFeed'] == 1) {
             $id = $req->request->get('txtFeedID');
@@ -91,7 +93,7 @@ class FeedbackController extends AbstractController
         }
 
         return $this->render('feedback/feedback.html.twig', [
-            'feedbacks' => $feedbacks
+            'feedbacks' => $paginator
         ]);
     }
 

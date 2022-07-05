@@ -6,6 +6,7 @@ use App\Entity\Brands;
 use App\Form\Type\BrandFormType;
 use App\Repository\BrandsRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,7 @@ class BrandController extends AbstractController
     /**
      * @Route("/management/brand", name="show_all_brands")
      */
-    public function indexBrand(Request $req, BrandsRepository $repo): Response
+    public function indexBrand(Request $req, BrandsRepository $repo, PaginatorInterface $paginator): Response
     {
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
             if (isset($_POST['btnSearchBrand'])) {
@@ -30,9 +31,10 @@ class BrandController extends AbstractController
             } else {
                 $brands = $repo->findAll();
             }
+            $paginator = $paginator->paginate($brands, $req->query->getInt('page', 1), 15); //create paginator
 
             return $this->render('brand/index.html.twig', [
-                'brands' => $brands
+                'brands' => $paginator
             ]);
         } else {
             // $this->addFlash(

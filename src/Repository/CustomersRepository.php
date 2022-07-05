@@ -68,21 +68,6 @@ class CustomersRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
-    //SELECT * FROM orders o INNER JOIN order_details od ON o.id = od.orders_id INNER JOIN products p ON od.product_id = p.id WHERE od.orders_id = 32
-    /**
-     * @return Customer[]
-     */
-    public function showProductOrderedDetail($odID): array
-    {
-        $query = $this->createQueryBuilder('o')
-            ->select()
-            ->innerJoin('o.orderDetails', 'od')
-            ->innerJoin('od.product', 'p')
-            ->where('od.orders = :odID')
-            ->setParameter('odID', $odID);
-        return $query->getQuery()->execute();
-    }
-
     //SELECT * FROM order_details od, products p WHERE od.product_id = p.id AND od.orders_id = 17
     /**
      * @return Customer[]

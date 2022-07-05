@@ -54,10 +54,10 @@ class ProductsRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
-    // SELECT * , COUNT(od.product_id), SUM(od.quantity)
+    // SELECT * , COUNT(p.id), SUM(od.quantity)
     // FROM order_details od, products p
     // WHERE od.product_id = p.id
-    // GROUP BY od.product_id
+    // GROUP BY p.id
     // ORDER BY SUM(od.quantity)
     // DESC
     // LIMIT 4;
@@ -67,20 +67,31 @@ class ProductsRepository extends ServiceEntityRepository
     public function showTop4BestSelling(): array
     {
         $query = $this->createQueryBuilder('p')
-            ->innerJoin('p.orderDetails', 'od')
-            ->groupBy('od.product')
+            ->select('p.id, p.name, p.price, p.image, COUNT(p.id), SUM(od.quantity)')
+            ->leftJoin('p.orderDetails', 'od')
+            ->groupBy('p.id')
             ->orderBy('SUM(od.quantity)', 'DESC')
+            ->addOrderBy('p.createdDate', 'DESC')
             ->setMaxResults(4);
         return $query->getQuery()->execute();
     }
 
+    // SELECT *, COUNT(p.id), SUM(od.quantity)
+    // FROM products p LEFT OUTER JOIN order_details od
+    // ON p.id = od.product_id
+    // GROUP BY p.id
+    // ORDER BY p.created_date DESC, SUM(od.quantity) DESC
     /**
      * @return Products[]
      */
     public function showShop(): array
     {
         $query = $this->createQueryBuilder('p')
-            ->orderBy('p.createdDate', 'DESC');
+            ->select('p.id, p.name, p.price, p.image, COUNT(p.id), SUM(od.quantity)')
+            ->leftJoin('p.orderDetails', 'od')
+            ->groupBy('p.id')
+            ->orderBy('p.createdDate', 'DESC')
+            ->addOrderBy('SUM(od.quantity)', 'DESC');
         return $query->getQuery()->execute();
     }
 

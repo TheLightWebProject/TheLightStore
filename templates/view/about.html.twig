@@ -10,7 +10,7 @@
       position: fixed;
       margin: 0 12px 0 12px;
     }
-
+    
     .btnabout {
       display: inline-block;
       margin-top: 1rem;
@@ -57,10 +57,34 @@
       font-size: 1.3rem;
       color: rgb(19, 13, 13);
     }
+
+    @media only screen and (max-width: 600px) {
+      .content-left {
+        margin-top: 10rem;
+      }
+    }
+
+    @media only screen and (min-width: 600px) {
+      .content-left {
+        margin-top: 10rem;
+      }
+    }
+
+    @media only screen and (min-width: 768px) {
+      .content-left {
+        margin-top: 3rem;
+      }
+    }
+
+    @media only screen and (min-width: 992px) {
+      .content-left {
+        margin-top: 0rem;
+      }
+    }
   </style>
-  <section class="home justify-content-center" id="home" style="background-image: url(Image/test3.jpg)">
-    <div class="mt-5 m-5 p-5" style="background-color: rgba(0, 0, 0, 0.4);">
-      <div class="mt-5 d-flex justify-content-center align-items-center h-200">
+  <section class="home content-left justify-content-center" id="home" style="background-image: url(Image/test3.jpg)">
+    <div class="mt-5 p-5" style="background-color: rgba(0, 0, 0, 0.4);">
+      <div class="d-flex justify-content-center align-items-center">
         <div class="text-white">
           <div class="content">
             <h3 style="color:white" align="center">ABOUT</h3>
@@ -73,7 +97,8 @@
 
               the first 10 days of experience if they are not satisfied with the product.
 
-              At The light Store, customers will be able to shop comfortably without worrying about the price because we always put quality and user experience first.</p>
+              At The light Store, customers will be able to shop comfortably without worrying about the price because we always put quality and user experience first.
+            </p>
             <div class="text-center">
               <a href="{{ path('shop') }}" class="btn btnabout" align="center">START NOW</a>
             </div>

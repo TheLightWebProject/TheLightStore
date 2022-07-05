@@ -6,6 +6,7 @@ use App\Entity\Products;
 use App\Form\Type\ProductFormType;
 use App\Repository\ProductsRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/management/product", name="show_all_product")
      */
-    public function indexProduct(Request $req, ProductsRepository $repo): Response
+    public function indexProduct(Request $req, ProductsRepository $repo, PaginatorInterface $paginator): Response
     {
         if (isset($_POST['btnSearchProduct'])) {
             $value = $req->request->get('txtSearchProduct');
@@ -38,8 +39,10 @@ class ProductController extends AbstractController
             $products = $repo->showAllProduct();
         }
 
+        $paginator = $paginator->paginate($products, $req->query->getInt('page', 1), 15); //create paginator
+
         return $this->render('product/index.html.twig', [
-            'products' => $products
+            'products' => $paginator
         ]);
     }
 

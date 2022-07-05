@@ -9,6 +9,7 @@ use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -171,9 +172,11 @@ class OrderController extends AbstractController
     /**
      * @Route("/management/order", name="show_all_order")
      */
-    public function indexOrder(OrdersRepository $repo, Request $req, ManagerRegistry $res): Response
+    public function indexOrder(OrdersRepository $repo, Request $req, ManagerRegistry $res, PaginatorInterface $paginator): Response
     {
         $orders = $repo->showAllOrder();
+
+        $paginator = $paginator->paginate($orders, $req->query->getInt('page', 1), 15); //create paginator
 
         if (isset($_POST['btnchecked']) && $_POST['check'] == 1) {
             $id = $req->request->get('txtido');
@@ -203,7 +206,7 @@ class OrderController extends AbstractController
         }
 
         return $this->render('order/order.html.twig', [
-            'orders' => $orders
+            'orders' => $paginator
         ]);
     }
 
