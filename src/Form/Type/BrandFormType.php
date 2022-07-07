@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class BrandFormType extends AbstractType
 {
@@ -27,7 +28,7 @@ class BrandFormType extends AbstractType
         ->add('image', FileType::class, [
             'label' => 'Image',
             'mapped' => false,
-            'required' => false
+            'required' => false,
         ])
         ->add('save', SubmitType::class, [
             'label' => "Save"

@@ -1,20 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Suppliers
+{% block title %}
+  Edit Suppliers
 {% endblock %}
 
 {% block body %}
-	<div class="border pt-2 mb-2">
-		<div class="px-5">
-			<h1 class="text-center mb-4">Edit Suppliers</h2>
-			{{ form_start(form_Supplier) }}
-			{{ form_row(form_Supplier.name) }}
-			{{ form_row(form_Supplier.telephone) }}
-			{{ form_row(form_Supplier.email) }}
-			<div class="text-center">
-				{{ form_row(form_Supplier.save) }}
-			</div>
-			{{ form_end(form_Supplier) }}
-		</div>
-	</div>
+  <div class="border pt-2 mb-2">
+    <div class="px-5">
+      <h1 class="text-center mb-4">Edit Suppliers</h1>
+      {{ form_start(form_Supplier) }}
+      {{ form_row(form_Supplier.name) }}
+      {{ form_row(form_Supplier.telephone) }}
+      {{ form_row(form_Supplier.email) }}
+      <div class="text-center">{{ form_row(form_Supplier.save) }}</div>
+      {{ form_end(form_Supplier) }}
+    </div>
+  </div>
 {% endblock %}

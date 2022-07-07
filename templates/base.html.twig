@@ -164,64 +164,66 @@
       {% block body %}
 
       {% endblock %}
-      <footer class="text-center bg-light text-muted">
-        <!-- Section: Social media -->
-        <div class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-          <!-- Left -->
-          <div class="me-5 d-none d-md-block mx-md-4">
-            <span>Get connected with us on social networks:</span>
-          </div>
+      {% if not is_granted('ROLE_ADMIN') %}
+        <footer class="text-center bg-light text-muted">
+          <!-- Section: Social media -->
+          <div class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+            <!-- Left -->
+            <div class="me-5 d-none d-md-block mx-md-4">
+              <span>Get connected with us on social networks:</span>
+            </div>
 
-          <!-- Right -->
-          <div class="mx-md-3">
-            <a href="https://www.facebook.com/nguyenduyquang02/" target="blank" class="me-4 figure" style="color: #3b5998"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/ndquang_58/?hl=en" target="blank" class="figure" style="color: #d6249f"><i class="bi bi-instagram"></i></a>
-          </div>
-        </div>
-        <div class="text-center text-md-start mt-5">
-          <!-- Grid row -->
-          <div class="row">
-            <!-- Grid column -->
-            <div class="col-md-4">
-              <div class="mx-5 text-center">
-                <h6><a href="#" class="text-uppercase fw-bold text-reset text-decoration-none">The Light SecondHand</a></h6>
-                <p class="pt-2">
-                  <a href="{{ path('index') }}" class="text-reset text-decoration-none">Home</a>
-                  <strong>&middot;</strong>
-                  <a href="{{ path('shop') }}" class="text-reset text-decoration-none">Shop</a>
-                  <strong>&middot;</strong>
-                  <a href="{{ path('about') }}" class="text-reset text-decoration-none">About</a>
-                </p>
-                <p>THELIGHTSECONDHAND.COM &copy; 2022</p>
-              </div>
-            </div>
-            <!-- Grid column -->
-            <div class="col-md-4">
-              <div class="mx-5 text-center">
-                <!-- Links -->
-                <h6 class="text-uppercase fw-bold pb-2">Contact</h6>
-                <p>
-                  <i class="bi bi-house-door me-2"></i>Xuan Khanh, Ninh Kieu, Can Tho
-                </p>
-                <p>
-                  <i class="bi bi-envelope me-2"></i>quangndgcc200030@fpt.edu.vn
-                </p>
-                <p>
-                  <i class="bi bi-telephone me-2"></i>+84 916 843 367
-                </p>
-              </div>
-            </div>
-            <!-- Grid column -->
-            <div class="col-md-4">
-              <div class="mx-5 text-center">
-                <!-- Content -->
-                <h6 class="text-uppercase fw-bold pb-2"><i class="bi bi-gem me-2"></i>THE LIGHT SECONDHAND</h6>
-                <p class="px-5">The Light SecondHand was founded in 2022. Our store offers a huge collection of unisex. What are you waiting for? Start shopping online today.</p>
-              </div>
+            <!-- Right -->
+            <div class="mx-md-3">
+              <a href="https://www.facebook.com/nguyenduyquang02/" target="blank" class="me-4 figure" style="color: #3b5998"><i class="bi bi-facebook"></i></a>
+              <a href="https://www.instagram.com/ndquang_58/?hl=en" target="blank" class="figure" style="color: #d6249f"><i class="bi bi-instagram"></i></a>
             </div>
           </div>
-        </div>
-      </footer>
+          <div class="text-center text-md-start mt-5">
+            <!-- Grid row -->
+            <div class="row">
+              <!-- Grid column -->
+              <div class="col-md-4 mb-4">
+                <div class="mx-5 text-center">
+                  <h6><a href="#" class="text-uppercase fw-bold text-reset text-decoration-none">The Light SecondHand</a></h6>
+                  <p class="pt-2">
+                    <a href="{{ path('index') }}" class="text-reset text-decoration-none">Home</a>
+                    <strong>&middot;</strong>
+                    <a href="{{ path('shop') }}" class="text-reset text-decoration-none">Shop</a>
+                    <strong>&middot;</strong>
+                    <a href="{{ path('about') }}" class="text-reset text-decoration-none">About</a>
+                  </p>
+                  <p>THELIGHTSECONDHAND.COM &copy; 2022</p>
+                </div>
+              </div>
+              <!-- Grid column -->
+              <div class="col-md-4 mb-4">
+                <div class="mx-5 text-center">
+                  <!-- Links -->
+                  <h6 class="text-uppercase fw-bold pb-2">Contact</h6>
+                  <p>
+                    <i class="bi bi-house-door me-2"></i>Xuan Khanh, Ninh Kieu, Can Tho
+                  </p>
+                  <p>
+                    <i class="bi bi-envelope me-2"></i>quangndgcc200030@fpt.edu.vn
+                  </p>
+                  <p>
+                    <i class="bi bi-telephone me-2"></i>+84 916 843 367
+                  </p>
+                </div>
+              </div>
+              <!-- Grid column -->
+              <div class="col-md-4 mb-4">
+                <div class="mx-5 text-center">
+                  <!-- Content -->
+                  <h6 class="text-uppercase fw-bold pb-2"><i class="bi bi-gem me-2"></i>THE LIGHT SECONDHAND</h6>
+                  <p class="px-5">The Light SecondHand was founded in 2022. Our store offers a huge collection of unisex. What are you waiting for? Start shopping online today.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      {% endif %}
     </div>
   </body>
 </html>

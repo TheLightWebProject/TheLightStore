@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2022 at 03:55 AM
+-- Generation Time: Jul 06, 2022 at 10:34 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.28
 
@@ -68,11 +68,9 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `fullname`, `sex`, `telephone`, `address`, `birthday`, `user_id`) VALUES
-(15, 'Nguyen Thai Duong', 1, '0375741165', 'An Binh, Vinh Long', '2002-03-15', 39),
 (16, 'Nguyen Duy Quang', 1, '0916843367', 'Ninh Kieu, Can Tho city', '2002-08-05', 33),
 (17, 'Nguyen Que Tran', 0, '0706546651', 'Tan Hanh, Vinh Long', '2003-03-09', 40),
-(18, 'Nguyen Tuan Anh', 1, '0123456789', 'Phung Hiep, Hau Giang', '2022-06-27', 41),
-(20, 'Huynh Bao Trong', 1, '0123456789', 'Long Ho, Vinh Long', '2002-06-15', 43);
+(22, 'Nguyen Thai Duong', 1, '0375741165', 'An Binh, Vinh Long', '2002-03-15', 45);
 
 -- --------------------------------------------------------
 
@@ -106,7 +104,8 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20220630075152', '2022-06-30 14:51:58', 358),
 ('DoctrineMigrations\\Version20220630075239', '2022-06-30 14:52:42', 33),
 ('DoctrineMigrations\\Version20220630075323', '2022-06-30 14:53:26', 40),
-('DoctrineMigrations\\Version20220630075536', '2022-06-30 14:55:39', 32);
+('DoctrineMigrations\\Version20220630075536', '2022-06-30 14:55:39', 32),
+('DoctrineMigrations\\Version20220703065829', '2022-07-03 13:58:35', 546);
 
 -- --------------------------------------------------------
 
@@ -144,18 +143,24 @@ CREATE TABLE `orders` (
   `checked` tinyint(1) NOT NULL,
   `delivery_local` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `cust_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `cust_phone` varchar(15) COLLATE utf8_unicode_ci NOT NULL
+  `cust_phone` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `username_id`, `order_date`, `delivery_date`, `checked`, `delivery_local`, `cust_name`, `cust_phone`) VALUES
-(29, 16, '2022-06-30 15:42:43', '2022-07-01 08:16:32', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367'),
-(30, 16, '2022-06-30 15:43:11', '2022-07-01 08:16:33', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367'),
-(31, 16, '2022-06-30 15:50:46', '2022-07-01 08:16:35', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367'),
-(32, 16, '2022-06-30 15:51:20', '2022-07-01 08:16:36', 1, 'Tan Hanh, Vinh Long', 'Nguyen Que Tran', '0706546651');
+INSERT INTO `orders` (`id`, `username_id`, `order_date`, `delivery_date`, `checked`, `delivery_local`, `cust_name`, `cust_phone`, `total_price`) VALUES
+(29, 16, '2022-06-30 15:42:43', '2022-07-01 08:16:32', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 35),
+(30, 16, '2022-06-30 15:43:11', '2022-07-01 08:16:33', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 60),
+(31, 16, '2022-06-30 15:50:46', '2022-07-01 08:16:35', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 44),
+(32, 16, '2022-06-30 15:51:20', '2022-07-01 08:16:36', 1, 'Tan Hanh, Vinh Long', 'Nguyen Que Tran', '0706546651', 45),
+(33, 16, '2022-07-03 14:02:36', '2022-07-03 14:09:15', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 35),
+(34, 16, '2022-07-03 14:04:27', '2022-07-03 14:09:17', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 65),
+(35, 22, '2022-07-04 11:16:10', '2022-07-04 11:16:10', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 22),
+(39, 22, '2022-07-04 11:21:51', '2022-07-04 11:21:51', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 29),
+(42, 22, '2022-07-04 11:30:20', '2022-07-04 11:30:20', 0, 'Hung Loi, Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0327281160', 30);
 
 -- --------------------------------------------------------
 
@@ -180,7 +185,13 @@ INSERT INTO `order_details` (`id`, `orders_id`, `product_id`, `quantity`, `total
 (37, 30, 21, 2, 60),
 (38, 31, 20, 2, 44),
 (39, 32, 21, 1, 30),
-(40, 32, 11, 1, 15);
+(40, 32, 11, 1, 15),
+(41, 33, 23, 1, 35),
+(42, 34, 23, 1, 35),
+(43, 34, 18, 1, 30),
+(44, 35, 20, 1, 22),
+(46, 39, 14, 1, 9),
+(49, 42, 18, 1, 30);
 
 -- --------------------------------------------------------
 
@@ -215,16 +226,16 @@ INSERT INTO `products` (`id`, `brand_id`, `supplier_id`, `name`, `price`, `small
 (11, 13, 5, 'Checkered shirt', 15, 'Small Desc Checkered shirt', 'Detail Desc Checkered shirt', '2022-06-21 02:45:42', 1, 'z3398766422532-ede724b6a5829547fd899e7c185a16c8-62b114b6ab823.jpg'),
 (12, 16, 6, 'Shorts', 20, 'Small Desc Shorts', 'Detail Desc Shorts', '2022-06-21 02:46:22', 1, 'z3398766617127-271089c387fd75d4a1bcc129e6b7e14e-62b114de4e57b.jpg'),
 (13, 13, 4, 'Moss green shirt', 23, 'Small Desc Moss green shirt', 'Detail Desc Moss green shirt', '2022-06-21 02:47:50', 3, 'download-1-62b11536a566a.jpg'),
-(14, 10, 6, 'Navy swim short', 9, 'Small Desc Navy swim short', 'Detail Desc Navy swim short', '2022-06-21 02:48:35', 1, 'navyswimshorts-62b1156326539.jpg'),
-(15, 16, 4, 'Shorts stock', 11, 'Small Desc Shorts stock', 'Detail Desc Shorts stock', '2022-06-21 02:49:45', 3, 'ShortsStock-62b115a9f407e.jpg'),
+(14, 10, 6, 'Navy swim short', 9, 'Small Desc Navy swim short', 'Detail Desc Navy swim short', '2022-06-21 02:48:35', 0, 'navyswimshorts-62b1156326539.jpg'),
+(15, 16, 4, 'Shorts stock', 11, 'Small Desc Shorts stock', 'Detail Desc Shorts stock', '2022-06-21 02:49:45', 2, 'ShortsStock-62b115a9f407e.jpg'),
 (16, 11, 5, 'Plaid shirt', 28, 'Small Desc Plaid shirt', 'Detail Desc Plaid shirt', '2022-06-21 02:50:57', 1, 'images-62b115f1bde19.jpg'),
-(17, 13, 5, 'Blue t-shirt', 8, 'Small Desc Blue t-shirt', 'Detail Desc Blue t-shirt', '2022-06-21 02:51:40', 2, '9088-62b1161c57045.png'),
-(18, 15, 4, 'Leather jacket', 30, 'Small Desc Leather jacket', 'Detail Desc Leather jacket', '2022-06-21 02:52:22', 5, 'LeatherJacket-62b1164657953.jpg'),
+(17, 13, 5, 'Blue t-shirt', 8, 'Small Desc Blue t-shirt', 'Detail Desc Blue t-shirt', '2022-06-21 02:51:40', 1, '9088-62b1161c57045.png'),
+(18, 15, 4, 'Leather jacket', 30, 'Small Desc Leather jacket', 'Detail Desc Leather jacket', '2022-06-21 02:52:22', 2, 'LeatherJacket-62b1164657953.jpg'),
 (19, 14, 6, 'Bomber jacket', 25, 'Small Desc Bomber jacket', 'Detail Desc Bomber jacket', '2022-06-21 02:53:10', 1, 'BomberJacket-62b11676d7309.jpg'),
-(20, 10, 5, 'Plain Hoodie', 22, 'Small Desc Plain Hoodie', 'Detail Desc Plain Hoodie', '2022-06-21 02:54:11', 4, 'PlainHoodie-62b116b352aa6.jpg'),
-(21, 12, 5, 'Denim jacket', 30, 'Small Desc Denim jacket', 'Detail Desc Denim jacket', '2022-06-25 15:01:39', 0, 'DenimJacket-62b116dedaac6.jpg'),
-(23, 12, 6, 'Denim jacket', 35, 'Small Desc Denim jeans', 'Detail Desc Denim jeans', '2022-06-25 15:17:12', 4, 'denim-jeans-large-black-62b11db08450e.jpg'),
-(24, 14, 5, 'T-shirt chaintrang', 13, 'Small Desc T-shirt stay chaintrang', 'Detail Desc T-shirt stay chaintrang', '2022-06-30 16:06:56', 3, 't-shirt-stay-chaintrang-62bd6778b8b21.webp');
+(20, 10, 5, 'Plain Hoodie', 22, 'Small Desc Plain Hoodie', 'Detail Desc Plain Hoodie', '2022-06-21 02:54:11', 0, 'PlainHoodie-62b116b352aa6.jpg'),
+(21, 12, 5, 'Denim jacket', 30, 'Small Desc Denim jacket', 'Detail Desc Denim jacket', '2022-07-03 22:18:58', 1, 'DenimJacket-62b116dedaac6.jpg'),
+(23, 12, 6, 'Denim jacket', 35, 'Small Desc Denim jeans', 'Detail Desc Denim jeans', '2022-06-25 15:17:12', 1, 'denim-jeans-large-black-62b11db08450e.jpg'),
+(27, 12, 6, 'T-shirt stay chaintrang', 15, 'Small Desc T-shirt stay chaintrang', 'Detail Desc T-shirt stay chaintrang', '2022-07-06 14:30:13', 3, 't-shirt-stay-chaintrang-62c3fcd4c26e7.webp');
 
 -- --------------------------------------------------------
 
@@ -283,10 +294,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`) VALUES
 (33, 'quangndgcc200030@fpt.edu.vn', '[\"ROLE_ADMIN\"]', '$2y$13$ZMC0vswJFdqGtxfrVTJet.nhY7gCeEVdC5ioDEjMlQ9BdZR1LyObG', 1),
-(39, 'duongntgcc200026@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$Mjgfqf0Av6LIjWV3KaJHweE8RpMaNHbdnaz/J/EwP0VmR94jQo/3a', 1),
-(40, 'trannqgcc210042@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$f6A6Ap8gaP8xzoNyZVXGkukBTMw0aLcY0TyqNrJ74ocAIKz6jPSPW', 1),
-(41, 'anhntgcc200302@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$lS2llNH7Z7hZUW1TUmmn7ubQvzg5bf.V4Wu8LgmXb0gRkLPkXF4TK', 1),
-(43, 'tronghbgcc200034@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$F3RKudUZb.i/qRJ6SLxEZ.2lcDrLacYILgY0ym..R5m6O2hCdMiiC', 1);
+(40, 'trannqgcc210042@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$wWH.iivwdPJXjrXaa9O0Cu3iNy4qgPq4BEcDc.RWprraGZ7xCubXa', 1),
+(45, 'duongntgcc200026@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$16C260SiE8f0qxee4nKumOGMUNQO8vcq93wxQfDP/lBv0mANVIs5q', 1);
 
 --
 -- Indexes for dumped tables
@@ -370,43 +379,43 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `reset_password_request`
 --
 ALTER TABLE `reset_password_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
@@ -418,7 +427,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- Constraints for dumped tables
@@ -441,7 +450,7 @@ ALTER TABLE `feedback`
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `FK_E52FFDEEED766068` FOREIGN KEY (`username_id`) REFERENCES `customers` (`id`);
+  ADD CONSTRAINT `FK_E52FFDEEED766068` FOREIGN KEY (`username_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `order_details`
@@ -454,8 +463,8 @@ ALTER TABLE `order_details`
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `FK_B3BA5A5A2ADD6D8C` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`),
-  ADD CONSTRAINT `FK_B3BA5A5A44F5D008` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`);
+  ADD CONSTRAINT `FK_B3BA5A5A2ADD6D8C` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_B3BA5A5A44F5D008` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reset_password_request`

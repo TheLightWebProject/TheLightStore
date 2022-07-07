@@ -71,7 +71,7 @@ class ProductController extends AbstractController
 
             $imgFile = $formProduct->get('image')->getData();
 
-            if ($imgFile) {
+            if ($imgFile && $imgFile != "") {
                 $originalFilename = pathinfo($imgFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $imgFile->guessExtension();
@@ -85,17 +85,23 @@ class ProductController extends AbstractController
                     echo $e;
                 }
                 $products->setImage($newFilename);
+                $entity->persist($products);
+                $entity->flush();
+
+                $this->addFlash(
+                    'success',
+                    'New product was added'
+                );
+
+                return $this->redirectToRoute("show_all_product");
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'Please choose image'
+                );
+
+                return $this->redirectToRoute("add_product");
             }
-
-            $entity->persist($products);
-            $entity->flush();
-
-            $this->addFlash(
-                'success',
-                'New product was added'
-            );
-
-            return $this->redirectToRoute("show_all_product");
         }
 
         return $this->render('product/add.html.twig', [
@@ -193,7 +199,7 @@ class ProductController extends AbstractController
         $filePath = $product->getImage();
         $file = $this->getParameter('image_product') . '/' . $filePath;
         unlink($file);
-        
+
         return new JsonResponse();
         // return $this->redirectToRoute("show_all_product");
     }

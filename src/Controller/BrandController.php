@@ -68,7 +68,7 @@ class BrandController extends AbstractController
 
             $imgFile = $formBrand->get('image')->getData();
 
-            if ($imgFile) {
+            if ($imgFile && $imgFile != "") {
                 $originalFilename = pathinfo($imgFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $imgFile->guessExtension();
@@ -82,17 +82,23 @@ class BrandController extends AbstractController
                     echo $e;
                 }
                 $brand->setImage($newFilename);
+                $entity->persist($brand);
+                $entity->flush();
+
+                $this->addFlash(
+                    'success',
+                    'New brand was added'
+                );
+
+                return $this->redirectToRoute("show_all_brands");
+            } else {
+                $this->addFlash(
+                    'danger',
+                    'Please choose image'
+                );
+
+                return $this->redirectToRoute("add_brand");
             }
-
-            $entity->persist($brand);
-            $entity->flush();
-
-            $this->addFlash(
-                'success',
-                'New brand was added'
-            );
-
-            return $this->redirectToRoute("show_all_brands");
         }
 
         return $this->render('brand/add.html.twig', [
@@ -194,6 +200,7 @@ class BrandController extends AbstractController
         $filePath = $brand->getImage();
         $file = $this->getParameter('image_brand') . '/' . $filePath;
         unlink($file);
+
         return new JsonResponse();
         // return $this->redirectToRoute("show_all_brands");
     }

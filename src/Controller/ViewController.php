@@ -113,14 +113,6 @@ class ViewController extends AbstractController
     }
 
     /**
-     * @Route("/management", name="index_management")
-     */
-    public function indexManagementAction(): Response
-    {
-        return $this->render('view/management.html.twig');
-    }
-
-    /**
      * @Route("/notification", name="notification")
      */
     public function notificationAction(ProductsRepository $repo): Response

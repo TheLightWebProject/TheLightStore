@@ -1,18 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Editing Products
+{% block title %}
+  Editing Products
 {% endblock %}
 
 {% block body %}
-	<div class="border pt-3 mb-2">
-		<div class="px-5">
-			<h1 class="text-center mb-4">Editing Product</h2>
-			{{ form_start(form_Product) }}
-			{{ form_widget(form_Product) }}
-			<div class="text-center">
-				<input class="btn btn-primary mb-3" type="submit" value="Edit">
-			</div>
-			{{ form_end(form_Product) }}
-		</div>
-	</div>
+  <div class="border pt-3 mb-2">
+    <div class="px-5">
+      <h1 class="text-center mb-4">Editing Product</h1>
+      {{ form_start(form_Product) }}
+      {{ form_widget(form_Product) }}
+      <div class="text-center">
+        <input class="btn btn-primary mb-3" type="submit" value="Edit" />
+      </div>
+      {{ form_end(form_Product) }}
+    </div>
+  </div>
 {% endblock %}
