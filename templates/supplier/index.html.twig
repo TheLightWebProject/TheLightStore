@@ -79,7 +79,8 @@
           {% for supplier in suppliers %}
             <tr class="text-center" id="sup{{ supplier.id }}">
               <td>
-                <a href="{{ path('shop', { sid: supplier.id }) }}" class="text-decoration-none">{{ count }}</a>
+                {# <a href="{{ path('shop', { sid: supplier.id }) }}" class="text-decoration-none">{{ count }}</a> #}
+                {{ count }}
               </td>
               <td>{{ supplier.name }}</td>
               <td>{{ supplier.telephone }}</td>

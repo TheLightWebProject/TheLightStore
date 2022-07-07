@@ -7,7 +7,7 @@
 {% block body %}
   <style>
     td p {
-      width: 30vw;
+      width: 25vw;
     }
     p.c {
       word-spacing: normal;
@@ -55,7 +55,8 @@
             <td class="text-center">{{ feedback.sendDate|date('Y-m-d H:i:s') }}</td>
             <td class="text-center">{{ feedback.fullname }}</td>
             <td class="text-center">
-              <a class="text-decoration-none" href="{{ path('view_detail_product', { id: feedback.proID }) }}">{{ feedback.name }}</a>
+              {# <a class="text-decoration-none" href="{{ path('view_detail_product', { id: feedback.proID }) }}">{{ feedback.name }}</a> #}
+              {{ feedback.name }}
             </td>
             <td class="text-center">
               <img src="{{ path('get_product_photo', { filename: feedback.image }) }}" width="50" height="50" />

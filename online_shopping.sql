@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 07, 2022 at 10:06 AM
+-- Generation Time: Jul 07, 2022 at 04:04 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.28
 
@@ -154,7 +154,6 @@ INSERT INTO `orders` (`id`, `username_id`, `order_date`, `delivery_date`, `check
 (29, 16, '2022-06-30 15:42:43', '2022-07-01 08:16:32', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 35),
 (30, 16, '2022-06-30 15:43:11', '2022-07-01 08:16:33', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 60),
 (31, 16, '2022-06-30 15:50:46', '2022-07-01 08:16:35', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 44),
-(32, 16, '2022-06-30 15:51:20', '2022-07-01 08:16:36', 1, 'Tan Hanh, Vinh Long', 'Nguyen Que Tran', '0706546651', 45),
 (33, 16, '2022-07-03 14:02:36', '2022-07-03 14:09:15', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 35),
 (34, 16, '2022-07-03 14:04:27', '2022-07-03 14:09:17', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 65),
 (35, 22, '2022-07-04 11:16:10', '2022-07-04 11:16:10', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 22),
@@ -184,8 +183,6 @@ INSERT INTO `order_details` (`id`, `orders_id`, `product_id`, `quantity`, `total
 (36, 29, 23, 1, 35),
 (37, 30, 21, 2, 60),
 (38, 31, 20, 2, 44),
-(39, 32, 21, 1, 30),
-(40, 32, 11, 1, 15),
 (41, 33, 23, 1, 35),
 (42, 34, 23, 1, 35),
 (43, 34, 18, 1, 30),

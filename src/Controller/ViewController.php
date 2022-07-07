@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ViewController extends AbstractController
 {
     /**
-     * @Route("/homepage", name="index")
+     * @Route("/home", name="index")
      */
     public function index(ProductsRepository $repo): Response
     {
