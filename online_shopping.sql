@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2022 at 10:34 AM
+-- Generation Time: Jul 07, 2022 at 10:06 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.28
 
@@ -69,7 +69,6 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `fullname`, `sex`, `telephone`, `address`, `birthday`, `user_id`) VALUES
 (16, 'Nguyen Duy Quang', 1, '0916843367', 'Ninh Kieu, Can Tho city', '2002-08-05', 33),
-(17, 'Nguyen Que Tran', 0, '0706546651', 'Tan Hanh, Vinh Long', '2003-03-09', 40),
 (22, 'Nguyen Thai Duong', 1, '0375741165', 'An Binh, Vinh Long', '2002-03-15', 45);
 
 -- --------------------------------------------------------
@@ -160,7 +159,8 @@ INSERT INTO `orders` (`id`, `username_id`, `order_date`, `delivery_date`, `check
 (34, 16, '2022-07-03 14:04:27', '2022-07-03 14:09:17', 1, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 65),
 (35, 22, '2022-07-04 11:16:10', '2022-07-04 11:16:10', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 22),
 (39, 22, '2022-07-04 11:21:51', '2022-07-04 11:21:51', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 29),
-(42, 22, '2022-07-04 11:30:20', '2022-07-04 11:30:20', 0, 'Hung Loi, Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0327281160', 30);
+(42, 22, '2022-07-04 11:30:20', '2022-07-04 11:30:20', 0, 'Hung Loi, Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0327281160', 30),
+(48, 22, '2022-07-07 14:29:05', '2022-07-07 14:29:05', 0, 'Phung Hiep, Hau Giang', 'Nguyen Tuan Anh', '0704725944', 20);
 
 -- --------------------------------------------------------
 
@@ -191,7 +191,8 @@ INSERT INTO `order_details` (`id`, `orders_id`, `product_id`, `quantity`, `total
 (43, 34, 18, 1, 30),
 (44, 35, 20, 1, 22),
 (46, 39, 14, 1, 9),
-(49, 42, 18, 1, 30);
+(49, 42, 18, 1, 30),
+(56, 48, 12, 1, 20);
 
 -- --------------------------------------------------------
 
@@ -224,7 +225,7 @@ INSERT INTO `products` (`id`, `brand_id`, `supplier_id`, `name`, `price`, `small
 (9, 16, 5, 'Green T-shirt', 10, 'Small Desc Green T-shirt', 'Detail Desc Green T-shirt', '2022-06-21 02:42:51', 4, 'download-62b1140b9713a.jpg'),
 (10, 15, 5, 'White T-shirt', 20, 'Small Desc White T-shirt', 'Detail Desc White T-shirt', '2022-06-21 02:44:07', 3, 'z3398765216804-bbd37e95412ae276b0740ed82e342127-62b11457561d8.jpg'),
 (11, 13, 5, 'Checkered shirt', 15, 'Small Desc Checkered shirt', 'Detail Desc Checkered shirt', '2022-06-21 02:45:42', 1, 'z3398766422532-ede724b6a5829547fd899e7c185a16c8-62b114b6ab823.jpg'),
-(12, 16, 6, 'Shorts', 20, 'Small Desc Shorts', 'Detail Desc Shorts', '2022-06-21 02:46:22', 1, 'z3398766617127-271089c387fd75d4a1bcc129e6b7e14e-62b114de4e57b.jpg'),
+(12, 16, 6, 'Shorts', 20, 'Small Desc Shorts', 'Detail Desc Shorts', '2022-06-21 02:46:22', 0, 'z3398766617127-271089c387fd75d4a1bcc129e6b7e14e-62b114de4e57b.jpg'),
 (13, 13, 4, 'Moss green shirt', 23, 'Small Desc Moss green shirt', 'Detail Desc Moss green shirt', '2022-06-21 02:47:50', 3, 'download-1-62b11536a566a.jpg'),
 (14, 10, 6, 'Navy swim short', 9, 'Small Desc Navy swim short', 'Detail Desc Navy swim short', '2022-06-21 02:48:35', 0, 'navyswimshorts-62b1156326539.jpg'),
 (15, 16, 4, 'Shorts stock', 11, 'Small Desc Shorts stock', 'Detail Desc Shorts stock', '2022-06-21 02:49:45', 2, 'ShortsStock-62b115a9f407e.jpg'),
@@ -294,7 +295,6 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`) VALUES
 (33, 'quangndgcc200030@fpt.edu.vn', '[\"ROLE_ADMIN\"]', '$2y$13$ZMC0vswJFdqGtxfrVTJet.nhY7gCeEVdC5ioDEjMlQ9BdZR1LyObG', 1),
-(40, 'trannqgcc210042@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$wWH.iivwdPJXjrXaa9O0Cu3iNy4qgPq4BEcDc.RWprraGZ7xCubXa', 1),
 (45, 'duongntgcc200026@fpt.edu.vn', '[\"ROLE_USER\"]', '$2y$13$16C260SiE8f0qxee4nKumOGMUNQO8vcq93wxQfDP/lBv0mANVIs5q', 1);
 
 --
@@ -397,13 +397,13 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `products`
