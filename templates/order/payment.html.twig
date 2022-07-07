@@ -1,84 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Payment
+{% block title %}
+  Payment
 {% endblock %}
 
 {% block body %}
-	<div class="cardorder border my-2 p-md-3">
-		<div class="cardorder-top border-bottom text-center mb-4">
-			<span id="logo">The Light SecondHand</span>
-		</div>
-		<form action="" method="POST" class="cardorder-body">
-			<div class="row">
-				<div class="col-md-6">
-					<div class="left border">
-						<div class="header fw-bold ms-2">Customer's infomation</div>
-						<div class="row mt-3">
-							<div>
-								<span>Order's name:</span>
-								<input class="input" name="txtFullname" placeholder="Full name" value="{{ customer.fullname }}">
-							</div>
-							<div>
-								<span>Phone Number:</span>
-								<input class="input" name="txtPhonenumber" placeholder="Phone Number" value="{{ customer.telephone }}">
-							</div>
-							<div>
-								<span>Address:</span>
-								<input class="input" name="txtAddress" placeholder="Address" value="{{ customer.address }}">
-							</div>
-						</div>
-					</div>
-				</div>
+  <div class="cardorder border my-2 p-md-3">
+    <div class="cardorder-top border-bottom text-center mb-4">
+      <span id="logo">The Light SecondHand</span>
+    </div>
+    <form action="" method="POST" class="cardorder-body">
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <div class="left border">
+            <div class="header fw-bold ms-2">Customer's infomation</div>
+            <div class="row mt-3">
+              <div>
+                <span>Order's name:</span>
+                <input class="input" name="txtFullname" placeholder="Full name" value="{{ customer.fullname }}" />
+              </div>
+              <div>
+                <span>Phone Number:</span>
+                <input class="input" name="txtPhonenumber" placeholder="Phone Number" value="{{ customer.telephone }}" />
+              </div>
+              <div>
+                <span>Address:</span>
+                <input class="input" name="txtAddress" placeholder="Address" value="{{ customer.address }}" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-				<div class="col-md-6">
-					<div class="right border">
-						<div class="header fw-bold">Order Summary</div>
-						<hr>
-						{% if sessions is defined and sessions is iterable %}
-							{% set all = 0 %}
-							{% set item = 0 %}
-							{% for i, session in sessions %}
-								{% set total = session[4] * session[5] %}
-								{% set all = all + total %}
-								<div class="row item">
-									<div class="col-4 align-self-center"><img class="img-fluid" src="{{ path('get_product_photo', {'filename' : session[3]} ) }}"></div>
-									<div class="col-8">
-										<b>${{ session[5] }}</b>
-										<div class="row text-muted">{{ session[1] }}</div>
-										<div class="row">Qty:
-											{{ session[4] }}</div>
-									</div>
-								</div>
-								<hr>
-                                {% set item = item + 1 %}
-							{% endfor %}
-							<div class="row lower">
-								<div class="col text-left">item</div>
-								<div class="col text-right">{{ item }}</div>
-							</div>
-							<div class="row lower">
-								<div class="col text-left">Subtotal</div>
-								<div class="col text-right">${{ all }}</div>
-							</div>
-							<div class="row lower">
-								<div class="col text-left">Delivery</div>
-								<div class="col text-right">Free</div>
-							</div>
-							<div class="row lower">
-								<div class="col text-left">
-									<b>Total to pay</b>
-								</div>
-								<div class="col text-right">
-									<b>${{ all }}</b>
-								</div>
-							</div>
-						{% endif %}
-						<input type="hidden" name="totalprice" value="{{ all }}">
-						<input type="submit" class="btn btn-primary btnorder my-3" name="btnPayment" id="btnPayment" value="Payment"/>
-						<p class="text-muted text-center">Complimentary Shipping</p>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
+        <div class="col-md-6">
+          <div class="right border">
+            <div class="header fw-bold">Order Summary</div>
+            <hr />
+            {% if sessions is defined and sessions is iterable %}
+              {% set all = 0 %}
+              {% set item = 0 %}
+              {% for i, session in sessions %}
+                {% set total = session[4] * session[5] %}
+                {% set all = all + total %}
+                <div class="row item">
+                  <div class="col-4 align-self-center">
+                    <img class="img-fluid" src="{{ path('get_product_photo', { filename: session[3] }) }}" />
+                  </div>
+                  <div class="col-8">
+                    <b>${{ session[5] }}</b>
+                    <div class="row text-muted">{{ session[1] }}</div>
+                    <div class="row">Qty:
+                      {{ session[4] }}</div>
+                  </div>
+                </div>
+                <hr />
+                {% set item = item + 1 %}
+              {% endfor %}
+              <div class="row lower">
+                <div class="col text-left">item</div>
+                <div class="col text-right">{{ item }}</div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">Subtotal</div>
+                <div class="col text-right">${{ all }}</div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">Delivery</div>
+                <div class="col text-right">Free</div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">
+                  <b>Total to pay</b>
+                </div>
+                <div class="col text-right">
+                  <b>${{ all }}</b>
+                </div>
+              </div>
+            {% endif %}
+            <input type="hidden" name="totalprice" value="{{ all }}" />
+            <input type="submit" class="btn btn-primary btnorder my-3" name="btnPayment" id="btnPayment" value="Payment" />
+            <p class="text-muted text-center">Complimentary Shipping</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 {% endblock %}
