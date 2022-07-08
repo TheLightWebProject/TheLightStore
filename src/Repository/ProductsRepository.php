@@ -64,7 +64,7 @@ class ProductsRepository extends ServiceEntityRepository
     /**
      * @return Products[]
      */
-    public function showTop4BestSelling(): array
+    public function showTopBestSelling(): array
     {
         $query = $this->createQueryBuilder('p')
             ->select('p.id, p.name, p.price, p.image, COUNT(p.id), SUM(od.quantity)')
@@ -72,7 +72,7 @@ class ProductsRepository extends ServiceEntityRepository
             ->groupBy('p.id')
             ->orderBy('SUM(od.quantity)', 'DESC')
             ->addOrderBy('p.createdDate', 'DESC')
-            ->setMaxResults(4);
+            ->setMaxResults(6);
         return $query->getQuery()->execute();
     }
 

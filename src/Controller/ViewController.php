@@ -21,7 +21,7 @@ class ViewController extends AbstractController
      */
     public function index(ProductsRepository $repo): Response
     {
-        $products = $repo->showTop4BestSelling();
+        $products = $repo->showTopBestSelling();
 
         return $this->render('view/content.html.twig', [
             'products' => $products,
