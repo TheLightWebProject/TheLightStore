@@ -33,7 +33,7 @@ class CartController extends AbstractController
                 $fl = 0;
                 //Check whether or not the product has been duplicated
                 for ($i = 0; $i < sizeof($_SESSION['cart_item']); $i++) {
-                    if ($_SESSION['cart_item'][$i][1] == $name) {
+                    if ($_SESSION['cart_item'][$i][1] == $name && $_SESSION['cart_item'][$i][0] == $id) {
                         $fl = 1;
                         $newqty = $quantity + $_SESSION['cart_item'][$i][4];
                         //check whether or not the purchase quantity is greater than the inventory quantity
