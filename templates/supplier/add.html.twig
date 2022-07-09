@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Adding Supplier
+	Adding Supplier
 {% endblock %}
 
 {% block body %}
-  <div class="border pt-2 mb-2">
-    <div class="px-5">
-      <h1 class="text-center mb-4">Adding Supplier</h1>
-      {{ form_start(form_Supplier) }}
-      {{ form_row(form_Supplier.name) }}
-      {{ form_row(form_Supplier.telephone) }}
-      {{ form_row(form_Supplier.email) }}
-      <div class="text-center">{{ form_row(form_Supplier.save) }}</div>
-      {{ form_end(form_Supplier) }}
-    </div>
-  </div>
+	<div class="border pt-2 mb-2">
+		<div class="px-5">
+			<h1 class="text-center mb-4">Adding Supplier</h1>
+			{{ form_start(form_Supplier) }}
+			{{ form_row(form_Supplier.name) }}
+			{{ form_row(form_Supplier.telephone) }}
+			{{ form_row(form_Supplier.email) }}
+			<div class="text-center">
+				<input class="btn btn-primary mb-3" type="submit" value="Add">
+			</div>
+			{{ form_end(form_Supplier) }}
+		</div>
+	</div>
 {% endblock %}
