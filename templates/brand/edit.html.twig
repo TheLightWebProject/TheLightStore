@@ -1,19 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Edit Brands
+	Edit Brands
 {% endblock %}
 
 {% block body %}
-  <div class="border py-3 mb-2">
-    <div class="px-5">
-      <h1 class="text-center mb-4">Edit Brand</h1>
-      {{ form_start(form_Brand) }}
-      {{ form_row(form_Brand.name) }}
-      {{ form_row(form_Brand.decrip) }}
-      {{ form_row(form_Brand.image) }}
-      <div class="text-center">{{ form_row(form_Brand.save) }}</div>
-      {{ form_end(form_Brand) }}
-    </div>
-  </div>
+	<div class="border py-3 mb-2">
+		<div class="px-5">
+			<h1 class="text-center mb-4">Edit Brand</h1>
+			{{ form_start(form_Brand) }}
+			{{ form_row(form_Brand.name) }}
+			{{ form_row(form_Brand.decrip) }}
+			{{ form_row(form_Brand.image) }}
+			<div class="text-center">
+				<input class="btn btn-primary mb-3" type="submit" value="Edit">
+			</div>
+			{{ form_end(form_Brand) }}
+		</div>
+	</div>
 {% endblock %}

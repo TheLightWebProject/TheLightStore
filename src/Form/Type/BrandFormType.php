@@ -29,9 +29,6 @@ class BrandFormType extends AbstractType
             'label' => 'Image',
             'mapped' => false,
             'required' => false,
-        ])
-        ->add('save', SubmitType::class, [
-            'label' => "Save"
         ]);
     }
 }

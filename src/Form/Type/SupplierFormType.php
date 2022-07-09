@@ -24,9 +24,7 @@ class SupplierFormType extends AbstractType
         ->add('name', TextType::class)
         ->add('telephone', TextType::class)
         ->add('email', EmailType::class)
-        ->add('save', SubmitType::class, [
-            'label' => "Save"
-        ]);
+        ;
     }
 }
 
