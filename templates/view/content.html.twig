@@ -9,7 +9,7 @@
     section {
       padding: 2rem 9%;
     }
-
+    
     header {
       position: fixed;
       margin: 0 12px 0 12px;
@@ -248,7 +248,19 @@
   </section>
   <!-- icons section ends -->
 
-  <!-- review section starts -->
+  <div class="mt-2">
+    <h2><b>Top Brands</b></h2>
+    <div class="row mt-50">
+      {% for brand in brands %}
+        <div class="col-12 col-sm-6 col-md-6 col-lg-3 p-5 d-flex align-items-center justify-content-center">
+          <a href="{{ path('shop', { bid: brand.id }) }}">
+            <img class="img-fluid" src="{{ path('get_brand_photo', { filename: brand.image }) }}" alt="{{ brand.name }}" />
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
   <div class="mt-2">
     <h2><b>Top Best-selling</b></h2>
     <div class="d-flex justify-content-center mt-50">

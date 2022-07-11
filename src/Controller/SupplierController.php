@@ -103,7 +103,7 @@ class SupplierController extends AbstractController
     }
 
     /**
-     * @Route("/management/supplier/delete/{id}", name="delete_supplier")
+     * @Route("/management/supplier/delete/{id}", name="delete_supplier", methods={"DELETE"})
      */
     public function deleteSupplierAction(SuppliersRepository $repo, ManagerRegistry $res, int $id): Response
     {

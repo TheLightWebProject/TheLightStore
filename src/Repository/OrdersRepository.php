@@ -52,6 +52,69 @@ class OrdersRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
+    //SELECT * FROM orders o WHERE MONTH(o.order_date) = 7
+    /**
+     * @return Orders[]
+     */
+    public function findDateOfOrder($year, $month, $day): array
+    {
+        $query = [];
+        if ($day == 0 && $month == 0) {
+            $query = $this->createQueryBuilder('o')
+                ->select('o.id, o.orderDate, o.deliveryDate, o.checked, o.deliveryLocal, o.custName, o.custPhone, o.totalPrice')
+                ->where('YEAR(o.orderDate) = :year')
+                ->setParameter('year', $year)
+                ->orderBy('o.orderDate', 'DESC');
+        } elseif ($day == 0) {
+            $query = $this->createQueryBuilder('o')
+                ->select('o.id, o.orderDate, o.deliveryDate, o.checked, o.deliveryLocal, o.custName, o.custPhone, o.totalPrice')
+                ->where('YEAR(o.orderDate) = :year')
+                ->setParameter('year', $year)
+                ->andWhere('MONTH(o.orderDate) = :month')
+                ->setParameter('month', $month)
+                ->orderBy('o.orderDate', 'DESC');
+        } else {
+            $query = $this->createQueryBuilder('o')
+                ->select('o.id, o.orderDate, o.deliveryDate, o.checked, o.deliveryLocal, o.custName, o.custPhone, o.totalPrice')
+                ->where('YEAR(o.orderDate) = :year')
+                ->setParameter('year', $year)
+                ->andWhere('MONTH(o.orderDate) = :month')
+                ->setParameter('month', $month)
+                ->andWhere('DAY(o.orderDate) = :day')
+                ->setParameter('day', $day)
+                ->orderBy('o.orderDate', 'DESC');
+        }
+        return $query->getQuery()->execute();
+    }
+
+    // /**
+    //  * @return Orders[]
+    //  */
+    // public function findByMonthAndYear($year, $month): array
+    // {
+    //     $query = $this->createQueryBuilder('o')
+    //         ->select('o.id, o.orderDate, o.deliveryDate, o.checked, o.deliveryLocal, o.custName, o.custPhone, o.totalPrice')
+    //         ->where('YEAR(o.orderDate) = :year')
+    //         ->setParameter('year', $year)
+    //         ->andWhere('MONTH(o.orderDate) = :month')
+    //         ->setParameter('month', $month)
+    //         ->orderBy('o.orderDate', 'DESC');
+    //     return $query->getQuery()->execute();
+    // }
+
+    // /**
+    //  * @return Orders[]
+    //  */
+    // public function findByYear($year): array
+    // {
+    //     $query = $this->createQueryBuilder('o')
+    //         ->select('o.id, o.orderDate, o.deliveryDate, o.checked, o.deliveryLocal, o.custName, o.custPhone, o.totalPrice')
+    //         ->where('YEAR(o.orderDate) = :year')
+    //         ->setParameter('year', $year)
+    //         ->orderBy('o.orderDate', 'DESC');
+    //     return $query->getQuery()->execute();
+    // }
+
     //    /**
     //     * @return Orders[] Returns an array of Orders objects
     //     */

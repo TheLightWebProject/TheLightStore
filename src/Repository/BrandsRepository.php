@@ -50,6 +50,28 @@ class BrandsRepository extends ServiceEntityRepository
         return $query->getQuery()->execute();
     }
 
+    // SELECT b.id, b.image, b.name, COUNT(b.id), SUM(od.quantity)
+    // FROM brands b INNER JOIN products p
+    // ON b.id = p.brand_id INNER JOIN order_details od
+    // ON P.id = od.product_id
+    // GROUP BY b.id
+    // ORDER BY SUM(od.quantity)
+    // DESC
+    /**
+     * @return Brands[]
+     */
+    public function showBrandHome(): array
+    {
+        $query = $this->createQueryBuilder('b')
+            ->select('b.id, b.image, b.name, COUNT(b.id), SUM(od.quantity)')
+            ->innerJoin('b.products', 'p')
+            ->innerJoin('p.orderDetails', 'od')
+            ->groupBy('b.id')
+            ->orderBy('SUM(od.quantity)', 'DESC')
+            ->setMaxResults(4);
+        return $query->getQuery()->execute();
+    }
+
     //    /**
     //     * @return Brands[] Returns an array of Brands objects
     //     */

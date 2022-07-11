@@ -43,7 +43,7 @@
         <a href="{{ path('add_supplier') }}" class="btn btn-outline-primary"><img src="../Image/add.png" alt="Add new" width="16" height="16" border="0" />Add</a>
       </div>
       <div class="col-6 d-flex justify-content-end align-items-center">
-        <form action="/management/supplier" method="POST" class="d-flex input-group w-auto">
+        <form action="{{ path('show_all_supplier') }}" method="POST" class="d-flex input-group w-auto">
           <input name="txtSearchSupplier" type="search" class="form-control" placeholder="Search by name" aria-label="Search" aria-describedby="search-addon" />
           <button class="btn btn-secondary searching" type="submit" name="btnSearchSupplier"><i class="bi bi-search"></i></button>
         </form>

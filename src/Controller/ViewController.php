@@ -19,12 +19,14 @@ class ViewController extends AbstractController
     /**
      * @Route("/home", name="index")
      */
-    public function index(ProductsRepository $repo): Response
+    public function index(ProductsRepository $repo, BrandsRepository $repoBrand): Response
     {
         $products = $repo->showTopBestSelling();
+        $brands = $repoBrand->showBrandHome();
 
         return $this->render('view/content.html.twig', [
             'products' => $products,
+            'brands' => $brands
         ]);
     }
 

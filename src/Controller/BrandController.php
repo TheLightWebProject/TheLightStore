@@ -107,7 +107,7 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/management/brand/getphoto/{filename}", name="get_brand_photo")
+     * @Route("/brand/getphoto/{filename}", name="get_brand_photo")
      */
     public function getBrandPhoto($filename): Response
     {
@@ -181,7 +181,7 @@ class BrandController extends AbstractController
     }
 
     /**
-     * @Route("/management/brand/delete/{id}", name="delete_brand")
+     * @Route("/management/brand/delete/{id}", name="delete_brand", methods={"DELETE"})
      */
     public function deleteBrandAction(BrandsRepository $repo, ManagerRegistry $res, int $id): Response
     {

@@ -180,7 +180,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/management/product/delete/{id}", name="delete_product")
+     * @Route("/management/product/delete/{id}", name="delete_product", methods={"DELETE"})
      */
     public function deleteProductAction(ProductsRepository $repo, ManagerRegistry $res, int $id): Response
     {

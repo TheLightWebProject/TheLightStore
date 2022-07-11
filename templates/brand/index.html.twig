@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
   <script>
     $(document).ready(function () {
-      $('table#tablebrand td a.trash').click(function () {
+      $('table#tablebrand td a.trash').click(function() {
         var el = this
         if (confirm('Are you sure you want to delete this brand?')) {
           var id = $(this).attr('id')
@@ -43,7 +43,7 @@
         <a href="{{ path('add_brand') }}" class="btn btn-outline-primary"><img src="../Image/add.png" alt="Add new" width="16" height="16" border="0" />Add</a>
       </div>
       <div class="col-6 d-flex justify-content-end align-items-center">
-        <form action="/management/brand" method="POST" class="d-flex input-group w-auto">
+        <form action="{{ path('show_all_brands') }}" method="POST" class="d-flex input-group w-auto">
           <input name="txtSearchBrand" type="search" class="form-control" placeholder="Search by name" aria-label="Search" aria-describedby="search-addon" />
           <button class="btn btn-secondary searching" type="submit" name="btnSearchBrand"><i class="bi bi-search"></i></button>
         </form>

@@ -5,9 +5,106 @@
 {% endblock %}
 
 {% block body %}
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    function is_leap_year($year) {
+      return $year % 4 == 0 && ($year % 100 != 0 || $year % 400 == 0)
+    }
+    
+    function formValid() {
+      f = document.formOrder
+      if (f.slYear.value == 0 && f.slMonth.value == 0 && f.slDay.value == 0) {
+        alert('Invalid, please enter again')
+        return false
+      }
+      if (is_leap_year(f.slYear.value) && f.slMonth.value == 2 && f.slDay.value > 29) {
+        alert('Invalid, please enter again')
+        return false
+      }
+      if (!is_leap_year(f.slYear.value) && f.slMonth.value == 2 && f.slDay.value > 28) {
+        alert('Invalid, please enter again')
+        return false
+      }
+      if ((f.slMonth.value == 4 || f.slMonth.value == 6 || f.slMonth.value == 9 || f.slMonth.value == 11) && f.slDay.value > 30) {
+        alert('Invalid, please enter again')
+        return false
+      }
+      return true
+    }
+  </script>
   <div class="border pt-2 mb-2">
     <h1 class="text-center mb-4">Order List</h1>
-    <table id="tablecategory" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
+    <div class="text-center mb-2 d-flex row align-items-center">
+      <script type="text/javascript">
+        function sendData() {
+          $.ajax({
+            url: '/management/order/export',
+            type: 'POST',
+            success: function () {
+              window.open('/management/order/export')
+            }
+          })
+        }
+      </script>
+      {# {% set array = [] %}
+      {% for order in orders %}
+        {% set array = array|merge([order.orderDate|date('y-m-d H:i:s'), order.deliveryDate|date('y-m-d H:i:s'), order.custName, order.custPhone, order.deliveryLocal, order.totalPrice]) %}
+      {% endfor %}
+      <input type="hidden" id="array" value="{{ array|json_encode }}" />
+      <script type="text/javascript">
+        function sendData() {
+          var orders = document.getElementById('array').value
+          $.ajax({
+            url: '/management/order/export',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'json',
+            data: { orders: JSON.stringify(orders) },
+            success: function () {
+              window.open('/management/order/export')
+            }
+          })
+        }
+      </script> #}
+      <div class="col-6 text-start">
+        <button class="btn btn-success" id="export" onclick="sendData()">Export</button>
+      </div>
+      <div class="col-6 d-flex justify-content-end align-items-center">
+        <form action="{{ path('show_all_order') }}" name="formOrder" method="POST" class="input-group w-auto" onsubmit="return formValid()">
+          {# <input name="txtSearchBrand" type="search" class="form-control" placeholder="Search by name" aria-label="Search" aria-describedby="search-addon" /> #}
+          <div class="input-group">
+            <span class="col-md-3 pb-md-0 col-12 pb-2 p-0">
+              <select name="slYear" id="slYear" class="form-control">
+                <option value="0">Year</option>
+                {% for i in 2000..2030 %}
+                  <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+            </span>
+            <span class="col-md-3 py-md-0 col-12 py-2">
+              <select name="slMonth" id="slMonth" class="form-control">
+                <option value="0">Month</option>
+                {% for i in 1..12 %}
+                  <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+            </span>
+            <span class="col-md-3 pt-md-0 col-12 py-2">
+              <select name="slDay" id="slDay" class="form-control">
+                <option value="0">Day</option>
+                {% for i in 1..31 %}
+                  <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+            </span>
+            <span class="col-md-3 pt-md-0 col-12 pt-2"><button class="btn btn-secondary" type="submit" name="btnSearchOrder"><i class="bi bi-search"></i></button></span>
+          </div>
+        </form>
+      </div>
+    </div>
+    <table id="tableorder" class="table table-striped table-bordered m-0" cellspacing="0" width="100%">
       <thead class="justify-content-md-between justify-content-sm-center align-content-center border-bottom border-2 my-2 bg-dark text-light p-3 rounded-3">
         <tr class="text-center">
           <th>
