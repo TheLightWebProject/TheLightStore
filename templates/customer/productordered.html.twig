@@ -39,7 +39,9 @@
           {% set count = 1 %}
           {% for order in product_ordered %}
             <tr>
-              <td class="text-center"><a href="{{ path('product_ordered_detail', { 'id': order.id }) }}" class="text-decoration-none">{{ count }}</a></td>
+              <td class="text-center">
+                <a href="{{ path('product_ordered_detail', { id: order.id }) }}" class="text-decoration-none">{{ count }}</a>
+              </td>
               <td class="text-center">{{ order.orderDate|date('Y-m-d H:i:s') }}</td>
               <td class="text-center">{{ order.deliveryDate|date('Y-m-d H:i:s') }}</td>
               <td class="text-center">{{ order.custName }}</td>

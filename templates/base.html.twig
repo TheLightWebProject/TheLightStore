@@ -94,6 +94,20 @@
     </style>
   </head>
   <body>
+    <script>
+      function formValid() {
+        f = document.formSearch
+        var validname = /^[A-Za-z]+|(\s)$/
+        var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/
+      
+        if (f.txtSearch.value == '' || format.test(f.txtSearch.value) || validname.test(f.txtSearch.value) == false) {
+          alert("Search can't be empty, number, and special character. Please enter again")
+          f.txtSearch.focus()
+          return false
+        }
+        return true
+      }
+    </script>
     <div class="container-fluid">
       {% if is_granted('ROLE_ADMIN') %}
         {% include 'view/management.html.twig' %}
@@ -101,7 +115,7 @@
         <header class="d-flex flex-wrap text-center justify-content-md-between py-4" style="background-color: #E0E0E0;">
           <div class="col-xl-3 col-lg-3 col-md-3 col-12 ms-md-4 d-flex justify-content-center justify-content-lg-start text-dark align-items-center">
             <img title="The Light SecondHand" onclick="location.href='{{ path('index') }}'" src="../../../Image/TL.png" height="40" width="40" class="me-2" style="border-radius: 5px" role="button" />
-            <form class="d-flex input-group w-auto" method="POST" action="/shop">
+            <form id="formSearch" name="formSearch" class="d-flex input-group w-auto" method="POST" action="{{ path('shop') }}" onsubmit="return formValid()">
               <input name="txtSearch" type="search" class="form-control" placeholder="Search the product" aria-label="Search" aria-describedby="search-addon" />
               <button class="btn btn-secondary searching" type="submit" name="btnSearch"><i class="bi bi-search"></i></button>
             </form>

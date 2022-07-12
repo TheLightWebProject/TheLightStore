@@ -29,6 +29,9 @@
           <th>
             <strong>Image</strong>
           </th>
+          <th>
+            <strong>Give Feedback</strong>
+          </th>
           {# <th>
 						<strong>Delete</strong>
 					</th> #}
@@ -46,6 +49,9 @@
             <td>${{ pod.totalPrice }}</td>
             <td>
               <a href="{{ path('view_detail_product', { id: pod.proID }) }}"><img src="{{ path('get_product_photo', { filename: pod.image }) }}" width="50" height="50" /></a>
+            </td>
+            <td class="text-center">
+              <a href="{{ path('give_feedback', { id: pod.proID }) }}" class="btn btn-warning">Feedback</a>
             </td>
             {# <td>
 							<a href="{{ path('delele_oreder_detail', { 'id': orderDetail.odID }) }}" onclick="return confirm('Are you sure to delete!')">
