@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Customers;
-use App\Form\Type\ChangePasswordFormType;
 use App\Form\Type\CustomerFormType;
 use App\Repository\CustomersRepository;
 use App\Repository\OrderDetailsRepository;
-use App\Repository\OrdersRepository;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,8 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 class CustomerController extends AbstractController

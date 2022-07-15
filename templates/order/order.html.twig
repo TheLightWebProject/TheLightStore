@@ -37,18 +37,18 @@
   <div class="border pt-2 mb-2">
     <h1 class="text-center mb-4">Order List</h1>
     <div class="text-center mb-2 d-flex row align-items-center">
-      <script type="text/javascript">
-        function sendData() {
-          $.ajax({
-            url: '/management/order/export',
-            type: 'POST',
-            success: function () {
-              window.open('/management/order/export')
-            }
-          })
-        }
-      </script>
-      {# {% set array = [] %}
+      {# <script type="text/javascript">
+           function sendData() {
+             $.ajax({
+               url: '/management/order/export',
+               type: 'POST',
+               success: function () {
+                 window.open('/management/order/export')
+               }
+             })
+           }
+         </script> #}
+      {% set array = [] %}
       {% for order in orders %}
         {% set array = array|merge([order.orderDate|date('y-m-d H:i:s'), order.deliveryDate|date('y-m-d H:i:s'), order.custName, order.custPhone, order.deliveryLocal, order.totalPrice]) %}
       {% endfor %}
@@ -57,17 +57,15 @@
         function sendData() {
           var orders = document.getElementById('array').value
           $.ajax({
-            url: '/management/order/export',
+            url: "{{ path('export') }}",
             type: 'POST',
-            dataType: 'json',
-            contentType: 'json',
             data: { orders: JSON.stringify(orders) },
-            success: function () {
-              window.open('/management/order/export')
+            success: function (data) {
+              window.open("{{ path('export') }}")
             }
           })
         }
-      </script> #}
+      </script>
       <div class="col-6 text-start">
         <button class="btn btn-success" id="export" onclick="sendData()">Export</button>
       </div>

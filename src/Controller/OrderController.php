@@ -4,11 +4,9 @@ namespace App\Controller;
 
 use App\Entity\OrderDetails;
 use App\Entity\Orders;
-use App\Form\Type\OrderFormType;
 use App\Repository\CustomersRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
-use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -18,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 class OrderController extends AbstractController
@@ -230,46 +227,49 @@ class OrderController extends AbstractController
         $orders = $repo->showAllOrder();
         // $orders = json_decode($request->getContent());
         // $orders = json_encode($request->request->all());
-        return $this->json(['property'=> $orders]);
-
-        // $spreadsheet = new Spreadsheet();
-
-        // /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
-        // $sheet = $spreadsheet->getActiveSheet();
-        // $sheet->setCellValue('A1', 'Order Date');
-        // $sheet->setCellValue('B1', 'Delivery date');
-        // $sheet->setCellValue('C1', 'Customer Name');
-        // $sheet->setCellValue('D1', 'Telephone');
-        // $sheet->setCellValue('E1', 'Address');
-        // $sheet->setCellValue('F1', 'Total Price');
-
-        // $count = 2;
-
-        // foreach ((array) $orders as $row) {
-        //     $sheet->setCellValue('A' . $count, $row["orderDate"]);
-        //     $sheet->setCellValue('B' . $count, $row["deliveryDate"]);
-        //     $sheet->setCellValue('C' . $count, $row["custName"]);
-        //     $sheet->setCellValue('D' . $count, $row["custPhone"]);
-        //     $sheet->setCellValue('E' . $count, $row["deliveryLocal"]);
-        //     $sheet->setCellValue('F' . $count, $row["totalPrice"]);
-
-        //     $count = $count + 1;
+        // if ($request->isXmlHttpRequest()) {
+        //     return $this->json(['data' => 'Successfully called the named route']);
         // }
+        // return $this->json(['property'=> 'false']);
 
-        // $sheet->setTitle("Statistical");
+        $spreadsheet = new Spreadsheet();
 
-        // // Create your Office 2007 Excel (XLSX Format)
-        // $writer = new Xlsx($spreadsheet);
+        /* @var $sheet \PhpOffice\PhpSpreadsheet\Writer\Xlsx\Worksheet */
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Order Date');
+        $sheet->setCellValue('B1', 'Delivery date');
+        $sheet->setCellValue('C1', 'Customer Name');
+        $sheet->setCellValue('D1', 'Telephone');
+        $sheet->setCellValue('E1', 'Address');
+        $sheet->setCellValue('F1', 'Total Price');
 
-        // // Create a Temporary file in the system
-        // $fileName = 'export_to_excel.xlsx';
-        // $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        $count = 2;
 
-        // // Create the excel file in the tmp directory of the system
-        // $writer->save($temp_file);
+        foreach ((array) $orders as $row) {
+            $sheet->setCellValue('A' . $count, $row["orderDate"]);
+            $sheet->setCellValue('B' . $count, $row["deliveryDate"]);
+            $sheet->setCellValue('C' . $count, $row["custName"]);
+            $sheet->setCellValue('D' . $count, $row["custPhone"]);
+            $sheet->setCellValue('E' . $count, $row["deliveryLocal"]);
+            $sheet->setCellValue('F' . $count, $row["totalPrice"]);
 
-        // // Return the excel file as an attachment
-        // return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
+            $count = $count + 1;
+        }
+
+        $sheet->setTitle("Statistical");
+
+        // Create your Office 2007 Excel (XLSX Format)
+        $writer = new Xlsx($spreadsheet);
+
+        // Create a Temporary file in the system
+        $fileName = 'export_to_excel.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+
+        // Create the excel file in the tmp directory of the system
+        $writer->save($temp_file);
+
+        // Return the excel file as an attachment
+        return $this->file($temp_file, $fileName, ResponseHeaderBag::DISPOSITION_INLINE);
     }
 
     /**

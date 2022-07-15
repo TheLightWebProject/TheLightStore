@@ -7,14 +7,12 @@ use App\Form\Type\FeedbackFormType;
 use App\Repository\CustomersRepository;
 use App\Repository\FeedbackRepository;
 use App\Repository\ProductsRepository;
-use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 class FeedbackController extends AbstractController
