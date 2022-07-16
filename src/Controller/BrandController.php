@@ -186,11 +186,6 @@ class BrandController extends AbstractController
     {
         $brand = $repo->find($id);
 
-        if (!$brand) {
-            throw
-            $this->createNotFoundException('Invalid ID' . $id);
-        }
-
         $entity = $res->getManager();
 
         $entity->remove($brand);

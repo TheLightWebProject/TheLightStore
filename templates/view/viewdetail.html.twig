@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block body %}
+  {% for message in app.flashes('success') %}
+    <div class="alert alert-success text-center mb-0 mt-2">{{ message }}</div>
+  {% endfor %}
   <div class="my-2 border">
     <div class="card">
       <div class="card-body">
@@ -32,13 +35,8 @@
                   <input type="number" name="quantity" class="col-md-2" value="1" min="1" max="{{ product[0].quantity }}" />
                   <input type="submit" name="addcart" class="btn btn-dark btn-rounded mx-md-2 my-2 my-md-0 col-md-3" value="Add to cart" />
                   <input type="submit" name="btnBuynow" formaction="{{ path('buynow') }}" class="btn btn-primary btn-rounded me-md-2 my-md-0 mb-2 col-md-3" value="Buy Now" />
+                  <input type="hidden" name="proid" value="{{ product[0].id }}" />
                 </div>
-                <input type="hidden" name="proid" value="{{ product[0].id }}" />
-                <input type="hidden" name="proname" value="{{ product[0].name }}" />
-                <input type="hidden" name="shortdesc" value="{{ product[0].smallDesc }}" />
-                <input type="hidden" name="image" value="{{ product[0].image }}" />
-                <input type="hidden" name="price" value="{{ product[0].price }}" />
-                <input type="hidden" name="qty" value="{{ product[0].quantity }}" />
               </form>
             {% else %}
               <h4 class="mt-md-4">Out of stock</h4>

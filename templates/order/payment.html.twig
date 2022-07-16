@@ -35,21 +35,18 @@
           <div class="right border">
             <div class="header fw-bold">Order Summary</div>
             <hr />
-            {% if sessions is defined and sessions is iterable %}
-              {% set all = 0 %}
+            {% if cart and cartDetails %}
               {% set item = 0 %}
-              {% for i, session in sessions %}
-                {% set total = session[4] * session[5] %}
-                {% set all = all + total %}
+              {% for cartDetail in cartDetails %}
                 <div class="row item">
                   <div class="col-4 align-self-center">
-                    <img class="img-fluid" src="{{ path('get_product_photo', { filename: session[3] }) }}" />
+                    <img class="img-fluid" src="{{ path('get_product_photo', { filename: cartDetail.image }) }}" />
                   </div>
                   <div class="col-8">
-                    <b>${{ session[5] }}</b>
-                    <div class="row text-muted">{{ session[1] }}</div>
+                    <b>${{ cartDetail.price }}</b>
+                    <div class="row text-muted">{{ cartDetail.name }}</div>
                     <div class="row">Qty:
-                      {{ session[4] }}</div>
+                      {{ cartDetail.quantity }}</div>
                   </div>
                 </div>
                 <hr />
@@ -61,7 +58,7 @@
               </div>
               <div class="row lower">
                 <div class="col text-left">Subtotal</div>
-                <div class="col text-right">${{ all }}</div>
+                <div class="col text-right">${{ cart.totalPrice }}</div>
               </div>
               <div class="row lower">
                 <div class="col text-left">Delivery</div>
@@ -72,11 +69,11 @@
                   <b>Total to pay</b>
                 </div>
                 <div class="col text-right">
-                  <b>${{ all }}</b>
+                  <b>${{ cart.totalPrice }}</b>
                 </div>
               </div>
             {% endif %}
-            <input type="hidden" name="totalprice" value="{{ all }}" />
+            <input type="hidden" name="totalprice" value="{{ cart.totalPrice }}" />
             <input type="submit" class="btn btn-primary btnorder my-3" name="btnPayment" id="btnPayment" value="Payment" />
             <p class="text-muted text-center">Complimentary Shipping</p>
           </div>

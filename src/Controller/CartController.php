@@ -2,6 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
+use App\Entity\CartDetails;
+use App\Repository\CartDetailsRepository;
+use App\Repository\CartRepository;
+use App\Repository\CustomersRepository;
+use App\Repository\FeedbackRepository;
+use App\Repository\ProductsRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,52 +21,108 @@ class CartController extends AbstractController
     /**
      * @Route("/cart", name="cart")
      */
-    public function cartAction(Request $req): Response
+    public function cartAction(Request $req, ManagerRegistry $res, CustomersRepository $repoCus, ProductsRepository $repoPro, CartRepository $repoCart, CartDetailsRepository $repoCartDetail, FeedbackRepository $repoFeed): Response
     {
         if (!$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY')) {
-            //Cart initialization
-            if (!isset($_SESSION['cart_item'])) $_SESSION['cart_item'] = [];
+            $user = $this->getUser();
+            $customer = $repoCus->findOneBy(['user' => $user]);
+            $cart = $repoCart->findOneBy(['customer' => $customer]);
+            $cartDetails = $repoCartDetail->showCartDetails($customer->getId());
 
             //Get information from form
             if (isset($_POST['addcart']) && ($_POST['addcart'])) {
                 $id = $req->request->get('proid');
-                $name = $req->request->get('proname');
-                $short = $req->request->get('shortdesc');
-                $image = $req->request->get('image');
+                $product = $repoPro->find($id);
                 $quantity = $req->request->get('quantity');
-                $price = $req->request->get('price');
-                $qty = $req->request->get('qty');
 
-                //Check whether or not the product has in the cart
-                $fl = 0;
-                //Check whether or not the product has been duplicated
-                for ($i = 0; $i < sizeof($_SESSION['cart_item']); $i++) {
-                    if ($_SESSION['cart_item'][$i][1] == $name && $_SESSION['cart_item'][$i][0] == $id) {
-                        $fl = 1;
-                        $newqty = $quantity + $_SESSION['cart_item'][$i][4];
-                        //check whether or not the purchase quantity is greater than the inventory quantity
-                        if ($newqty > $qty) {
-                            $this->addFlash(
-                                'danger',
-                                'The purchase quantity is greater than the inventory quantity'
-                            );
-                            return $this->redirectToRoute("cart");
-                        } else {
-                            $_SESSION['cart_item'][$i][4] = $newqty;
-                            break;
+                if ($cart == null) {
+                    $cartEntity = new Cart();
+                    $cartEntity->setCustomer($customer);
+                    $cartEntity->setTotalPrice($product->getPrice() * $quantity);
+
+                    $entity = $res->getManager();
+                    $entity->persist($cartEntity);
+                    $entity->flush();
+
+                    $cartDetailEntity = new CartDetails();
+                    $cartDetailEntity->setCart($repoCart->find($cartEntity->getId()));
+                    $cartDetailEntity->setProducts($product);
+                    $cartDetailEntity->setQuantity($quantity);
+                    $cartDetailEntity->setTotalPrice($product->getPrice() * $quantity);
+
+                    $entity = $res->getManager();
+                    $entity->persist($cartDetailEntity);
+                    $entity->flush();
+                } else {
+                    $cartEntity = $repoCart->find($cart->getId());
+                    $cartDetailTemp = $repoCartDetail->findBy(['cart' => $cartEntity]);
+
+                    foreach ($cartDetailTemp as $cartDetail) {
+                        if ($cartDetail->getProducts() == $product) {
+                            $newqty = $cartDetail->getQuantity() + $quantity;
+                            //check whether or not the purchase quantity is greater than the inventory quantity
+                            if ($newqty > $product->getQuantity()) {
+                                $this->addFlash(
+                                    'danger',
+                                    'The purchase quantity is greater than the inventory quantity'
+                                );
+                                return $this->redirectToRoute("cart");
+                            } else {
+                                //Update product existed
+                                $cartDetail->setQuantity($newqty);
+                                $cartDetail->setTotalPrice($newqty * $product->getPrice());
+
+                                $entity = $res->getManager();
+                                $entity->persist($cartDetail);
+
+                                //Update total price of cart
+                                $cartEntity->setTotalPrice($cartEntity->getTotalPrice() + ($quantity * $product->getPrice()));
+                                
+                                $entity->persist($cartEntity);
+                                $entity->flush();
+
+                                $this->addFlash(
+                                    'success',
+                                    'Add to cart successfully'
+                                );
+                                return $this->render('view/viewdetail.html.twig', [
+                                    'product' => $repoPro->viewDetail($id),
+                                    'show_Feeds' => $repoFeed->allowDisplayFeedback($id),
+                                ]);
+                            }
                         }
                     }
-                }
+                    //Add new cart detail
+                    $cartDetailEntity = new CartDetails();
+                    $cartDetailEntity->setCart($cartEntity);
+                    $cartDetailEntity->setProducts($product);
+                    $cartDetailEntity->setQuantity($quantity);
+                    $cartDetailEntity->setTotalPrice($product->getPrice() * $quantity);
 
-                if ($fl == 0) {
-                    $item = [$id, $name, $short, $image, $quantity, $price];
-                    $_SESSION['cart_item'][] = $item;
-                    //var_dump($_SESSION['cart_item']);
+                    $entity = $res->getManager();
+                    $entity->persist($cartDetailEntity);
+                    $entity->flush();
+
+                    //Update total price of cart
+                    $cartEntity->setTotalPrice($cartEntity->getTotalPrice() + $cartDetailEntity->getTotalPrice());
+                    $entity = $res->getManager();
+                    $entity->persist($cartEntity);
+                    $entity->flush();
                 }
+                $this->addFlash(
+                    'success',
+                    'Add to cart successfully'
+                );
+                return $this->render('view/viewdetail.html.twig', [
+                    'product' => $repoPro->viewDetail($id),
+                    'show_Feeds' => $repoFeed->allowDisplayFeedback($id),
+                ]);
+            } else {
+                return $this->render('cart/cart.html.twig', [
+                    'cart' => $cart,
+                    'cartDetails' => $cartDetails
+                ]);
             }
-            return $this->render('cart/cart.html.twig', [
-                'sessions' => $_SESSION['cart_item']
-            ]);
         } else {
             $this->addFlash(
                 'danger',
@@ -71,11 +135,23 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/remove", name="remove_cart")
      */
-    public function removeCartAction(): Response
+    public function removeCartAction(Request $req, ManagerRegistry $res, CartRepository $repoCart, CartDetailsRepository $repo): Response
     {
         //Delete a product in cart
-        if (isset($_GET['remove']) && ($_GET['remove'] >= 0)) {
-            array_splice($_SESSION['cart_item'], $_GET['remove'], 1);
+        if (isset($_GET['id'])) {
+            $id = $req->query->get('id');
+            $cartDetail = $repo->find($id);
+
+            $entity = $res->getManager();
+            $entity->remove($cartDetail);
+            $entity->flush();
+
+            $cart = $repoCart->find($cartDetail->getCart());
+            $cart->setTotalPrice($cart->getTotalPrice() - $cartDetail->getTotalPrice());
+
+            $entity = $res->getManager();
+            $entity->persist($cart);
+            $entity->flush();
         }
         return $this->redirectToRoute("cart");
     }
@@ -83,11 +159,17 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/clear", name="clear_cart")
      */
-    public function clearCartAction(): Response
+    public function clearCartAction(Request $req, ManagerRegistry $res, CartRepository $repo): Response
     {
         //Clear all cart
-        if (isset($_GET['delcard']) && ($_GET['delcard'] == 1)) unset($_SESSION['cart_item']);
+        if (isset($_GET['id'])) {
+            $id = $req->query->get('id');
+            $cart = $repo->find($id);
 
-        return $this->redirectToRoute("cart");
+            $entity = $res->getManager();
+            $entity->remove($cart);
+            $entity->flush();
+            return $this->redirectToRoute("cart");
+        }
     }
 }

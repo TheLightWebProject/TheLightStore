@@ -71,13 +71,13 @@
 
             <div class="row item">
               <div class="col-4 align-self-center">
-                <img class="img-fluid" src="{{ path('get_product_photo', { filename: product[3] }) }}" />
+                <img class="img-fluid" src="{{ path('get_product_photo', { filename: product.image }) }}" />
               </div>
               <div class="col-8">
-                <b>${{ product[5] }}</b>
-                <div class="row text-muted">{{ product[1] }}</div>
+                <b>${{ product.price }}</b>
+                <div class="row text-muted">{{ product.name }}</div>
                 <div class="row">Qty:
-                  {{ product[4] }}</div>
+                  {{ product.quantity }}</div>
               </div>
             </div>
             <hr />
@@ -89,7 +89,7 @@
             <div class="row lower">
               <div class="col text-left">Subtotal</div>
               <div class="col text-right">$
-                {{ product[4] * product[5] }}</div>
+                {{ product.price * product.quantity }}</div>
             </div>
             <div class="row lower">
               <div class="col text-left">Delivery</div>
@@ -100,13 +100,13 @@
                 <b>Total to pay</b>
               </div>
               <div class="col text-right">
-                <b>${{ product[4] * product[5] }}</b>
+                <b>${{ product.price * product.quantity }}</b>
               </div>
             </div>
-            <input type="hidden" name="proid" value="{{ product[0] }}" />
-            <input type="hidden" name="quantity" value="{{ product[4] }}" />
-            <input type="hidden" name="price" value="{{ product[5] }}" />
-            <input type="hidden" name="totalprice" value="{{ product[4] * product[5] }}" />
+            <input type="hidden" name="proid" value="{{ product.id }}" />
+            <input type="hidden" name="quantity" value="{{ product.quantity }}" />
+            <input type="hidden" name="price" value="{{ product.price }}" />
+            <input type="hidden" name="totalprice" value="{{ product.price * product.quantity }}" />
             <input type="submit" class="btn btn-primary btnorder my-3" name="btnPaymentnow" id="btnPaymentnow" value="Payment" />
             <p class="text-muted text-center">Complimentary Shipping</p>
           </div>

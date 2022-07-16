@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\OrderDetails;
 use App\Entity\Orders;
+use App\Repository\CartDetailsRepository;
+use App\Repository\CartRepository;
 use App\Repository\CustomersRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
@@ -31,11 +33,8 @@ class OrderController extends AbstractController
         $customer = $repoCus->findOneBy(['user' => $user]);
 
         $id = $req->request->get('proid');
-        $name = $req->request->get('proname');
-        $short = $req->request->get('shortdesc');
-        $image = $req->request->get('image');
+        $product = $repoPro->find($id);
         $quantity = $req->request->get('quantity');
-        $price = $req->request->get('price');
 
         if (isset($_POST["btnPaymentnow"])) {
             $custName = $req->request->get('txtFullname');
@@ -88,8 +87,6 @@ class OrderController extends AbstractController
             return $this->redirectToRoute('cart');
         }
 
-        $product = [$id, $name, $short, $image, $quantity, $price];
-
         return $this->render('order/buynow.html.twig', [
             'customer' => $customer,
             'product' => $product
@@ -99,12 +96,14 @@ class OrderController extends AbstractController
     /**
      * @Route("/order/payment", name="payment")
      */
-    public function paymentCartAction(ManagerRegistry $res, Request $req, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro): Response
+    public function paymentCartAction(ManagerRegistry $res, Request $req, CustomersRepository $repoCus, OrdersRepository $repoOrder, ProductsRepository $repoPro, CartRepository $repoCart, CartDetailsRepository $repoCartDetail): Response
     {
         //Get user Customer
         $user = $this->getUser();
         //Get customer entity
         $customer = $repoCus->findOneBy(['user' => $user]);
+        $cart = $repoCart->findOneBy(['customer' => $customer]);
+        $cartDetails = $repoCartDetail->showCartDetails($customer->getId());
 
         if (isset($_POST["btnPayment"])) {
             $custName = $req->request->get('txtFullname');
@@ -129,32 +128,32 @@ class OrderController extends AbstractController
             $entity->flush();
 
             //add order details
-            for ($item = 0; $item < sizeof($_SESSION['cart_item']); $item++) {
-                $id = $_SESSION['cart_item'][$item][0];
-                $quantity = $_SESSION['cart_item'][$item][4];
-                $price = $_SESSION['cart_item'][$item][5];
-                $allprice = $quantity * $price;
+            $cartDetailTemp = $repoCartDetail->findBy(['cart' => $cart]);
+            foreach ($cartDetailTemp as $cartDetail) {
+                $quantity = $cartDetail->getQuantity();
+                $totalPrice = $cartDetail->getTotalPrice();
 
-                $product = $repoPro->find($id); //get entity product
-                $orderID = $repoOrder->find($order->getId()); //get entity order
+                $product = $cartDetail->getProducts(); //get entity product
+                $order = $repoOrder->find($order->getId()); //get entity order
 
                 $orderDetail = new OrderDetails();
                 $orderDetail->setQuantity($quantity);
-                $orderDetail->setTotalPrice($allprice);
-                $orderDetail->setOrders($orderID);
+                $orderDetail->setTotalPrice($totalPrice);
+                $orderDetail->setOrders($order);
                 $orderDetail->setProduct($product);
 
                 $entity->persist($orderDetail);
                 $entity->flush();
 
                 //update product
-
                 $product->setQuantity($product->getQuantity() - $quantity);
                 $entity->persist($product);
                 $entity->flush();
             }
 
-            unset($_SESSION['cart_item']);
+            $entity = $res->getManager();
+            $entity->remove($cart);
+            $entity->flush();
 
             $this->addFlash(
                 'success',
@@ -166,7 +165,8 @@ class OrderController extends AbstractController
 
         return $this->render('order/payment.html.twig', [
             'customer' => $customer,
-            'sessions' => $_SESSION['cart_item']
+            'cart' => $cart,
+            'cartDetails' => $cartDetails
         ]);
     }
 
