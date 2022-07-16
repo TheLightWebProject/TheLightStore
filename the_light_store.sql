@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2022 at 10:06 AM
+-- Generation Time: Jul 16, 2022 at 02:38 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.28
 
@@ -59,13 +59,6 @@ CREATE TABLE `cart` (
   `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`id`, `customer_id`, `total_price`) VALUES
-(7, 16, 36);
-
 -- --------------------------------------------------------
 
 --
@@ -79,14 +72,6 @@ CREATE TABLE `cart_details` (
   `quantity` int(11) NOT NULL,
   `total_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `cart_details`
---
-
-INSERT INTO `cart_details` (`id`, `cart_id`, `products_id`, `quantity`, `total_price`) VALUES
-(16, 7, 19, 1, 25),
-(17, 7, 15, 2, 22);
 
 -- --------------------------------------------------------
 
@@ -207,7 +192,8 @@ INSERT INTO `orders` (`id`, `username_id`, `order_date`, `delivery_date`, `check
 (49, 22, '2022-07-16 13:41:36', '2022-07-16 13:41:36', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 60),
 (50, 22, '2022-07-16 13:49:30', '2022-07-16 13:49:30', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 65),
 (55, 22, '2022-07-16 15:01:23', '2022-07-16 15:01:23', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 72),
-(56, 22, '2022-07-16 15:04:30', '2022-07-16 15:04:30', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 52);
+(56, 22, '2022-07-16 15:04:30', '2022-07-16 15:04:30', 0, 'An Binh, Vinh Long', 'Nguyen Thai Duong', '0375741165', 52),
+(57, 16, '2022-07-16 19:36:14', '2022-07-16 19:36:14', 0, 'Ninh Kieu, Can Tho city', 'Nguyen Duy Quang', '0916843367', 36);
 
 -- --------------------------------------------------------
 
@@ -242,7 +228,9 @@ INSERT INTO `order_details` (`id`, `orders_id`, `product_id`, `quantity`, `total
 (66, 55, 15, 2, 22),
 (67, 55, 19, 2, 50),
 (68, 56, 15, 2, 22),
-(69, 56, 21, 1, 30);
+(69, 56, 21, 1, 30),
+(70, 57, 19, 1, 25),
+(71, 57, 15, 2, 22);
 
 -- --------------------------------------------------------
 
@@ -278,11 +266,11 @@ INSERT INTO `products` (`id`, `brand_id`, `supplier_id`, `name`, `price`, `small
 (12, 16, 6, 'Shorts', 20, 'Small Desc Shorts', 'Detail Desc Shorts', '2022-06-21 02:46:22', 0, 'z3398766617127-271089c387fd75d4a1bcc129e6b7e14e-62b114de4e57b.jpg'),
 (13, 13, 4, 'Moss green shirt', 23, 'Small Desc Moss green shirt', 'Detail Desc Moss green shirt', '2022-06-21 02:47:50', 3, 'download-1-62b11536a566a.jpg'),
 (14, 10, 6, 'Navy swim short', 9, 'Small Desc Navy swim short', 'Detail Desc Navy swim short', '2022-06-21 02:48:35', 0, 'navyswimshorts-62b1156326539.jpg'),
-(15, 16, 4, 'Shorts stock', 11, 'Small Desc Shorts stock', 'Detail Desc Shorts stock', '2022-06-21 02:49:45', 1, 'ShortsStock-62b115a9f407e.jpg'),
+(15, 16, 4, 'Shorts stock', 11, 'Small Desc Shorts stock', 'Detail Desc Shorts stock', '2022-06-21 02:49:45', -1, 'ShortsStock-62b115a9f407e.jpg'),
 (16, 11, 5, 'Plaid shirt', 28, 'Small Desc Plaid shirt', 'Detail Desc Plaid shirt', '2022-06-21 02:50:57', 1, 'images-62b115f1bde19.jpg'),
 (17, 13, 5, 'Blue t-shirt', 8, 'Small Desc Blue t-shirt', 'Detail Desc Blue t-shirt', '2022-06-21 02:51:40', 0, '9088-62b1161c57045.png'),
 (18, 15, 4, 'Leather jacket', 30, 'Small Desc Leather jacket', 'Detail Desc Leather jacket', '2022-06-21 02:52:22', 0, 'LeatherJacket-62b1164657953.jpg'),
-(19, 14, 6, 'Bomber jacket', 25, 'Small Desc Bomber jacket', 'Detail Desc Bomber jacket', '2022-06-21 02:53:10', 3, 'BomberJacket-62b11676d7309.jpg'),
+(19, 14, 6, 'Bomber jacket', 25, 'Small Desc Bomber jacket', 'Detail Desc Bomber jacket', '2022-06-21 02:53:10', 2, 'BomberJacket-62b11676d7309.jpg'),
 (20, 10, 5, 'Plain Hoodie', 22, 'Small Desc Plain Hoodie', 'Detail Desc Plain Hoodie', '2022-06-21 02:54:11', 0, 'PlainHoodie-62b116b352aa6.jpg'),
 (21, 12, 5, 'Denim jacket', 30, 'Small Desc Denim jacket', 'Detail Desc Denim jacket', '2022-07-03 22:18:58', 0, 'DenimJacket-62b116dedaac6.jpg'),
 (23, 12, 6, 'Denim jacket', 35, 'Small Desc Denim jeans', 'Detail Desc Denim jeans', '2022-06-25 15:17:12', 0, 'denim-jeans-large-black-62b11db08450e.jpg'),
@@ -475,13 +463,13 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -522,7 +510,7 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `cart_details`
   ADD CONSTRAINT `FK_89FCC38D1AD5CDBF` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_89FCC38D6C8A81A9` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`);
+  ADD CONSTRAINT `FK_89FCC38D6C8A81A9` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `customers`
@@ -534,28 +522,28 @@ ALTER TABLE `customers`
 -- Constraints for table `feedback`
 --
 ALTER TABLE `feedback`
-  ADD CONSTRAINT `FK_D22944584584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `FK_D22944584584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_D22944589395C3F3` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `FK_E52FFDEEED766068` FOREIGN KEY (`username_id`) REFERENCES `customers` (`id`);
+  ADD CONSTRAINT `FK_E52FFDEEED766068` FOREIGN KEY (`username_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `order_details`
 --
 ALTER TABLE `order_details`
-  ADD CONSTRAINT `FK_845CA2C14584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `FK_845CA2C14584665A` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_845CA2C1CFFE9AD6` FOREIGN KEY (`orders_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `FK_B3BA5A5A2ADD6D8C` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`),
-  ADD CONSTRAINT `FK_B3BA5A5A44F5D008` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`);
+  ADD CONSTRAINT `FK_B3BA5A5A2ADD6D8C` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_B3BA5A5A44F5D008` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reset_password_request`
