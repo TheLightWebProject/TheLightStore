@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+  <link rel="stylesheet" href="{{ asset('css/cart.css') }}" />
   <div class="my-2 border">
     <h2 class="text-center my-3">My Cart</h2>
     {% for message in app.flashes('success') %}

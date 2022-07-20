@@ -1,0 +1,66 @@
+#logo {
+    font-family: 'Dancing Script';
+    font-weight: bold;
+    font-size: 1.6rem;
+  }
+  
+  @media(max-width:768px) {
+    .cardorder-body {
+      padding: 0 1rem 1rem 1rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  
+    .cardorder-top {
+      padding: 0.7rem 1rem;
+    }
+  }
+  
+  .row {
+    margin: 0;
+  }
+  
+  form span {
+    color: rgb(179, 179, 179);
+  }
+  
+  .input {
+    border: 1px solid rgba(0, 0, 0, 0.137);
+    padding: 1vh;
+    margin-bottom: 4vh;
+    outline: none;
+    width: 100%;
+    background-color: rgb(247, 247, 247);
+  }
+  
+  .header {
+    font-size: 1.5rem;
+  }
+  
+  .left {
+    background-color: #ffffff;
+    padding: 2vh;
+  }
+  
+  .right .item {
+    padding: 0.3rem 0;
+  }
+  
+  .right {
+    background-color: #ffffff;
+    padding: 2vh;
+  }
+  
+  .lower {
+    line-height: 2;
+  }
+  
+  .btnorder {
+    background-color: rgb(23, 4, 189);
+    border-color: rgb(23, 4, 189);
+    color: white;
+    width: 100%;
+    font-size: 0.7rem;
+    padding: 1.5vh;
+    border-radius: 0;
+  }
